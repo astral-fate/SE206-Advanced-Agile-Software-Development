@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SE206 - Unit 5: Applying and Evaluating Agile</title>
+    <style>
+        /* Paste the CSS from the SE205 unit1.html example here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, h3 {
+            color: #0056b3; /* Cairo University Blue */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            margin-top: 20px; /* Reduced top margin for sections */
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            margin-top: 25px;
+            margin-bottom: 15px;
+            color: #007bff; /* Lighter Blue */
+        }
+         ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+         li {
+             margin-bottom: 8px;
+         }
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            background-color: #e9ecef;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.95em;
+        }
+        strong {
+             color: #dc3545; /* Red emphasis */
+        }
+
+        /* Main Tabs Styles */
+        .main-tabs {
+            display: flex;
+            justify-content: space-around; /* Or flex-start, center */
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            margin-bottom: 25px;
+            border-bottom: 2px solid #0056b3;
+        }
+
+        .main-tabs .tab-button {
+            padding: 12px 20px; /* Adjusted padding slightly */
+            border: none;
+            background: none;
+            color: #0056b3;
+            font-size: 0.95em; /* Slightly smaller font */
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px 5px 0 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin-bottom: -2px; /* Overlap border */
+            border-bottom: 2px solid transparent;
+            text-align: center;
+        }
+
+        .main-tabs .tab-button.active {
+            background: #0056b3;
+            color: white;
+            border-bottom: 2px solid #0056b3;
+        }
+        .main-tabs .tab-button:hover:not(.active) {
+            background-color: #e9ecef;
+            border-bottom: 2px solid #adb5bd;
+        }
+
+        /* Content Sections */
+        .main-content {
+            display: none; /* Hide all main content sections by default */
+            animation: fadeIn 0.5s;
+        }
+
+        .main-content.active {
+            display: block; /* Show only the active one */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+
+        /* --- Accordion Styles (for Glossary) --- */
+        .glossary-accordion {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            overflow: hidden; /* Contain borders */
+        }
+
+        .accordion-item {
+            border-bottom: 1px solid #dee2e6; /* Separator */
+        }
+        .accordion-item:last-child {
+            border-bottom: none;
+        }
+
+        .accordion-header {
+            background-color: #f8f9fa;
+            color: #dc3545; /* Highlight Red for terms */
+            cursor: pointer;
+            padding: 15px 20px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            position: relative; /* For the indicator */
+        }
+
+        .accordion-header:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Indicator (+/-) */
+        .accordion-header::after {
+            content: '\002B'; /* + sign */
+            color: #0056b3;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .accordion-header.active::after {
+            content: "\2212"; /* - sign */
+            transform: rotate(180deg); /* Optional: animate the sign itself */
+        }
+        /* Optional: Slightly different style for active header */
+        .accordion-header.active {
+             background-color: #e7f1ff;
+        }
+
+
+        .accordion-panel {
+            padding: 0 20px; /* Start with 0 padding top/bottom */
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out; /* Smooth transition */
+        }
+        .accordion-panel p, .accordion-panel ul { /* Apply margin to lists too */
+            margin: 15px 0; /* Add margin back when panel is open */
+            color: #333; /* Reset color for definition */
+        }
+
+        /* --- End Accordion Styles --- */
+
+        /* Concepts Section Styles */
+        #concepts .concept-block {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+        }
+         #concepts .concept-block h3 {
+            margin-top: 0;
+            color: #007bff;
+            border-bottom: 1px dotted #ccc;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+
+        /* Quiz Styles (apply within #fill, #tf, #mc) */
+        .question {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            background-color: #ffffff; /* White background for questions */
+            position: relative; /* For feedback positioning */
+        }
+
+        .question p {
+            margin: 0 0 15px;
+            font-weight: bold;
+            font-size: 1.05em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-button {
+            padding: 10px 15px;
+            border: 1px solid #ced4da;
+            background: #f8f9fa; /* Light background for options */
+            color: #495057;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: left;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            width: 100%;
+        }
+        .option-button:hover {
+             background-color: #e9ecef;
+             border-color: #adb5bd;
+        }
+
+        .option-button.selected {
+            background: #007bff;
+            color: white;
+            border-color: #0056b3;
+        }
+
+        .check-answer {
+            margin-top: 15px;
+            padding: 10px 20px;
+            border: none;
+            background: #28a745; /* Success Green */
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+        }
+        .check-answer:hover {
+             background-color: #218838;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SE206 - Unit 5: Applying and Evaluating Agile</h1>
+
+        <!-- Main Tab Buttons -->
+        <div class="main-tabs">
+            <button class="tab-button active" data-tab="glossary">Glossary</button>
+            <button class="tab-button" data-tab="concepts">Key Concepts</button>
+            <button class="tab-button" data-tab="fill">Fill in the Blank</button>
+            <button class="tab-button" data-tab="tf">True/False</button>
+            <button class="tab-button" data-tab="mc">Multiple Choice</button>
+        </div>
+
+        <!-- Glossary Section (Accordion) -->
+        <section id="glossary" class="main-content active">
+            <h2>Glossary of Terms</h2>
+            <div class="glossary-accordion">
+                <!-- Add terms based on SE206 Unit 5 (Application/Evaluation/RE) -->
+                 <div class="accordion-item">
+                    <button class="accordion-header">Agile SPM</button>
+                    <div class="accordion-panel">
+                        <p>(Agile Software Product Management) An approach that integrates product management activities within an Agile development context, focusing on defining requirements flexibly and managing product backlogs.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Digital Divide</button>
+                    <div class="accordion-panel">
+                        <p>The gap between demographics and regions that have access to modern information and communications technology (ICT), and those that don't or have restricted access. A challenge for E-Government initiatives.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">E-Government</button>
+                    <div class="accordion-panel">
+                        <p>The use of Information and Communication Technology (ICT), particularly the internet, to provide government services, information dissemination, communication transactions, and integration of various stand-alone systems.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Feasibility Study</button>
+                    <div class="accordion-panel">
+                        <p>An assessment of the practicality of a proposed project or system. In Requirement Engineering, it evaluates technical, operational, and economic feasibility.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">4-DAT</button>
+                    <div class="accordion-panel">
+                        <p>(4-Dimensional Analytical Tools) A framework mentioned for selecting appropriate Agile methodologies based on analyzing dimensions like Scope, Agile Values, Software Process, and Agility.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">GQM Method</button>
+                    <div class="accordion-panel">
+                        <p>(Goal-Question-Metric) A structured approach for defining and measuring software project goals. Goals lead to specific Questions, which are answered by quantifiable Metrics.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Requirement Elicitation</button>
+                    <div class="accordion-panel">
+                        <p>The process of gathering requirements from stakeholders, users, and existing systems. A key part of Requirement Engineering.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Requirement Engineering (RE)</button>
+                    <div class="accordion-panel">
+                        <p>The process of defining, documenting, and maintaining requirements. Includes feasibility study, elicitation, specification, validation, and management.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Requirement Management</button>
+                    <div class="accordion-panel">
+                        <p>The process of managing changing requirements during the requirements engineering process and system development.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Requirement Validation</button>
+                    <div class="accordion-panel">
+                        <p>The process of checking that the defined requirements are complete, consistent, correct, and accurately reflect the customer's needs.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Software Requirement Specification (SRS)</button>
+                    <div class="accordion-panel">
+                        <p>A document that describes what the software will do and how it will be expected to perform. Details functional and non-functional requirements.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">XP Rules</button>
+                    <div class="accordion-panel">
+                        <p>Specific guidelines derived from XP practices, such as Planning Game, Small Releases, Metaphor, Simple Design, Testing, Refactoring, Pair Programming, Collective Ownership, Continuous Integration, 40-Hour Week, On-Site Customer, Coding Standards.</p>
+                    </div>
+                </div>
+
+            </div> <!-- End glossary-accordion -->
+        </section>
+
+        <!-- Key Concepts Section -->
+        <section id="concepts" class="main-content">
+            <h2>Key Concepts from Unit 5</h2>
+
+            <div class="concept-block">
+                <h3>Evaluating XP Implementation</h3>
+                <p>Evaluating the effectiveness of XP involves assessing its core practices:</p>
+                <ul>
+                    <li><strong>Refactoring:</strong> Improves code efficiency and understandability but needs discipline. Automated testing simplifies checking if changes broke functionality.</li>
+                    <li><strong>Test-First Development:</strong> Clarifies requirements, ensures testability, but requires effort to write and maintain tests.</li>
+                    <li><strong>Pair Programming:</strong> Improves code quality, knowledge sharing, and serves as informal review, though requires compatible pairs.</li>
+                    <li><strong>The XP Release Cycle:</strong> Involves selecting stories, breaking into tasks, development/integration/testing, evaluation, and release.</li>
+                </ul>
+                <p>The <strong>GQM (Goal-Question-Metric)</strong> method can be applied to measure the implementation success of specific XP practices by defining goals (e.g., Improve code quality via Refactoring), questions (e.g., How often is code refactored?), and metrics (e.g., % of code changed per iteration).</p>
+            </div>
+
+            <div class="concept-block">
+                <h3>XP Rules Summary</h3>
+                <p>XP practices translate into operational rules:</p>
+                <ol>
+                    <li><strong>Planning Game:</strong> Collaborative planning using story cards.</li>
+                    <li><strong>Small Releases:</strong> Frequent delivery of testable features (e.g., 3-4 weeks).</li>
+                    <li><strong>Metaphor:</strong> A shared story or analogy explaining the system's overall design/operation.</li>
+                    <li><strong>Simple Design:</strong> Meet current needs with the simplest possible design.</li>
+                    <li><strong>Testing:</strong> Programmers write unit tests, customers write functional/acceptance tests.</li>
+                    <li><strong>Refactoring:</strong> Continuously improve code structure without changing behavior.</li>
+                    <li><strong>Pair Programming:</strong> Two developers, one computer.</li>
+                    <li><strong>Collective Code Ownership:</strong> Anyone can improve any code.</li>
+                    <li><strong>Continuous Integration:</strong> Integrate and test code many times a day.</li>
+                    <li><strong>40-Hour Week:</strong> Maintain a sustainable pace.</li>
+                    <li><strong>On-Site Customer:</strong> Customer available full-time to answer questions and provide feedback.</li>
+                    <li><strong>Coding Standards:</strong> Team agrees on common coding rules.</li>
+                </ol>
+            </div>
+
+             <div class="concept-block">
+                <h3>Agile in E-Government</h3>
+                <p>E-Government involves using ICT for government services.</p>
+                <ul>
+                    <li><strong>Challenges:</strong> Digital Divide (unequal access), financial barriers, integrating legacy systems.</li>
+                    <li><strong>Applying Agile:</strong> Agile methods can help E-Gov projects adapt to changing policies, user needs, and technology.</li>
+                    <li><strong>4-DAT Framework:</strong> A tool to analyze project dimensions (Scope, Agile Values, Process, Agility) to help select suitable Agile methods (like XP or Scrum) for specific E-Gov contexts.</li>
+                    <li><strong>Agile SPM:</strong> Enables flexible requirement definition and management suitable for evolving E-Gov services.</li>
+                </ul>
+             </div>
+
+            <div class="concept-block">
+                <h3>Requirement Engineering (RE) in Agile</h3>
+                 <p>RE is the process of defining, documenting, and maintaining requirements.</p>
+                 <p><strong>Traditional RE Process:</strong></p>
+                 <ol>
+                    <li><strong>Feasibility Study:</strong> Assess practicality (Technical, Operational, Economic).</li>
+                    <li><strong>Elicitation and Analysis:</strong> Gather requirements from stakeholders.</li>
+                    <li><strong>Specification:</strong> Document requirements (e.g., in an SRS).</li>
+                    <li><strong>Validation:</strong> Check if specified requirements meet user needs.</li>
+                    <li><strong>Management:</strong> Handle changes to requirements.</li>
+                 </ol>
+                 <p><strong>RE in Agile:</strong> While the steps exist conceptually, they are more iterative and continuous. Elicitation, specification, validation happen frequently within iterations, often using User Stories and direct customer feedback instead of a large upfront SRS.</p>
+                 <p><strong>SRS (Software Requirement Specification):</strong> A detailed document describing functional and non-functional requirements. Key characteristics of a good SRS include: Correctness, Completeness, Consistency, Unambiguousness, Modifiability, Verifiability, Traceability, Design Independence, Testability, Understandability.</p>
+
+             </div>
+
+        </section>
+
+        <!-- Quiz Sections -->
+        <div id="fill" class="main-content">
+            <h2>Fill in the Blank Questions</h2>
+            <div id="fill-questions"></div>
+        </div>
+
+        <div id="tf" class="main-content">
+            <h2>True/False Questions</h2>
+            <div id="tf-questions"></div>
+        </div>
+
+        <div id="mc" class="main-content">
+            <h2>Multiple Choice Questions</h2>
+            <div id="mc-questions"></div>
+        </div>
+
+    </div> <!-- End Container -->
+
+    <script>
+        // --- START OF QUIZ DATA (SE206 UNIT 5 - Applying/Evaluating/RE) ---
+        const fillInTheBlank = [
+            { question: "The method for defining and measuring software goals using Goals, Questions, and Metrics is called _______.", options: ["SRS", "XP", "GQM", "SPM"], answer: "GQM" },
+            { question: "The XP rule stating that the customer should be available full-time to the team is the _______ Customer rule.", options: ["Remote", "Part-Time", "On-Site", "Proxy"], answer: "On-Site" },
+            { question: "_______ Engineering is the process of defining, documenting, and maintaining software requirements.", options: ["Software", "Systems", "Requirement", "Agile"], answer: "Requirement" },
+            { question: "A _______ Requirement Specification (SRS) is a document detailing what software should do.", options: ["System", "Software", "Solution", "Stakeholder"], answer: "Software" },
+            { question: "The gap in access to technology between different groups is known as the _______ Divide.", options: ["Information", "Economic", "Digital", "Social"], answer: "Digital" },
+            { question: "The XP practice of improving code structure without changing its behavior is _______.", options: ["Testing", "Debugging", "Refactoring", "Integrating"], answer: "Refactoring" },
+            { question: "Using ICT, especially the internet, to deliver government services is known as _______-Government.", options: ["Agile", "Digital", "E", "Smart"], answer: "E" },
+            { question: "The 4-DAT framework analyzes project dimensions to help _______ appropriate Agile methodologies.", options: ["Implement", "Evaluate", "Select", "Discard"], answer: "Select" },
+            { question: "The RE step involving gathering requirements from stakeholders is called _______.", options: ["Specification", "Validation", "Elicitation", "Management"], answer: "Elicitation" },
+            { question: "An SRS should be _______, meaning each requirement has only one interpretation.", options: ["Consistent", "Complete", "Unambiguous", "Modifiable"], answer: "Unambiguous" }
+        ];
+
+        const trueOrFalse = [
+            { question: "GQM stands for Goal-Quality-Measurement.", answer: false }, // Goal-Question-Metric
+            { question: "The XP rule '40-Hour Week' encourages working overtime to meet deadlines.", answer: false }, // Encourages sustainable pace
+            { question: "Requirement Engineering in Agile typically involves creating a large, detailed SRS document upfront.", answer: false }, // RE is iterative, uses lighter artifacts like user stories initially
+            { question: "E-Government faces challenges like the Digital Divide.", answer: true },
+            { question: "Refactoring involves adding new functionality to the software.", answer: false }, // Improves internal structure, doesn't change external behavior/functionality
+            { question: "The 'On-Site Customer' rule in XP means the customer visits the team once per iteration.", answer: false }, // Means customer is available full-time or very frequently
+            { question: "An SRS should ideally include detailed design specifications.", answer: false }, // Should be Design Independent
+            { question: "Requirement Validation checks if the documented requirements meet the actual user needs.", answer: true },
+            { question: "The 4-DAT framework is a specific Agile methodology like Scrum or XP.", answer: false }, // It's an analytical tool/framework for selection
+            { question: "Collective Code Ownership means only one specific person owns and can change a piece of code.", answer: false } // Means anyone on the team can change any code
+        ];
+
+        const multipleChoice = [
+            { question: "Which XP Rule emphasizes having a shared understanding of the system's overall operation through an analogy?", options: ["Simple Design", "Planning Game", "Metaphor", "Small Releases"], answer: "Metaphor" },
+            { question: "What does GQM stand for?", options: ["Goal-Quality-Metric", "Goal-Question-Measure", "Goal-Question-Metric", "General Quality Management"], answer: "Goal-Question-Metric" },
+            { question: "Which RE activity involves checking requirements for correctness, completeness, and consistency?", options: ["Elicitation", "Specification", "Validation", "Management"], answer: "Validation" },
+            { question: "Which characteristic is NOT desirable for a good SRS?", options: ["Correct", "Ambiguous", "Consistent", "Modifiable"], answer: "Ambiguous" },
+            { question: "The 4-DAT framework is used for what purpose in the context of Agile E-Government?", options: ["Estimating project cost", "Selecting suitable Agile methodologies", "Writing user stories", "Performing automated tests"], answer: "Selecting suitable Agile methodologies" },
+            { question: "Which XP practice directly supports Collective Code Ownership?", options: ["Test-First Development", "Pair Programming", "Small Releases", "Planning Game"], answer: "Pair Programming" }, // Also CI, Refactoring implicitly support it
+            { question: "What is the primary focus of Requirement Elicitation?", options: ["Writing the SRS document", "Testing the requirements", "Managing changes to requirements", "Gathering requirements from stakeholders"], answer: "Gathering requirements from stakeholders" },
+            { question: "Which is a major challenge for implementing E-Government services?", options: ["Lack of available technology", "Digital Divide", "Too many government regulations", "Absence of Agile methods"], answer: "Digital Divide" },
+            { question: "The XP rule encouraging frequent delivery of working software in short cycles is:", options: ["Continuous Integration", "Small Releases", "Planning Game", "40-Hour Week"], answer: "Small Releases" },
+            { question: "Agile SPM primarily focuses on integrating _______ within Agile development.", options: ["Testing practices", "Product management activities", "Hardware development", "Database administration"], answer: "Product management activities" }
+        ];
+        // --- END OF QUIZ DATA ---
+
+        // --- START OF SCRIPT LOGIC (PASTE FROM PREVIOUS EXAMPLE) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Select main tabs and content sections
+            const mainTabButtons = document.querySelectorAll('.main-tabs .tab-button');
+            const mainTabContents = document.querySelectorAll('.main-content');
+
+            // Select quiz content containers
+            const fillContainer = document.getElementById('fill-questions');
+            const tfContainer = document.getElementById('tf-questions');
+            const mcContainer = document.getElementById('mc-questions');
+
+             // Select accordion elements
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+
+            // --- Main Tab Switching Logic ---
+            mainTabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab'); // Get the ID of the target content
+
+                    // Deactivate all main buttons and content
+                    mainTabButtons.forEach(btn => btn.classList.remove('active'));
+                    mainTabContents.forEach(content => content.classList.remove('active'));
+
+                    // Activate the clicked button
+                    button.classList.add('active');
+
+                    // Activate the corresponding content section
+                    const targetContent = document.getElementById(tabId);
+                    if (targetContent) {
+                        targetContent.classList.add('active');
+                    }
+                });
+            });
+
+            // --- Accordion Logic (for Glossary) ---
+             accordionHeaders.forEach(header => {
+                header.addEventListener('click', function() {
+                    // Toggle active class on the header for styling (+) (-) sign
+                    this.classList.toggle('active');
+
+                    // Get the panel sibling
+                    const panel = this.nextElementSibling;
+
+                    // Toggle the max-height for smooth transition
+                    if (panel.style.maxHeight) {
+                        // If panel is open, close it
+                        panel.style.maxHeight = null;
+                        panel.style.padding = "0 20px"; // Remove padding when closing
+                    } else {
+                         // If panel is closed, open it
+                        panel.style.maxHeight = panel.scrollHeight + 40 + "px"; // Add some buffer
+                        panel.style.padding = "15px 20px"; // Add padding back when opening
+                    }
+
+                    // --- Optional: Close other accordions ---
+                    accordionHeaders.forEach(otherHeader => {
+                        if (otherHeader !== this && otherHeader.classList.contains('active')) {
+                            otherHeader.classList.remove('active');
+                            otherHeader.nextElementSibling.style.maxHeight = null;
+                            otherHeader.nextElementSibling.style.padding = "0 20px";
+                        }
+                    });
+                    // --- End Optional Close Others ---
+                });
+            });
+
+
+            // --- Function to handle option selection within a question ---
+            function handleOptionSelection(button, questionDiv) {
+                // Deselect siblings within the same question
+                const siblings = questionDiv.querySelectorAll('.option-button.selected');
+                siblings.forEach(sib => sib.classList.remove('selected'));
+                // Select clicked button
+                button.classList.add('selected');
+                 // Clear previous feedback when a new option is selected
+                const existingFeedback = questionDiv.querySelector('.feedback');
+                if (existingFeedback) {
+                    existingFeedback.remove();
+                }
+            }
+
+            // --- Function to create and append feedback ---
+            function showFeedback(questionDiv, isCorrect, correctAnswer) {
+                 // Remove existing feedback first
+                const existingFeedback = questionDiv.querySelector('.feedback');
+                if (existingFeedback) {
+                    existingFeedback.remove();
+                }
+
+                const feedback = document.createElement('div');
+                feedback.className = 'feedback';
+                if (isCorrect) {
+                    feedback.classList.add('correct');
+                    feedback.textContent = 'Correct!';
+                } else {
+                    feedback.classList.add('incorrect');
+                     // For T/F, explicitly show the boolean value
+                     let displayAnswer = correctAnswer;
+                     if (typeof correctAnswer === 'boolean') {
+                         displayAnswer = correctAnswer ? 'True' : 'False';
+                     }
+                    feedback.textContent = `Incorrect. Correct answer: ${displayAnswer}`;
+                }
+                // Append feedback after the check button
+                const checkButton = questionDiv.querySelector('.check-answer');
+                 if (checkButton) {
+                    // Insert after the check button if it exists
+                    checkButton.parentNode.insertBefore(feedback, checkButton.nextSibling);
+                } else {
+                     // Otherwise, append to the end of the question div
+                     questionDiv.appendChild(feedback);
+                }
+            }
+
+            // --- Load Fill in the Blank Questions ---
+            function loadFillInTheBlankQuestions() {
+                fillContainer.innerHTML = ''; // Clear previous content
+                fillInTheBlank.forEach((q, index) => { // Added index for unique IDs if needed
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question';
+                    questionDiv.id = `fill-q-${index}`;
+
+                    const questionText = document.createElement('p');
+                    // Find the blank spot indicated by _______ and replace it for display
+                    questionText.innerHTML = q.question.replace('_______', '<span style="color: #007bff; font-weight:bold;">_______</span>');
+                    questionDiv.appendChild(questionText);
+
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'options';
+
+                    // Shuffle options for variety (optional)
+                    const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+
+                    shuffledOptions.forEach(option => { // Use shuffled options
+                        const optionButton = document.createElement('button');
+                        optionButton.className = 'option-button';
+                        optionButton.textContent = option;
+                        optionButton.addEventListener('click', () => handleOptionSelection(optionButton, questionDiv));
+                        optionsDiv.appendChild(optionButton);
+                    });
+                    questionDiv.appendChild(optionsDiv);
+
+                    const checkButton = document.createElement('button');
+                    checkButton.className = 'check-answer';
+                    checkButton.textContent = 'Check Answer';
+                    checkButton.addEventListener('click', () => {
+                        const selected = questionDiv.querySelector('.option-button.selected');
+                        if (selected) {
+                            showFeedback(questionDiv, selected.textContent === q.answer, q.answer);
+                        } else {
+                             // Optionally show feedback that an answer must be selected
+                             showFeedback(questionDiv, false, q.answer); // Or provide specific feedback
+                        }
+                    });
+                    questionDiv.appendChild(checkButton);
+
+                    fillContainer.appendChild(questionDiv);
+                });
+            }
+
+
+            // --- Load True/False Questions ---
+            function loadTrueFalseQuestions() {
+                tfContainer.innerHTML = ''; // Clear previous content
+                trueOrFalse.forEach((q, index) => { // Added index
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question';
+                    questionDiv.id = `tf-q-${index}`;
+
+                    const questionText = document.createElement('p');
+                    questionText.textContent = q.question;
+                    questionDiv.appendChild(questionText);
+
+                     const optionsDiv = document.createElement('div'); // Keep consistent structure
+                    optionsDiv.className = 'options';
+
+                    const trueButton = document.createElement('button');
+                    trueButton.className = 'option-button';
+                    trueButton.textContent = 'True';
+                    trueButton.addEventListener('click', () => handleOptionSelection(trueButton, questionDiv));
+                    optionsDiv.appendChild(trueButton);
+
+                    const falseButton = document.createElement('button');
+                    falseButton.className = 'option-button';
+                    falseButton.textContent = 'False';
+                    falseButton.addEventListener('click', () => handleOptionSelection(falseButton, questionDiv));
+                    optionsDiv.appendChild(falseButton);
+
+                    questionDiv.appendChild(optionsDiv);
+
+                    const checkButton = document.createElement('button');
+                    checkButton.className = 'check-answer';
+                    checkButton.textContent = 'Check Answer';
+                    checkButton.addEventListener('click', () => {
+                        const selected = questionDiv.querySelector('.option-button.selected');
+                        if (selected) {
+                            // Check boolean answer correctly
+                            const isCorrect = (selected.textContent === 'True' && q.answer === true) || (selected.textContent === 'False' && q.answer === false);
+                            showFeedback(questionDiv, isCorrect, q.answer); // Pass boolean directly
+                        } else {
+                            showFeedback(questionDiv, false, q.answer); // Pass boolean directly
+                        }
+                    });
+                    questionDiv.appendChild(checkButton);
+
+                    tfContainer.appendChild(questionDiv);
+                });
+            }
+
+            // --- Load Multiple Choice Questions ---
+            function loadMultipleChoiceQuestions() {
+                mcContainer.innerHTML = ''; // Clear previous content
+                multipleChoice.forEach((q, index) => { // Added index
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question';
+                    questionDiv.id = `mc-q-${index}`;
+
+                    const questionText = document.createElement('p');
+                    questionText.textContent = q.question;
+                    questionDiv.appendChild(questionText);
+
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'options';
+
+                    // Shuffle options for variety (optional)
+                    const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+                    shuffledOptions.forEach(option => { // Use shuffled options
+                        const optionButton = document.createElement('button');
+                        optionButton.className = 'option-button';
+                        optionButton.textContent = option;
+                        optionButton.addEventListener('click', () => handleOptionSelection(optionButton, questionDiv));
+                        optionsDiv.appendChild(optionButton);
+                    });
+                    questionDiv.appendChild(optionsDiv);
+
+                    const checkButton = document.createElement('button');
+                    checkButton.className = 'check-answer';
+                    checkButton.textContent = 'Check Answer';
+                    checkButton.addEventListener('click', () => {
+                        const selected = questionDiv.querySelector('.option-button.selected');
+                        if (selected) {
+                            showFeedback(questionDiv, selected.textContent === q.answer, q.answer);
+                        } else {
+                             showFeedback(questionDiv, false, q.answer);
+                        }
+                    });
+                    questionDiv.appendChild(checkButton);
+
+                    mcContainer.appendChild(questionDiv);
+                });
+            }
+
+            // --- Initial Load ---
+            // Load all quiz questions initially so they are ready when tabs are clicked
+            loadFillInTheBlankQuestions();
+            loadTrueFalseQuestions();
+            loadMultipleChoiceQuestions();
+
+
+        }); // End DOMContentLoaded
+        // --- END OF SCRIPT LOGIC ---
+    </script>
+</body>
+</html>
