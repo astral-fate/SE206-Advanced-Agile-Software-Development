@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SE206 Course Index - Advanced Agile Software Development</title>
     <style>
+        /* Copied CSS from your SE205 index.html example */
         body {
             font-family: sans-serif;
             line-height: 1.6;
@@ -15,51 +15,38 @@
             color: #333;
         }
         .container {
-            width: 85%; /* Slightly wider */
-            max-width: 1300px; /* Increase max width */
+            width: 80%;
+            max-width: 1200px;
             margin: 20px auto;
             background: #fff;
             padding: 25px 40px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
         }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #0056b3; /* Cairo Uni Blue */
-        }
         h1 {
-            color: #0056b3;
-            margin-bottom: 5px;
+            text-align: center;
+            color: #0056b3; /* Cairo Uni Blue */
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
         }
-        .sub-header {
-             color: #555;
-             font-size: 1.1em;
-             margin-top: 5px;
-        }
-         .instructor-info {
-             font-size: 0.95em;
-             color: #666;
-         }
         h2 {
             color: #007bff; /* Lighter Blue */
             border-bottom: 1px solid #eee;
-            padding-bottom: 8px;
-            margin-top: 35px;
-            margin-bottom: 20px;
+            padding-bottom: 5px;
+            margin-top: 30px;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            font-size: 0.9em;
+            font-size: 0.9em; /* Adjust font size for better fit */
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 10px 12px;
+            padding: 10px 12px; /* Adjust padding */
             text-align: left;
-            vertical-align: top;
+            vertical-align: top; /* Align content to top */
         }
         th {
             background-color: #e9ecef;
@@ -80,10 +67,10 @@
             text-decoration: underline;
         }
         /* Adjust column widths */
-        th:nth-child(1), td:nth-child(1) { width: 8%; text-align: center;} /* Unit */
-        th:nth-child(2), td:nth-child(2) { width: 27%; } /* Main Topics */
-        th:nth-child(3), td:nth-child(3) { width: 40%; } /* Key Concepts / Details */
-        th:nth-child(4), td:nth-child(4) { width: 25%; } /* Methodologies / Artifacts / Roles */
+        th:nth-child(1), td:nth-child(1) { width: 8%; } /* Unit */
+        th:nth-child(2), td:nth-child(2) { width: 25%; } /* Main Topics */
+        th:nth-child(3), td:nth-child(3) { width: 42%; } /* Key Concepts */
+        th:nth-child(4), td:nth-child(4) { width: 25%; } /* Methodologies/Tools */
 
         ul {
             list-style-type: disc;
@@ -94,163 +81,208 @@
         li {
              margin-bottom: 5px;
         }
-         .grading-list li strong {
+        strong { /* For grading percentages */
             color: #28a745; /* Green */
-            display: inline-block;
-            min-width: 40px; /* Align percentages */
-         }
-        .objectives-list li {
-             margin-bottom: 8px;
         }
-        .note {
-            font-size: 0.9em;
-            color: #6c757d;
-            margin-top: 5px;
+        .course-desc {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            color: #555;
         }
-
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>Advanced Agile Software Development</h1>
-            <p class="sub-header">Cairo University - Faculty of Graduate Studies for Statistical Research</p>
-            <p class="sub-header">Course Code: SE206</p>
-            <p class="instructor-info">Instructor: Dr. Atef Raslan (Dr.Atef.Raslan@gmail.com)</p>
-             <!-- Optional: Link to the broader program if known
-             <p class="course-desc">
-                Part of the <a href="[Link to Program]" target="_blank" rel="noopener noreferrer">Software Engineering Professional Master's Degree</a> program.
-             </p>
-             -->
-        </div>
+        <h1>SE206: Advanced Agile Software Development</h1>
+        <p class="course-desc">
+             This course is part of the
+            <a href="https://github.com/astral-fate/Cairo-University-Software-Engineering-Professional-Master-s-Degree" target="_blank" rel="noopener noreferrer">Cairo University Software Engineering Professional Master's Degree</a> program.
+            Focuses on Agile principles, methodologies, and practices.
+        </p>
 
-        <h2>Course Syllabus & Outline</h2>
+        <h2>Course Syllabus</h2>
         <table>
             <thead>
                 <tr>
                     <th>Unit</th>
-                    <th>Main Topics Covered</th>
-                    <th>Key Concepts / Details</th>
-                    <th>Methodologies / Artifacts / Roles</th>
+                    <th>Main Topics</th>
+                    <th>Key Concepts</th>
+                    <th>Methodologies / Tools</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><strong><a href="chapters/unit1_intro_principles.html">Unit 1</a></strong></td>
+                    <td><strong><a href="chapters/se206_unit1.html">Unit 1</a></strong></td>
                     <td>
-                        - Introduction to SDLC & Waterfall<br>
-                        - Agile vs. Traditional Methods<br>
+                        - Introduction to Agile<br>
+                        - Agile vs. Traditional<br>
                         - Agile Manifesto & Principles<br>
-                        - Agile Characteristics & Advantages
+                        - Agile Characteristics & Advantages<br>
+                        - Overview of Methodologies
                     </td>
                     <td>
-                        - Understanding the traditional SDLC limitations.<br>
-                        - Core differences: Fixed Scope (Trad) vs. Fixed Time/Cost (Agile).<br>
-                        - Manifesto Values (Individuals/Interactions, Working Software, Customer Collaboration, Responding to Change).<br>
-                        - 12 Agile Principles (Customer Satisfaction, Welcome Change, Frequent Delivery, Collaboration, Motivation, Face-to-face, Working Software as measure, Constant Pace, Simplicity, Self-organization).<br>
-                        - Characteristics: Iterative, Incremental, Time-bound, Adaptive, People-oriented, Collaborative.<br>
-                        - Benefits: Early value, visibility, issue identification, responsiveness.
+                        - Software Development Life Cycle (SDLC)<br>
+                        - Waterfall Model Limitations<br>
+                        - Agile Definition (Iterative, Incremental, Self-organizing)<br>
+                        - Traditional (Fixed) vs. Agile (Flexible) Tradeoffs<br>
+                        - Agile Manifesto (4 Values)<br>
+                        - Key Agile Principles (Customer Satisfaction, Welcome Change, Frequent Delivery, Collaboration, Simplicity, Self-organization)<br>
+                        - Agile Characteristics (Modularity, Iterative, Time-bound, Adaptive, People-oriented, Collaborative)<br>
+                        - Advantages (Early Realization, Visibility, Respond to Change)
                     </td>
                     <td>
-                        - Waterfall Model (Contrast)<br>
+                        - SDLC<br>
+                        - Waterfall Model<br>
                         - Agile Manifesto<br>
-                        - General Agile Concepts
+                        - XP (Intro)<br>
+                        - Scrum (Intro)<br>
+                        - DSDM, FDD, Crystal, ASD, UP (Mentioned)
                     </td>
                 </tr>
-                <tr>
-                    <td><strong><a href="chapters/unit2_xp.html">Unit 2</a></strong></td>
+                 <tr>
+                    <td><strong><a href="chapters/se206_unit2.html">Unit 2</a></strong></td>
                     <td>
                         - Extreme Programming (XP)<br>
                         - XP Lifecycle & Values<br>
-                        - XP Documents & Artifacts<br>
-                        - XP Roles<br>
-                        - XP Practices
+                        - XP Roles & Practices<br>
+                        - XP Documents
                     </td>
                     <td>
-                        - Suited for new/incomplete projects with changing requirements.<br>
-                        - Focus on actual development process; designed for small teams.<br>
-                        - Phases: Exploration, Planning, Iterations, Productionizing, Maintenance, Death.<br>
-                        - Values: Communication, Simplicity, Feedback, Courage, Respect.<br>
-                        - Importance of User Stories, Task Lists, CRC Cards, Acceptance Tests, Visible Wall.<br>
-                        - Understanding the responsibilities of different roles.<br>
-                        - Key practices driving XP (Pair Programming, TDD, CI, Short Cycles, etc.).
+                        - Suitability (New/Incomplete projects, Small teams)<br>
+                        - XP Lifecycle Phases (Exploration, Planning, Iterations, Productionizing, Maintenance, Death)<br>
+                        - XP Values (Communication, Simplicity, Feedback, Courage, Respect)<br>
+                        - XP Roles (Manager, Coach, Tracker, Programmer, Tester, Customer)<br>
+                        - XP Practices (Sit Together, Informative Workspace, Pair Programming, Stories, Weekly Cycle, Slack, Test-First, Continuous Integration, Daily Meetings)<br>
+                        - XP Documents (User Stories, Task List, CRC Cards, Acceptance Tests)
                     </td>
                     <td>
-                        - Methodology: Extreme Programming (XP)<br>
-                        - Artifacts: User Story Cards, Task List, CRC Cards, Acceptance Tests, Visible Wall<br>
-                        - Roles: Manager, Coach, Tracker, Programmer, Tester, Customer<br>
-                        - Practices: Pair Programming, Test-First Dev, Continuous Integration, Sit Together, Weekly Cycle, Slack, Daily Meetings etc.
+                        - Extreme Programming (XP)<br>
+                        - User Stories<br>
+                        - CRC Cards<br>
+                        - Pair Programming<br>
+                        - Test-First Development (TDD)<br>
+                        - Continuous Integration (CI)<br>
+                        - Wall Graphs
                     </td>
-                </tr>
+                 </tr>
                  <tr>
-                    <td><strong><a href="chapters/unit3_scrum.html">Unit 3</a></strong></td>
+                    <td><strong><a href="chapters/se206_unit3.html">Unit 3</a></strong></td>
                     <td>
                         - Scrum Framework<br>
-                        - Scrum Process Flow<br>
+                        - Scrum Process & Roles<br>
                         - Scrum Artifacts<br>
-                        - Scrum Roles
+                        - Scrum Strengths & Limitations
                     </td>
                     <td>
-                        - Handles environmental/technical variables likely to change.<br>
-                        - Suitable for small teams and distributed teams.<br>
-                        - Iterative process: Sprint Planning, Daily Scrum, Development, Sprint Review, Sprint Retrospective.<br>
-                        - Importance and management of Product Backlog & Sprint Backlog.<br>
-                        - Use of Burndown charts for tracking progress.<br>
-                        - Distinct responsibilities of Product Owner, Scrum Master, and Development Team.
+                        - Scrum for Environmental/Technical Variables<br>
+                        - Suitability (Small/Distributed Teams)<br>
+                        - Scrum Process (Sprint Cycle, Daily Scrum, Sprint Planning, Sprint Review, Sprint Retrospective)<br>
+                        - Scrum Roles (Product Owner, Scrum Master, Development Team)<br>
+                        - Scrum Artifacts (Product Backlog, Sprint Backlog, Burndown Chart, Increment/Shippable Product)<br>
+                        - Strengths (Mgmt Techniques, Scalability via division, Synchronization)<br>
+                        - Limitations (Less focus on dev process)
                     </td>
                     <td>
-                        - Methodology: Scrum<br>
-                        - Artifacts: Product Backlog, Sprint Backlog, Sprint Burndown Chart<br>
-                        - Roles: Product Owner, Scrum Master, Developer (Team Member)<br>
-                        - Events: Sprint Planning, Daily Scrum, Sprint Review, Sprint Retrospective
+                        - Scrum<br>
+                        - Sprint<br>
+                        - Product Backlog<br>
+                        - Sprint Backlog<br>
+                        - Daily Scrum (Standup)<br>
+                        - Burndown Chart<br>
+                        - Sprint Review<br>
+                        - Sprint Retrospective
                     </td>
-                </tr>
+                 </tr>
+                  <tr>
+                    <td><strong><a href="chapters/se206_unit4.html">Unit 4</a></strong></td>
+                    <td>
+                        - Agile Effort Estimation<br>
+                        - Large-Scale Challenges<br>
+                        - COCOMO Models<br>
+                        - Story Points<br>
+                        - Fuzzy Logic Approach
+                    </td>
+                    <td>
+                        - Definition & Purpose of Estimation (Budgeting, Risk, Planning)<br>
+                        - Challenges in Large Scale Agile (Scaling, Coordination, Dependencies)<br>
+                        - COCOMO I (Constructive Cost Model) Basics<br>
+                        - COCOMO Intermediate (Cost Drivers, EAF)<br>
+                        - COCOMO II (Scaling Factors, Post-Architecture)<br>
+                        - COCOMO Imprecision Problem<br>
+                        - Story Points (Fibonacci, Planning Poker)<br>
+                        - Fuzzy Logic (Inference Engine, Defuzzification)<br>
+                        - Proposed Framework (EEEM, IEEM, ACF, Velocity Calc)<br>
+                        - Evaluation Metrics (MRE, PRED)
+                    </td>
+                    <td>
+                        - COCOMO / COCOMO II<br>
+                        - Cost Drivers<br>
+                        - Story Points<br>
+                        - Planning Poker<br>
+                        - Fuzzy Logic / MATLAB<br>
+                        - MRE / PRED<br>
+                        - Iteration Story Points (ISP)
+                    </td>
+                 </tr>
                  <tr>
-                    <td><strong><a href="chapters/unit4_other.html">Unit 4</a></strong></td>
+                    <td><strong><a href="chapters/se206_unit5.html">Unit 5</a></strong></td>
                     <td>
-                        - Other Agile Methodologies (Overview)<br>
-                        - Agile Estimation<br>
-                        - Success Factors<br>
-                        - XP Enhancements/Evaluation (Briefly)
+                        - Evaluating XP<br>
+                        - Applying Agile (E-Gov)<br>
+                        - Requirement Engineering in Agile
                     </td>
                     <td>
-                        - Awareness of other Agile approaches beyond XP and Scrum.<br>
-                        - Concept of Agile Estimation Techniques (details not provided in slides).<br>
-                        - Identifying factors contributing to Agile project success (details not provided in slides).<br>
-                        - Using XP practices within Scrum; evaluating XP implementation (details not provided in slides).
+                        - XP Evaluation Context (Refactoring, Test-First, Pair Programming)<br>
+                        - XP Rules Recap (Planning Game, Small Releases, Metaphor, Simple Design, Testing, Refactoring, Pair Programming, CI, 40-Hour Week, On-Site Customer, Coding Standards)<br>
+                        - GQM (Goal-Question-Metric) Method<br>
+                        - E-Government Definition & Environment<br>
+                        - E-Gov Challenges (Digital Divide, Financial)<br>
+                        - 4-Dimensional Analytical Tools (DAT) for Agile Selection<br>
+                        - Agile SPM (Agile Software Product Management)<br>
+                        - Requirement Engineering Process Overview<br>
+                        - RE in Agile (Feasibility, Elicitation, Specification, Validation, Management)<br>
+                        - SRS Characteristics (Correct, Complete, Consistent, etc.)
                     </td>
                     <td>
-                        - Methodologies (Mentioned): FDD, AMDD, DSDM, Crystal, ASD, UP<br>
-                         - Concepts: Effort Estimation, Success Factors<br>
-                        <span class="note">(Note: Detailed content for these topics is limited in the source slides)</span>
+                        - GQM Method<br>
+                        - 4-DAT<br>
+                        - Agile SPM<br>
+                        - Requirement Engineering<br>
+                        - SRS (Software Req. Spec)
                     </td>
-                </tr>
+                 </tr>
             </tbody>
         </table>
 
         <h2>Course Objectives</h2>
-        <ul class="objectives-list">
-            <li>Understand the differences between Agile and Traditional software development models (like Waterfall).</li>
-            <li>Explain the core values and principles outlined in the Agile Manifesto.</li>
-            <li>Describe the key characteristics and advantages of using Agile methodologies.</li>
-            <li>Identify and differentiate various Agile methodologies (XP, Scrum, FDD, DSDM, etc.).</li>
-            <li>Detail the lifecycle, values, roles, practices, and artifacts of Extreme Programming (XP).</li>
-            <li>Detail the process flow, roles, events, and artifacts of the Scrum framework.</li>
-            <li>Recognize the purpose of key Agile documents and artifacts (User Stories, Backlogs, Burndown Charts).</li>
-            <li>Understand the importance of concepts like iteration, incremental delivery, customer collaboration, and responding to change in Agile development.</li>
+        <ul>
+            <li>Understand the difference between Agile and Traditional development methods.</li>
+            <li>Learn Agile principles and characteristics.</li>
+            <li>Gain in-depth knowledge of Agile methodologies like Extreme Programming (XP) and Scrum.</li>
+            <li>Understand Agile roles, practices, and artifacts (User Stories, Backlogs, Sprints, etc.).</li>
+            <li>Explore techniques for Agile effort estimation (Story Points, COCOMO adaptations).</li>
+            <li>Learn about applying and evaluating Agile practices (GQM, 4-DAT).</li>
+            <li>Understand Requirement Engineering concepts within an Agile context.</li>
+            <!-- Add specific objectives from the PDF if needed -->
         </ul>
 
-         <h2>Assessment Methods</h2>
-         <ul class="grading-list">
-            <li><strong>40%</strong> - Final Exam</li>
-            <li><strong>30%</strong> - Mid-Term Exam</li>
-            <li><strong>10%</strong> - Quiz</li>
-            <li><strong>15%</strong> - Assignments / Projects</li>
-            <li><strong>  5%</strong> - Attendance / Class Participation</li>
-            <li><strong>100%</strong> - Total</li>
+         <h2>Grading</h2>
+         <!-- Based on Slide 4 -->
+        <ul>
+            <li><strong>40%</strong>: Final Exam</li>
+            <li><strong>30%</strong>: Mid-Term Exam</li>
+            <li><strong>10%</strong>: Quiz</li>
+            <li><strong>15%</strong>: Assignments/Projects</li>
+            <li><strong>5%</strong>: Attendance/Class Participation</li>
+            <li><strong>Total: 100%</strong></li>
         </ul>
-        <p class="note">Grading distribution as per Slide 4.</p>
 
+        <h2>Assignments</h2>
+        <ul>
+            <li>(Assignments and Projects details will be provided during the course)</li>
+            <!-- Specific assignments are not detailed in the provided PDF excerpts -->
+        </ul>
     </div>
 </body>
 </html>
