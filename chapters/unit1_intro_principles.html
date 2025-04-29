@@ -1,65 +1,286 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SE206 - Unit 1: Introduction & Agile Principles</title>
+    <title>SE206 - Unit 1: Introduction to Agile Development</title>
     <style>
-        /* Reuse the CSS from SE205 unit1.html or index.html, ensure it's included or linked */
-        body { font-family: Arial, sans-serif; background-color: #f8f9fa; margin: 0; padding: 20px; line-height: 1.6; color: #333; }
-        .container { max-width: 950px; margin: 20px auto; padding: 30px; background: #fff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); }
-        h1, h2, h3 { color: #0056b3; }
-        h1 { text-align: center; margin-bottom: 30px; border-bottom: 2px solid #dee2e6; padding-bottom: 15px; }
-        h2 { margin-top: 30px; margin-bottom: 20px; border-bottom: 1px solid #e9ecef; padding-bottom: 10px; }
-        h3 { margin-top: 25px; margin-bottom: 15px; color: #007bff; }
-        ul { list-style-type: disc; padding-left: 20px; margin-top: 10px; }
-        li { margin-bottom: 8px; }
-        code { font-family: Consolas, Monaco, monospace; background-color: #e9ecef; padding: 2px 5px; border-radius: 3px; font-size: 0.95em; }
-        strong { color: #dc3545; } /* Red emphasis for keywords */
-        .main-tabs { display: flex; justify-content: space-around; flex-wrap: wrap; margin-bottom: 25px; border-bottom: 2px solid #0056b3; }
-        .main-tabs .tab-button { padding: 12px 20px; border: none; background: none; color: #0056b3; font-size: 0.95em; font-weight: bold; cursor: pointer; border-radius: 5px 5px 0 0; transition: background-color 0.3s ease, color 0.3s ease; margin-bottom: -2px; border-bottom: 2px solid transparent; text-align: center; }
-        .main-tabs .tab-button.active { background: #0056b3; color: white; border-bottom: 2px solid #0056b3; }
-        .main-tabs .tab-button:hover:not(.active) { background-color: #e9ecef; border-bottom: 2px solid #adb5bd; }
-        .main-content { display: none; animation: fadeIn 0.5s; }
-        .main-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .glossary-accordion { border: 1px solid #dee2e6; border-radius: 5px; overflow: hidden; }
-        .accordion-item { border-bottom: 1px solid #dee2e6; }
-        .accordion-item:last-child { border-bottom: none; }
-        .accordion-header { background-color: #f8f9fa; color: #dc3545; cursor: pointer; padding: 15px 20px; width: 100%; border: none; text-align: left; outline: none; font-size: 1.1em; font-weight: bold; transition: background-color 0.3s ease; position: relative; }
-        .accordion-header:hover { background-color: #e9ecef; }
-        .accordion-header::after { content: '\002B'; color: #0056b3; font-weight: bold; float: right; margin-left: 5px; transition: transform 0.2s ease-in-out; }
-        .accordion-header.active::after { content: "\2212"; /* transform: rotate(180deg); */ } /* Simpler +/- without rotation */
-        .accordion-header.active { background-color: #e7f1ff; }
-        .accordion-panel { padding: 0 20px; background-color: white; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out, padding 0.3s ease-out; }
-        .accordion-panel p, .accordion-panel ul { margin: 15px 0; color: #333; }
-        #concepts .concept-block { background-color: #f8f9fa; border: 1px solid #e9ecef; padding: 20px; border-radius: 5px; margin-bottom: 25px; }
-        #concepts .concept-block h3 { margin-top: 0; color: #007bff; border-bottom: 1px dotted #ccc; padding-bottom: 8px; margin-bottom: 15px; }
-        .comparison-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        .comparison-table th, .comparison-table td { border: 1px solid #ddd; padding: 8px; text-align: center; }
-        .comparison-table th { background-color: #e9ecef; }
-        .comparison-table td { text-align: left; padding-left: 15px; }
-        .question { margin-bottom: 25px; padding: 20px; border: 1px solid #dee2e6; border-radius: 8px; background-color: #ffffff; position: relative; }
-        .question p { margin: 0 0 15px; font-weight: bold; font-size: 1.05em; }
-        .options { display: flex; flex-direction: column; gap: 10px; }
-        .option-button { padding: 10px 15px; border: 1px solid #ced4da; background: #f8f9fa; color: #495057; cursor: pointer; border-radius: 5px; text-align: left; transition: background-color 0.2s ease, border-color 0.2s ease; width: 100%; }
-        .option-button:hover { background-color: #e9ecef; border-color: #adb5bd; }
-        .option-button.selected { background: #007bff; color: white; border-color: #0056b3; }
-        .check-answer { margin-top: 15px; padding: 10px 20px; border: none; background: #28a745; color: white; cursor: pointer; border-radius: 5px; font-weight: bold; transition: background-color 0.2s ease; }
-        .check-answer:hover { background-color: #218838; }
-        .feedback { margin-top: 15px; padding: 10px; border-radius: 5px; font-weight: bold; }
-        .feedback.correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .feedback.incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        img { max-width: 100%; height: auto; margin-top: 15px; border: 1px solid #ddd; display: block; /* Prevents inline spacing issues */ margin-left: auto; margin-right: auto; /* Center images if desired */ }
-        .manifesto-image { max-width: 600px; } /* Specific style for manifesto image */
-        .principles-list { columns: 2; -webkit-columns: 2; -moz-columns: 2; column-gap: 40px; list-style-position: inside; padding-left: 0; } /* Multi-column list for principles */
-        .principles-list li { margin-bottom: 12px; }
+        /* Paste the CSS from the SE205 unit1.html example here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
 
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, h3 {
+            color: #0056b3; /* Cairo University Blue */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            margin-top: 20px; /* Reduced top margin for sections */
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            margin-top: 25px;
+            margin-bottom: 15px;
+            color: #007bff; /* Lighter Blue */
+        }
+         ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+         li {
+             margin-bottom: 8px;
+         }
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            background-color: #e9ecef;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.95em;
+        }
+        strong {
+             color: #dc3545; /* Red emphasis */
+        }
+
+        /* Main Tabs Styles */
+        .main-tabs {
+            display: flex;
+            justify-content: space-around; /* Or flex-start, center */
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            margin-bottom: 25px;
+            border-bottom: 2px solid #0056b3;
+        }
+
+        .main-tabs .tab-button {
+            padding: 12px 20px; /* Adjusted padding slightly */
+            border: none;
+            background: none;
+            color: #0056b3;
+            font-size: 0.95em; /* Slightly smaller font */
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px 5px 0 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin-bottom: -2px; /* Overlap border */
+            border-bottom: 2px solid transparent;
+            text-align: center;
+        }
+
+        .main-tabs .tab-button.active {
+            background: #0056b3;
+            color: white;
+            border-bottom: 2px solid #0056b3;
+        }
+        .main-tabs .tab-button:hover:not(.active) {
+            background-color: #e9ecef;
+            border-bottom: 2px solid #adb5bd;
+        }
+
+        /* Content Sections */
+        .main-content {
+            display: none; /* Hide all main content sections by default */
+            animation: fadeIn 0.5s;
+        }
+
+        .main-content.active {
+            display: block; /* Show only the active one */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+
+        /* --- Accordion Styles (for Glossary) --- */
+        .glossary-accordion {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            overflow: hidden; /* Contain borders */
+        }
+
+        .accordion-item {
+            border-bottom: 1px solid #dee2e6; /* Separator */
+        }
+        .accordion-item:last-child {
+            border-bottom: none;
+        }
+
+        .accordion-header {
+            background-color: #f8f9fa;
+            color: #dc3545; /* Highlight Red for terms */
+            cursor: pointer;
+            padding: 15px 20px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            position: relative; /* For the indicator */
+        }
+
+        .accordion-header:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Indicator (+/-) */
+        .accordion-header::after {
+            content: '\002B'; /* + sign */
+            color: #0056b3;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .accordion-header.active::after {
+            content: "\2212"; /* - sign */
+            transform: rotate(180deg); /* Optional: animate the sign itself */
+        }
+        /* Optional: Slightly different style for active header */
+        .accordion-header.active {
+             background-color: #e7f1ff;
+        }
+
+
+        .accordion-panel {
+            padding: 0 20px; /* Start with 0 padding top/bottom */
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out; /* Smooth transition */
+        }
+        .accordion-panel p, .accordion-panel ul { /* Apply margin to lists too */
+            margin: 15px 0; /* Add margin back when panel is open */
+            color: #333; /* Reset color for definition */
+        }
+
+        /* --- End Accordion Styles --- */
+
+        /* Concepts Section Styles */
+        #concepts .concept-block {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+        }
+         #concepts .concept-block h3 {
+            margin-top: 0;
+            color: #007bff;
+            border-bottom: 1px dotted #ccc;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+
+        /* Quiz Styles (apply within #fill, #tf, #mc) */
+        .question {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            background-color: #ffffff; /* White background for questions */
+            position: relative; /* For feedback positioning */
+        }
+
+        .question p {
+            margin: 0 0 15px;
+            font-weight: bold;
+            font-size: 1.05em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-button {
+            padding: 10px 15px;
+            border: 1px solid #ced4da;
+            background: #f8f9fa; /* Light background for options */
+            color: #495057;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: left;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            width: 100%;
+        }
+        .option-button:hover {
+             background-color: #e9ecef;
+             border-color: #adb5bd;
+        }
+
+        .option-button.selected {
+            background: #007bff;
+            color: white;
+            border-color: #0056b3;
+        }
+
+        .check-answer {
+            margin-top: 15px;
+            padding: 10px 20px;
+            border: none;
+            background: #28a745; /* Success Green */
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+        }
+        .check-answer:hover {
+             background-color: #218838;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>SE206 - Unit 1: Introduction & Agile Principles</h1>
+        <h1>SE206 - Unit 1: Introduction to Agile Development</h1>
 
         <!-- Main Tab Buttons -->
         <div class="main-tabs">
@@ -74,106 +295,80 @@
         <section id="glossary" class="main-content active">
             <h2>Glossary of Terms</h2>
             <div class="glossary-accordion">
+                <!-- Add terms based on SE206 Unit 1 -->
                  <div class="accordion-item">
-                    <button class="accordion-header">Adaptive</button>
+                    <button class="accordion-header">Agile Development</button>
                     <div class="accordion-panel">
-                        <p>An Agile characteristic meaning the process can adjust to changing requirements, risks, and environments throughout the project lifecycle.</p>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <button class="accordion-header">Agile</button>
-                    <div class="accordion-panel">
-                        <p>A group of software development processes characterized by being <strong>Iterative</strong>, <strong>Incremental</strong>, and <strong>Self-organizing</strong>. It emphasizes flexibility, customer collaboration, and responding to change.</p>
+                        <p>A group of software development methodologies based on iterative and incremental development, where requirements and solutions evolve through collaboration between self-organizing, cross-functional teams.</p>
                     </div>
                 </div>
                  <div class="accordion-item">
                     <button class="accordion-header">Agile Manifesto</button>
                     <div class="accordion-panel">
-                        <p>A formal proclamation of four key values for Agile software development, prioritizing:</p>
-                        <ul>
-                            <li>Individuals and interactions over processes and tools</li>
-                            <li>Working software over comprehensive documentation</li>
-                            <li>Customer collaboration over contract negotiation</li>
-                            <li>Responding to change over following a plan</li>
-                        </ul>
-                         <img src="https://raw.githubusercontent.com/PromptDesk/test-images/main/agile_dev_images/slide_10.png" alt="Agile Manifesto" class="manifesto-image">
+                        <p>A formal proclamation of four key values and 12 principles to guide an iterative and people-centric approach to software development. Values include: Individuals and interactions over processes and tools; Working software over comprehensive documentation; Customer collaboration over contract negotiation; Responding to change over following a plan.</p>
                     </div>
                 </div>
-                 <div class="accordion-item">
-                    <button class="accordion-header">Collaborative</button>
-                    <div class="accordion-panel">
-                        <p>An Agile characteristic emphasizing close cooperation between developers, business people, customers, and other stakeholders throughout the project.</p>
-                    </div>
-                </div>
-                 <div class="accordion-item">
-                    <button class="accordion-header">Communicative</button>
-                    <div class="accordion-panel">
-                        <p>An Agile characteristic related to collaboration, stressing the importance of effective and frequent communication, especially face-to-face conversations.</p>
-                    </div>
-                </div>
-                 <div class="accordion-item">
+                <div class="accordion-item">
                     <button class="accordion-header">Incremental Development</button>
                     <div class="accordion-panel">
-                        <p>A characteristic of Agile processes where software is built and delivered in small, usable pieces (increments). Each increment adds functionality to the previous ones, allowing early realization of value.</p>
+                        <p>A development approach where the software is built and delivered in pieces (increments). Each increment adds more functionality, allowing early feedback and use.</p>
                     </div>
                 </div>
-                 <div class="accordion-item">
+                <div class="accordion-item">
                     <button class="accordion-header">Iterative Development</button>
                     <div class="accordion-panel">
-                        <p>A characteristic of Agile processes involving repeating cycles (iterations) of development activities (plan, design, build, test) with short durations (e.g., 1-6 weeks). Each iteration produces a potentially shippable piece of software and allows for feedback and adaptation.</p>
+                        <p>A development approach that cycles through development phases (like requirements, design, implementation, testing) multiple times in short durations (iterations), refining the product with each cycle.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Scrum</button>
+                    <div class="accordion-panel">
+                        <p>An Agile framework for managing complex projects, typically software development. It uses iterative cycles called Sprints and emphasizes collaboration, self-organization, and frequent delivery.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Self-Organizing Team</button>
+                    <div class="accordion-panel">
+                        <p>A team structure, common in Agile, where the team members collectively decide how best to accomplish their work, rather than being directed by a manager outside the team.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Software Development Life Cycle (SDLC)</button>
+                    <div class="accordion-panel">
+                        <p>A framework defining tasks performed at each step in the software development process. Common phases include Requirements Analysis, Design, Implementation (Coding), Testing, Deployment, and Maintenance.</p>
                     </div>
                 </div>
                  <div class="accordion-item">
-                    <button class="accordion-header">Modularity</button>
+                    <button class="accordion-header">Sprint</button>
                     <div class="accordion-panel">
-                        <p>An Agile characteristic applied at the development process level, suggesting breaking down work into smaller, manageable components or modules (e.g., features, user stories).</p>
+                        <p>(In Scrum) A fixed-length iteration (usually 1-4 weeks) during which a potentially shippable product increment is created.</p>
                     </div>
                 </div>
-                 <div class="accordion-item">
-                    <button class="accordion-header">People-Oriented</button>
+                <div class="accordion-item">
+                    <button class="accordion-header">Traditional Methodologies</button>
                     <div class="accordion-panel">
-                        <p>An Agile characteristic recognizing that motivated individuals and effective team collaboration are central to project success, valuing people over rigid processes.</p>
+                        <p>Software development approaches, like the Waterfall model, characterized by sequential phases, extensive upfront planning, and resistance to change once a phase is complete.</p>
                     </div>
                 </div>
-                 <div class="accordion-item">
-                    <button class="accordion-header">SDLC (Software Development Life Cycle)</button>
+                <div class="accordion-item">
+                    <button class="accordion-header">Waterfall Model</button>
                     <div class="accordion-panel">
-                        <p>A process used by the software industry to design, develop, and test high-quality software. Traditional models like Waterfall follow sequential phases (Requirements, Design, Code, Test, Maintain).</p>
-                        <img src="https://raw.githubusercontent.com/PromptDesk/test-images/main/agile_dev_images/slide_5.png" alt="SDLC Diagram">
-                    </div>
-                </div>
-                 <div class="accordion-item">
-                    <button class="accordion-header">Self-Organizing Teams</button>
-                    <div class="accordion-panel">
-                        <p>A characteristic of Agile where teams have the autonomy and responsibility to decide how best to accomplish their work, rather than being directed by a manager for every task. Principle 10 states the best architectures, requirements, and designs emerge from such teams.</p>
-                         <img src="https://raw.githubusercontent.com/PromptDesk/test-images/main/agile_dev_images/slide_11.png" alt="Self-Organizing Team Concept">
-                    </div>
-                </div>
-                 <div class="accordion-item">
-                    <button class="accordion-header">Simplicity</button>
-                    <div class="accordion-panel">
-                        <p>An Agile principle (#9) defined as "the art of maximizing the amount of work not done." It encourages focusing on essential features and avoiding unnecessary complexity.</p>
-                    </div>
-                </div>
-                 <div class="accordion-item">
-                    <button class="accordion-header">Time-Bound</button>
-                    <div class="accordion-panel">
-                        <p>A characteristic of Agile iterations (like Sprints in Scrum), meaning they have a fixed duration, typically from one to six weeks, enabling fast verification and correction cycles.</p>
-                    </div>
-                </div>
-                 <div class="accordion-item">
-                    <button class="accordion-header">Traditional Method (e.g., Waterfall)</button>
-                    <div class="accordion-panel">
-                        <p>Software development approaches characterized by sequential phases, upfront planning, comprehensive documentation, and resistance to change once a phase is complete. Functionality is typically fixed, while time and resources might vary.</p>
-                         <img src="https://raw.githubusercontent.com/PromptDesk/test-images/main/agile_dev_images/slide_6.png" alt="Waterfall Model Diagram">
+                        <p>A traditional, sequential software development model where progress flows steadily downwards (like a waterfall) through phases like Requirement Gathering, System Analysis, Coding, Testing, Implementation, and Maintenance. It has limited flexibility for changes.</p>
                     </div>
                 </div>
                 <div class="accordion-item">
                     <button class="accordion-header">Working Software</button>
                     <div class="accordion-panel">
-                        <p>A primary measure of progress in Agile (Principle 7) and valued over comprehensive documentation (Manifesto). Agile focuses on delivering functional software frequently (Principle 3).</p>
+                        <p>A core principle in Agile, emphasizing the delivery of functional software increments as the primary measure of progress, rather than focusing solely on documentation or phase completion.</p>
                     </div>
                 </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Extreme Programming (XP)</button>
+                    <div class="accordion-panel">
+                        <p>An Agile software development framework intended to improve software quality and responsiveness to changing customer requirements. It emphasizes specific engineering practices like pair programming, test-driven development, and continuous integration.</p>
+                    </div>
+                </div>
+
             </div> <!-- End glossary-accordion -->
         </section>
 
@@ -182,43 +377,43 @@
             <h2>Key Concepts from Unit 1</h2>
 
             <div class="concept-block">
-                <h3>Traditional SDLC vs. Agile Iterations</h3>
-                 <p>Traditional models like <strong>Waterfall</strong> follow a linear sequence: Requirements -> System Analysis -> Coding -> Testing -> Implementation -> Operations & Maintenance. Software is often delivered only at the very end after a long cycle.</p>
-                 <p><strong>Agile</strong> uses iterative cycles. Each iteration includes requirements analysis, design, development, and testing for a small subset of features, resulting in potentially shippable software increments released frequently.</p>
-                <img src="https://raw.githubusercontent.com/PromptDesk/test-images/main/agile_dev_images/slide_8.png" alt="Traditional Phases vs Agile Iterations">
+                <h3>Traditional SDLC (Waterfall Model)</h3>
+                <p>The Software Development Life Cycle (SDLC) outlines the phases of software creation. The traditional <strong>Waterfall Model</strong> follows a strict sequence:</p>
+                <ol>
+                    <li>Requirement Gathering</li>
+                    <li>System Analysis</li>
+                    <li>Design</li>
+                    <li>Coding</li>
+                    <li>Testing</li>
+                    <li>Implementation</li>
+                    <li>Operations & Maintenance</li>
+                </ol>
+                <p>This model is linear and struggles with changes once a phase is complete.</p>
             </div>
 
-            <div class="concept-block">
-                <h3>Agile vs. Traditional: The Trade-off Triangle</h3>
-                <p>This illustrates a fundamental difference in priorities:</p>
-                <img src="https://raw.githubusercontent.com/PromptDesk/test-images/main/agile_dev_images/slide_9.png" alt="Agile vs Traditional Trade-off">
-                 <table class="comparison-table">
-                     <thead>
-                         <tr>
-                             <th>Aspect</th>
-                             <th>Traditional Methodologies</th>
-                             <th>Agile Methodologies</th>
-                         </tr>
-                     </thead>
-                     <tbody>
-                         <tr>
-                             <td><strong>Fixed</strong></td>
-                             <td>Functionality / Scope</td>
-                             <td>Time (Iteration Length) & Resources (Team)</td>
-                         </tr>
-                         <tr>
-                             <td><strong>Flexible / Estimated</strong></td>
-                             <td>Time & Resources</td>
-                             <td>Functionality / Scope</td>
-                         </tr>
-                     </tbody>
-                 </table>
-                 <p>Agile prioritizes delivering value within fixed timeframes and budgets, allowing the scope to adapt, while traditional methods fix the scope upfront and estimate time/cost.</p>
-            </div>
+             <div class="concept-block">
+                <h3>What is Agile Development?</h3>
+                <p>Agile is a group of software development processes based on:</p>
+                <ul>
+                    <li><strong>Iterative:</strong> Development occurs in repeating cycles (iterations).</li>
+                    <li><strong>Incremental:</strong> Software is delivered in functional pieces (increments).</li>
+                    <li><strong>Self-organizing:</strong> Teams manage their own work to achieve goals.</li>
+                </ul>
+                <p>It focuses on flexibility, collaboration, and responding to change.</p>
+             </div>
+
+             <div class="concept-block">
+                <h3>Agile vs. Traditional Methods</h3>
+                 <p>A key difference lies in how they handle project constraints:</p>
+                 <ul>
+                     <li><strong>Traditional (e.g., Waterfall):</strong> Features/Functionality are usually <strong>Fixed</strong> upfront. Time and Resources are flexible (often leading to delays/overruns).</li>
+                     <li><strong>Agile:</strong> Time (iterations) and Resources (team size) are often <strong>Fixed</strong>. Functionality is flexible and evolves based on priority and feedback.</li>
+                 </ul>
+             </div>
 
             <div class="concept-block">
-                <h3>The Agile Manifesto (Values)</h3>
-                 <p>The core philosophy articulated in 2001, emphasizing:</p>
+                <h3>The Agile Manifesto</h3>
+                 <p>Defines the core values guiding Agile development:</p>
                  <ul>
                      <li><strong>Individuals and interactions</strong> over processes and tools</li>
                      <li><strong>Working software</strong> over comprehensive documentation</li>
@@ -226,55 +421,64 @@
                      <li><strong>Responding to change</strong> over following a plan</li>
                  </ul>
                  <p>While there is value in the items on the right, Agile values the items on the left more.</p>
-                 <img src="https://raw.githubusercontent.com/PromptDesk/test-images/main/agile_dev_images/slide_10.png" alt="Agile Manifesto Values" class="manifesto-image">
             </div>
 
              <div class="concept-block">
-                 <h3>The 12 Agile Principles</h3>
-                 <p>These principles elaborate on the Manifesto's values:</p>
-                 <ol class="principles-list">
-                     <li>Our highest priority is to satisfy the customer through <strong>early and continuous delivery</strong> of valuable software.</li>
-                     <li><strong>Welcome changing requirements</strong>, even late in development. Agile processes harness change for the customer's competitive advantage.</li>
-                     <li>Deliver <strong>working software frequently</strong>, from a couple of weeks to a couple of months, with a preference to the shorter timescale.</li>
-                     <li>Business people and developers must <strong>work together daily</strong> throughout the project.</li>
-                     <li>Build projects around <strong>motivated individuals</strong>. Give them the environment and support they need, and trust them to get the job done.</li>
-                     <li>The most efficient and effective method of conveying information to and within a development team is <strong>face-to-face conversation</strong>.</li>
-                     <li><strong>Working software</strong> is the primary measure of progress.</li>
-                     <li>Agile processes promote sustainable development. The sponsors, developers, and users should be able to maintain a <strong>constant pace</strong> indefinitely.</li>
-                     <li><strong>Simplicity</strong> – the art of maximizing the amount of work not done – is essential.</li>
-                     <li>The best architectures, requirements, and designs emerge from <strong>self-organizing teams</strong>.</li>
-                     <li>(Implicit, often included) Continuous attention to technical excellence and good design enhances agility.</li>
-                     <li>(Implicit, often included) At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behavior accordingly.</li>
-                 </ol>
-                 <p><em>(Note: Principles 11 & 12 are standard Agile principles, though not explicitly listed on slides 12-14). Slide 14 omits explicit principles 11 and 12, jumping from 10 to an implicit summary)</em></p>
-             </div>
+                <h3>Agile Principles (Selected)</h3>
+                <p>The Agile Manifesto is supported by 12 principles. Some key ones include:</p>
+                <ul>
+                    <li>Highest priority is to satisfy the customer through <strong>early and continuous delivery</strong> of valuable software.</li>
+                    <li><strong>Welcome changing requirements</strong>, even late in development.</li>
+                    <li>Deliver <strong>working software frequently</strong> (weeks or months).</li>
+                    <li>Business people and developers must <strong>work together daily</strong>.</li>
+                    <li>Build projects around <strong>motivated individuals</strong>. Trust them to get the job done.</li>
+                    <li><strong>Face-to-face conversation</strong> is the most efficient and effective method of conveying information.</li>
+                    <li><strong>Working software</strong> is the primary measure of progress.</li>
+                    <li>Agile processes promote <strong>sustainable development</strong>. Sponsors, developers, and users should maintain a constant pace indefinitely.</li>
+                    <li><strong>Simplicity</strong>—the art of maximizing the amount of work not done—is essential.</li>
+                    <li>The best architectures, requirements, and designs emerge from <strong>self-organizing teams</strong>.</li>
+                 </ul>
+            </div>
 
              <div class="concept-block">
                 <h3>Agile Characteristics</h3>
-                <p>Agile development processes typically exhibit these traits:</p>
-                 <ul>
-                     <li><strong>Modularity:</strong> Work is broken down into manageable parts.</li>
-                     <li><strong>Iterative:</strong> Development occurs in short, repeated cycles (1-6 weeks).</li>
-                     <li><strong>Time-bound:</strong> Iterations have fixed durations.</li>
-                     <li><strong>Incremental:</strong> Value is delivered piece by piece, early and often.</li>
-                     <li><strong>Adaptive:</strong> Capable of responding to changes and new risks.</li>
-                     <li><strong>People-oriented:</strong> Values individuals, motivation, and trust.</li>
-                     <li><strong>Collaborative & Communicative:</strong> Emphasizes teamwork and open communication (especially face-to-face).</li>
-                     <li><strong>Self-organizing:</strong> Teams manage their own work.</li>
+                <p>Key characteristics of Agile development processes:</p>
+                <ul>
+                    <li><strong>Modularity:</strong> Process is broken down into manageable parts.</li>
+                    <li><strong>Iterative:</strong> Short cycles enable fast verification and correction.</li>
+                    <li><strong>Time-bound:</strong> Iterations typically last one to six weeks.</li>
+                    <li><strong>Adaptive:</strong> Able to handle emergent risks and changing requirements.</li>
+                    <li><strong>People-oriented:</strong> Focuses on individuals, motivation, and collaboration.</li>
+                    <li><strong>Collaborative:</strong> Emphasizes communication and teamwork.</li>
                  </ul>
             </div>
 
-             <div class="concept-block">
+            <div class="concept-block">
                 <h3>Advantages of Agile</h3>
                  <ul>
-                     <li><strong>Early Value Realization:</strong> The incremental nature allows benefits to be seen early as the product develops.</li>
-                     <li><strong>Increased Visibility & Feedback:</strong> Small, frequent releases make progress visible to stakeholders, allowing for early issue identification.</li>
-                     <li><strong>Improved Responsiveness to Change:</strong> Easier to adapt to changing requirements or market conditions.</li>
-                     <li><strong>Enhanced Customer Satisfaction:</strong> Achieved through continuous delivery, collaboration, and responding to needs (aligns with Principle 1).</li>
-                     <li><strong>Focus on the Right Product:</strong> Collaboration and feedback loops help ensure the final product meets user needs.</li>
+                     <li><strong>Early Realization:</strong> Incremental nature allows benefits to be realized early.</li>
+                     <li><strong>Visibility & Early Issue Identification:</strong> Small incremental releases are visible, helping identify issues early.</li>
+                     <li><strong>Adaptability:</strong> Easier to respond to changes in requirements or the market.</li>
+                     <li><strong>Customer Satisfaction:</strong> Focus on frequent delivery and collaboration leads to higher satisfaction.</li>
+                     <li><strong>Producing the Right Product:</strong> Continuous feedback helps ensure the product meets user needs.</li>
                  </ul>
-                  <img src="https://raw.githubusercontent.com/PromptDesk/test-images/main/agile_dev_images/slide_17.png" alt="Agile Advantages Graph Concept">
             </div>
+
+            <div class="concept-block">
+                <h3>Overview of Agile Methodologies</h3>
+                <p>Agile is an umbrella term. Specific methodologies include:</p>
+                <ul>
+                    <li>Extreme Programming (XP)</li>
+                    <li>Scrum</li>
+                    <li>Dynamic Systems Development Method (DSDM)</li>
+                    <li>Feature Driven Development (FDD)</li>
+                    <li>Crystal Method</li>
+                    <li>Adaptive Software Development (ASD)</li>
+                    <li>Unified Process (UP) / Agile UP</li>
+                    <li>Lean Software Development (LSD)</li>
+                </ul>
+                <p>These methods promote development, teamwork, collaboration, and adaptability.</p>
+             </div>
 
         </section>
 
@@ -297,48 +501,46 @@
     </div> <!-- End Container -->
 
     <script>
-        // --- START OF QUIZ DATA (UNIT 1) ---
+        // --- START OF QUIZ DATA (SE206 UNIT 1) ---
         const fillInTheBlank = [
-            { question: "Agile development is characterized by being Iterative, Incremental, and _______.", options: ["Documented", "Sequential", "Self-organizing", "Managed"], answer: "Self-organizing" },
-            { question: "The Agile Manifesto values working software over _______ documentation.", options: ["Minimal", "Comprehensive", "Technical", "User"], answer: "Comprehensive" },
-            { question: "In traditional methods, _______ is often fixed, while time and resources are estimated.", options: ["Quality", "Functionality", "Team Size", "Technology"], answer: "Functionality" },
-            { question: "Agile methodologies prioritize responding to change over following a _______.", options: ["Budget", "Plan", "Contract", "Specification"], answer: "Plan" },
-            { question: "Principle #1 states the highest priority is to satisfy the customer through early and _______ delivery of valuable software.", options: ["Complete", "Continuous", "Documented", "Tested"], answer: "Continuous" },
-            { question: "Agile Principle #7 states that _______ software is the primary measure of progress.", options: ["Documented", "Tested", "Working", "Approved"], answer: "Working" },
-            { question: "Agile teams should be able to maintain a _______ pace indefinitely.", options: ["Fast", "Variable", "Constant", "Slow"], answer: "Constant" },
-            { question: "The best architectures, requirements, and designs emerge from _______ teams.", options: ["Managed", "Large", "Self-organizing", "Distributed"], answer: "Self-organizing" },
-            { question: "Simplicity in Agile is the art of _______ the amount of work not done.", options: ["Minimizing", "Maximizing", "Documenting", "Estimating"], answer: "Maximizing" },
-            { question: "Agile iterations are _______, typically lasting from one to six weeks.", options: ["Flexible", "Sequential", "Time-bound", "Optional"], answer: "Time-bound" }
+            { question: "The traditional software development model characterized by sequential phases is called the _______ model.", options: ["Agile", "Spiral", "Waterfall", "Iterative"], answer: "Waterfall" },
+            { question: "Agile development processes are described as Iterative, Incremental, and ______-organizing.", options: ["Self", "Manager", "Customer", "Process"], answer: "Self" },
+            { question: "The Agile Manifesto values 'Individuals and interactions' over '_______ and tools'.", options: ["Documentation", "Contracts", "Processes", "Plans"], answer: "Processes" },
+            { question: "In Agile, _______ software is the primary measure of progress.", options: ["Documented", "Planned", "Working", "Tested"], answer: "Working" },
+            { question: "Agile principle suggests that business people and developers must work together _______.", options: ["Weekly", "Monthly", "Daily", "Occasionally"], answer: "Daily" },
+            { question: "In the comparison of Agile vs Traditional, Agile typically fixes Time and Resources, while _______ is flexible.", options: ["Budget", "Team Size", "Functionality", "Tools"], answer: "Functionality" },
+            { question: "The Agile principle of _______ involves maximizing the amount of work not done.", options: ["Collaboration", "Simplicity", "Feedback", "Sustainability"], answer: "Simplicity" },
+            { question: "Development cycles in Agile, typically lasting 1-6 weeks, are known as _______.", options: ["Phases", "Sprints", "Iterations", "Releases"], answer: "Iterations" } // Iterations is general, Sprints specific to Scrum
         ];
 
         const trueOrFalse = [
-            { question: "The Waterfall model is an example of an Agile methodology.", answer: false },
-            { question: "Agile values contract negotiation over customer collaboration.", answer: false },
-            { question: "In Agile, Time and Resources are typically fixed, while Scope is flexible.", answer: true },
-            { question: "Agile principles welcome changing requirements, even late in development.", answer: true },
-            { question: "Comprehensive documentation is the primary measure of progress in Agile.", answer: false }, // Working software is
+            { question: "The Waterfall model is known for its flexibility in handling changing requirements mid-project.", answer: false },
+            { question: "Agile methodologies emphasize comprehensive documentation as the most important deliverable.", answer: false }, // Values working software over it
+            { question: "Agile development is purely iterative and not incremental.", answer: false }, // It's both
+            { question: "The Agile Manifesto prioritizes following a plan over responding to change.", answer: false }, // Prioritizes responding to change
+            { question: "Self-organizing teams are a key characteristic of Agile development.", answer: true },
+            { question: "Agile development aims to deliver working software only at the very end of the project.", answer: false }, // Delivers frequently
             { question: "Face-to-face conversation is considered the most effective form of communication within an Agile team.", answer: true },
-            { question: "Agile processes discourage sustainable development paces.", answer: false }, // They promote it
-            { question: "Agile development delivers the entire software product at the very end of the project.", answer: false }, // Delivers incrementally
-            { question: "Self-organizing teams require constant direction from a project manager.", answer: false },
-            { question: "Being adaptive is a key characteristic of Agile development.", answer: true }
+            { question: "Traditional methods typically fix the scope (functionality) early in the project.", answer: true },
+            { question: "Agile processes promote unsustainable development paces to finish quickly.", answer: false }, // Promote sustainable pace
+            { question: "Scrum and XP are examples of specific Agile methodologies.", answer: true }
         ];
 
         const multipleChoice = [
-            { question: "Which is NOT one of the four values of the Agile Manifesto?", options: ["Individuals and interactions over processes and tools", "Working software over comprehensive documentation", "Following a plan over responding to change", "Customer collaboration over contract negotiation"], answer: "Following a plan over responding to change" },
-            { question: "What are the three defining characteristics of Agile processes mentioned in the definition?", options: ["Fast, Flexible, Documented", "Iterative, Incremental, Self-organizing", "Planned, Managed, Tested", "Simple, Collaborative, Sequential"], answer: "Iterative, Incremental, Self-organizing" },
-            { question: "According to Agile principles, what is the primary measure of progress?", options: ["Lines of code written", "Documents completed", "Hours worked", "Working software"], answer: "Working software" },
-            { question: "Which Agile characteristic refers to fixed-duration development cycles?", options: ["Incremental", "Iterative", "Time-bound", "Adaptive"], answer: "Time-bound" },
-            { question: "What does Agile Principle #9, 'Simplicity', emphasize?", options: ["Using simple tools", "Writing basic code", "Maximizing the amount of work *not* done", "Having simple requirements"], answer: "Maximizing the amount of work *not* done" },
-            { question: "The traditional Waterfall model is best described as:", options: ["Iterative and Incremental", "Sequential and Linear", "Adaptive and Flexible", "Collaborative and Self-organizing"], answer: "Sequential and Linear" },
-            { question: "Which Agile principle emphasizes daily cooperation between stakeholders?", options: ["Principle 1 (Customer Satisfaction)", "Principle 4 (Business/Developer Collaboration)", "Principle 7 (Working Software)", "Principle 10 (Self-Organizing Teams)"], answer: "Principle 4 (Business/Developer Collaboration)" },
-            { question: "What is a key advantage of the incremental nature of Agile?", options: ["Reduced need for testing", "Guaranteed fixed scope", "Early realization of product value", "Less customer involvement required"], answer: "Early realization of product value" },
-            { question: "Agile development is considered:", options: ["Process-oriented", "People-oriented", "Documentation-oriented", "Tool-oriented"], answer: "People-oriented" },
-            { question: "Which statement best reflects the Agile approach to requirements?", options: ["Requirements must be fully defined upfront", "Requirements are expected to change and are welcomed", "Requirements are documented once and never revisited", "Only the project manager defines requirements"], answer: "Requirements are expected to change and are welcomed" }
+            { question: "Which of these is NOT one of the four values of the Agile Manifesto?", options: ["Working software over comprehensive documentation", "Individuals and interactions over processes and tools", "Following a plan over responding to change", "Customer collaboration over contract negotiation"], answer: "Following a plan over responding to change" },
+            { question: "Which term best describes the Agile characteristic of breaking work into short, repeatable cycles?", options: ["Incremental", "Iterative", "Adaptive", "Collaborative"], answer: "Iterative" },
+            { question: "What is the primary measure of progress in Agile development?", options: ["Completed documentation", "Hours spent", "Working software", "Approved phases"], answer: "Working software" },
+            { question: "Compared to Traditional methods, Agile methods typically treat which factor as more flexible?", options: ["Time", "Cost/Resources", "Scope/Functionality", "Team size"], answer: "Scope/Functionality" },
+            { question: "Which Agile principle emphasizes 'maximizing the amount of work not done'?", options: ["Customer Satisfaction", "Simplicity", "Sustainable Pace", "Motivated Individuals"], answer: "Simplicity" },
+            { question: "Which development model involves sequential phases like Requirements, Design, Coding, Testing?", options: ["Agile Model", "Waterfall Model", "Spiral Model", "Iterative Model"], answer: "Waterfall Model" },
+            { question: "Which of the following is listed as an advantage of Agile?", options: ["Extensive upfront planning", "Resistance to change", "Early realization of value", "Less need for customer interaction"], answer: "Early realization of value" },
+            { question: "Agile teams that determine their own way of working are described as:", options: ["Manager-led", "Process-driven", "Self-organizing", "Customer-directed"], answer: "Self-organizing" },
+            { question: "Frequent delivery of working software in Agile typically occurs on a timescale of:", options: ["Couple of years", "Couple of quarters", "Couple of weeks to a couple of months", "Only at project completion"], answer: "Couple of weeks to a couple of months" },
+            { question: "XP, Scrum, and DSDM are all examples of:", options: ["Traditional Methodologies", "Agile Methodologies", "Waterfall Phases", "Project Management Tools"], answer: "Agile Methodologies" }
         ];
         // --- END OF QUIZ DATA ---
 
-        // --- START OF SCRIPT LOGIC (PASTE FROM SE205 c1.html) ---
+        // --- START OF SCRIPT LOGIC (PASTE FROM PREVIOUS EXAMPLE) ---
         document.addEventListener('DOMContentLoaded', () => {
             // Select main tabs and content sections
             const mainTabButtons = document.querySelectorAll('.main-tabs .tab-button');
@@ -389,11 +591,7 @@
                         panel.style.padding = "0 20px"; // Remove padding when closing
                     } else {
                          // If panel is closed, open it
-                        // Calculate scrollHeight plus any vertical margins/paddings inside the panel
-                        let internalHeight = panel.scrollHeight;
-                        let style = window.getComputedStyle(panel);
-                        internalHeight += parseInt(style.marginTop) + parseInt(style.marginBottom);
-                        panel.style.maxHeight = internalHeight + 40 + "px"; // Add buffer
+                        panel.style.maxHeight = panel.scrollHeight + 40 + "px"; // Add some buffer
                         panel.style.padding = "15px 20px"; // Add padding back when opening
                     }
 
@@ -473,7 +671,11 @@
                     const optionsDiv = document.createElement('div');
                     optionsDiv.className = 'options';
 
-                    q.options.forEach(option => {
+                    // Shuffle options for variety (optional)
+                    const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+
+                    shuffledOptions.forEach(option => { // Use shuffled options
                         const optionButton = document.createElement('button');
                         optionButton.className = 'option-button';
                         optionButton.textContent = option;
@@ -491,12 +693,7 @@
                             showFeedback(questionDiv, selected.textContent === q.answer, q.answer);
                         } else {
                              // Optionally show feedback that an answer must be selected
-                             const feedback = document.createElement('div');
-                             feedback.className = 'feedback incorrect'; // Style as incorrect
-                             feedback.textContent = 'Please select an answer.';
-                             const existingFeedback = questionDiv.querySelector('.feedback');
-                             if (existingFeedback) existingFeedback.remove(); // Remove old feedback first
-                             checkButton.parentNode.insertBefore(feedback, checkButton.nextSibling);
+                             showFeedback(questionDiv, false, q.answer); // Or provide specific feedback
                         }
                     });
                     questionDiv.appendChild(checkButton);
@@ -545,12 +742,7 @@
                             const isCorrect = (selected.textContent === 'True' && q.answer === true) || (selected.textContent === 'False' && q.answer === false);
                             showFeedback(questionDiv, isCorrect, q.answer); // Pass boolean directly
                         } else {
-                             const feedback = document.createElement('div');
-                             feedback.className = 'feedback incorrect';
-                             feedback.textContent = 'Please select True or False.';
-                              const existingFeedback = questionDiv.querySelector('.feedback');
-                             if (existingFeedback) existingFeedback.remove();
-                             checkButton.parentNode.insertBefore(feedback, checkButton.nextSibling);
+                            showFeedback(questionDiv, false, q.answer); // Pass boolean directly
                         }
                     });
                     questionDiv.appendChild(checkButton);
@@ -574,10 +766,10 @@
                     const optionsDiv = document.createElement('div');
                     optionsDiv.className = 'options';
 
-                    // Optional: Shuffle options before displaying
-                    // const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+                    // Shuffle options for variety (optional)
+                    const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
 
-                    q.options.forEach(option => { // Use original options or shuffledOptions
+                    shuffledOptions.forEach(option => { // Use shuffled options
                         const optionButton = document.createElement('button');
                         optionButton.className = 'option-button';
                         optionButton.textContent = option;
@@ -594,12 +786,7 @@
                         if (selected) {
                             showFeedback(questionDiv, selected.textContent === q.answer, q.answer);
                         } else {
-                             const feedback = document.createElement('div');
-                             feedback.className = 'feedback incorrect';
-                             feedback.textContent = 'Please select an option.';
-                              const existingFeedback = questionDiv.querySelector('.feedback');
-                             if (existingFeedback) existingFeedback.remove();
-                             checkButton.parentNode.insertBefore(feedback, checkButton.nextSibling);
+                             showFeedback(questionDiv, false, q.answer);
                         }
                     });
                     questionDiv.appendChild(checkButton);
@@ -614,8 +801,6 @@
             loadTrueFalseQuestions();
             loadMultipleChoiceQuestions();
 
-            // --- Activate first tab content by default ---
-            document.querySelector('.main-content').classList.add('active');
 
         }); // End DOMContentLoaded
         // --- END OF SCRIPT LOGIC ---
