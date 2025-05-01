@@ -1,1 +1,1416 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Updated Title based on PDF Content -->
+    <title>SE206 - Unit X: Enhanced Framework for Agile Effort Estimation</title>
+    <style>
+        /* Paste the CSS from the SE205 unit1.html example here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, h3 {
+            color: #0056b3; /* Cairo University Blue */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            margin-top: 20px; /* Reduced top margin for sections */
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            margin-top: 25px;
+            margin-bottom: 15px;
+            color: #007bff; /* Lighter Blue */
+        }
+         ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+        ol { /* Added style for ordered lists */
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+         li {
+             margin-bottom: 8px;
+         }
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            background-color: #e9ecef;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.95em;
+            color: #c7254e; /* Added color for code */
+        }
+        strong {
+             color: #dc3545; /* Red emphasis */
+        }
+        .formula {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin: 10px 0;
+            display: block; /* Make it block level */
+            overflow-x: auto; /* Handle long formulas */
+        }
+
+        /* Main Tabs Styles */
+        .main-tabs {
+            display: flex;
+            justify-content: space-around; /* Or flex-start, center */
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            margin-bottom: 25px;
+            border-bottom: 2px solid #0056b3;
+        }
+
+        .main-tabs .tab-button {
+            padding: 12px 20px; /* Adjusted padding slightly */
+            border: none;
+            background: none;
+            color: #0056b3;
+            font-size: 0.95em; /* Slightly smaller font */
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px 5px 0 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin-bottom: -2px; /* Overlap border */
+            border-bottom: 2px solid transparent;
+            text-align: center;
+        }
+
+        .main-tabs .tab-button.active {
+            background: #0056b3;
+            color: white;
+            border-bottom: 2px solid #0056b3;
+        }
+        .main-tabs .tab-button:hover:not(.active) {
+            background-color: #e9ecef;
+            border-bottom: 2px solid #adb5bd;
+        }
+
+        /* Content Sections */
+        .main-content {
+            display: none; /* Hide all main content sections by default */
+            animation: fadeIn 0.5s;
+        }
+
+        .main-content.active {
+            display: block; /* Show only the active one */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+
+        /* --- Accordion Styles (for Glossary and Essay) --- */
+        .accordion-container { /* Wrapper for glossary and essay questions */
+             border: 1px solid #dee2e6;
+            border-radius: 5px;
+            overflow: hidden; /* Contain borders */
+            margin-top: 20px; /* Added margin for spacing */
+        }
+
+
+        .accordion-item {
+            border-bottom: 1px solid #dee2e6; /* Separator */
+        }
+        .accordion-item:last-child {
+            border-bottom: none;
+        }
+
+        .accordion-header {
+            background-color: #f8f9fa;
+            /* color: #dc3545; */ /* Default Red for terms - REMOVED default, set individually below */
+            cursor: pointer;
+            padding: 15px 20px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            position: relative; /* For the indicator */
+        }
+
+        /* Specific styling for glossary header */
+        #glossary .accordion-header {
+             color: #dc3545; /* Red for glossary terms */
+        }
+        /* Specific styling for essay questions header */
+        #essay .accordion-header {
+             color: #0056b3; /* Blue for essay questions */
+        }
+
+
+        .accordion-header:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Indicator (+/-) */
+        .accordion-header::after {
+            content: '\002B'; /* + sign */
+            /* color: #0056b3; */ /* Default Blue - REMOVED default, set individually below */
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+            transition: transform 0.2s ease-in-out;
+        }
+        #glossary .accordion-header::after {
+             color: #dc3545; /* Red indicator for glossary */
+        }
+        #essay .accordion-header::after {
+             color: #0056b3; /* Blue indicator for essay */
+        }
+
+
+        .accordion-header.active::after {
+            content: "\2212"; /* - sign */
+            transform: rotate(180deg); /* Optional: animate the sign itself */
+        }
+        /* Optional: Slightly different style for active header */
+        .accordion-header.active {
+             background-color: #e7f1ff; /* Light blue for active state */
+        }
+
+
+        .accordion-panel {
+            padding: 0 20px; /* Start with 0 padding top/bottom */
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out; /* Smooth transition */
+        }
+        /* Padding when panel is open */
+        .accordion-panel.open { /* Add a class for when it's open */
+             padding: 15px 20px;
+        }
+
+        .accordion-panel p,
+        .accordion-panel ul,
+        .accordion-panel ol { /* Apply margin to lists and paragraphs */
+            margin: 15px 0; /* Add margin back when panel is open */
+            color: #333; /* Reset color for definition */
+        }
+         .accordion-panel strong { /* Ensure strong is red inside panel */
+             color: #dc3545;
+         }
+         .accordion-panel code { /* Ensure code has correct styling inside panel */
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            background-color: #e9ecef;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.95em;
+            color: #c7254e;
+         }
+        .accordion-panel .formula { /* Ensure formula has correct styling inside panel */
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin: 10px 0;
+            display: block;
+            overflow-x: auto;
+        }
+
+
+        /* --- End Accordion Styles --- */
+
+        /* Concepts Section Styles */
+        #concepts .concept-block {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+        }
+         #concepts .concept-block h3 {
+            margin-top: 0;
+            color: #007bff;
+            border-bottom: 1px dotted #ccc;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+         #concepts .concept-block .formula { /* Style formulas within concepts */
+            font-size: 0.9em; /* Slightly smaller font */
+         }
+
+        /* Quiz Styles (apply within #fill, #tf, #mc) */
+        .question {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            background-color: #ffffff; /* White background for questions */
+            position: relative; /* For feedback positioning */
+        }
+
+        .question p {
+            margin: 0 0 15px;
+            font-weight: bold;
+            font-size: 1.05em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-button {
+            padding: 10px 15px;
+            border: 1px solid #ced4da;
+            background: #f8f9fa; /* Light background for options */
+            color: #495057;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: left;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            width: 100%;
+        }
+        .option-button:hover {
+             background-color: #e9ecef;
+             border-color: #adb5bd;
+        }
+
+        .option-button.selected {
+            background: #007bff;
+            color: white;
+            border-color: #0056b3;
+        }
+
+        .check-answer {
+            margin-top: 15px;
+            padding: 10px 20px;
+            border: none;
+            background: #28a745; /* Success Green */
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+        }
+        .check-answer:hover {
+             background-color: #218838;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Updated H1 based on PDF Content -->
+        <h1>SE206 - Unit 2: Enhanced Framework for Agile Effort Estimation</h1>
+
+        <!-- Main Tab Buttons -->
+        <div class="main-tabs">
+            <button class="tab-button active" data-tab="glossary">Glossary</button>
+            <button class="tab-button" data-tab="concepts">Key Concepts</button>
+             <!-- Added Essay Tab -->
+            <button class="tab-button" data-tab="essay">Essay Questions</button>
+            <button class="tab-button" data-tab="fill">Fill in the Blank</button>
+            <button class="tab-button" data-tab="tf">True/False</button>
+            <button class="tab-button" data-tab="mc">Multiple Choice</button>
+        </div>
+
+        <!-- Glossary Section (Accordion) -->
+        <section id="glossary" class="main-content active">
+            <h2>Glossary of Terms</h2>
+            <div class="accordion-container">
+                <!-- Terms based on the PDF presentation -->
+                 <div class="accordion-item">
+                    <button class="accordion-header">ACF (Adjusted COCOMO Factors)</button>
+                    <div class="accordion-panel">
+                        <p>In the proposed framework, this represents the combined, fuzzified effect of various COCOMO cost drivers (like product, platform, personnel, project attributes) used in the Iteration Effort Estimation Model (IEEM). Calculated using formula (8).</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Agile Software Development</button>
+                    <div class="accordion-panel">
+                        <p>An iterative and incremental approach to software development performed cooperatively to produce high-quality software meeting changing user requirements. Designed to deal with change and uncertainty.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">COA (Center of Area)</button>
+                    <div class="accordion-panel">
+                        <p>A common defuzzification method used to convert a fuzzy output set (resulting from fuzzy inference) into a single crisp numerical value. Calculated using formula (7).</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">COCOMO (Constructive Cost Model)</button>
+                    <div class="accordion-panel">
+                        <p>A widely used algorithmic software cost estimation model that predicts effort and duration based on project size (e.g., KLOC) and various cost drivers. Versions include Basic, Intermediate (COCOMO-81), and COCOMO II.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">COCOMO II</button>
+                    <div class="accordion-panel">
+                        <p>An updated version of COCOMO, developed upon COCOMO-81. It includes models for different stages (Early Design, Post-Architecture) and uses 5 Scaling Factors and 17 Effort Multipliers (Cost Drivers) rated on levels like Very Low to Extra High.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Cost Drivers</button>
+                    <div class="accordion-panel">
+                        <p>Factors in COCOMO models that influence the effort required for a project (e.g., Required Reliability (RELY), Product Complexity (CPLX), Analyst Capability (ACAP), Use of Software Tools (TOOL)). They adjust the nominal effort estimate.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Defuzzification</button>
+                    <div class="accordion-panel">
+                        <p>The process of converting a fuzzy output (represented by a membership function or a fuzzy set) from a fuzzy inference system into a single, precise (crisp) number.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">DF (Dynamic Factors)</button>
+                    <div class="accordion-panel">
+                        <p>In the proposed framework's velocity calculation (IEEM), these are factors representing dynamic aspects expected during an iteration (e.g., expected team changes, new tools, stakeholder delays). Used in formula (9).</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">EAF (Effort Adjustment Factor)</button>
+                    <div class="accordion-panel">
+                        <p>In Intermediate COCOMO, the product of the selected cost driver ratings. It multiplies the nominal effort to get the adjusted effort estimate (<code>Effort_adj = Effort_in * EAF</code>).</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">EEEM (Early Effort Estimation Model)</button>
+                    <div class="accordion-panel">
+                        <p>The first phase/model in the proposed framework. It provides an initial effort estimate *before* the project architecture is fully defined, using fuzzy logic on COCOMO II early design factors (like PREC, FLEX, RESL, TEAM, PMAT) and KLOC.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Effort Estimation</button>
+                    <div class="accordion-panel">
+                        <p>The process of predicting the amount of effort (typically in person-months or person-hours) required to develop a software system. Used for budgeting, planning, bidding, and risk analysis.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">FR (Friction Factors)</button>
+                    <div class="accordion-panel">
+                        <p>In the proposed framework's velocity calculation (IEEM), these are factors representing inherent team or environmental friction (e.g., team composition, process maturity, team dynamics). Used in formula (9).</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Fuzzy Inference System</button>
+                    <div class="accordion-panel">
+                        <p>A system that uses fuzzy set theory and fuzzy logic (IF-THEN rules) to map inputs to outputs. It involves fuzzification, rule evaluation (inference engine), and defuzzification.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Fuzzy Logic</button>
+                    <div class="accordion-panel">
+                        <p>A form of many-valued logic dealing with reasoning that is approximate rather than fixed and exact. It uses linguistic variables (e.g., "Low", "Nominal", "High") and membership functions to handle uncertainty and imprecision, suitable for complex systems like effort estimation.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Fuzzification</button>
+                    <div class="accordion-panel">
+                        <p>The process of converting crisp (precise) input values into fuzzy sets, represented by membership degrees (between 0 and 1) in various linguistic categories (e.g., converting a KLOC value into degrees of membership in "Small", "Medium", "Large").</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">IEEM (Iteration Effort Estimation Model)</button>
+                    <div class="accordion-panel">
+                        <p>The second phase/model in the proposed framework, used *after* the project architecture is defined. It estimates effort for each iteration based on Story Points, adjusted COCOMO factors (ACF), and calculated Velocity (derived from fuzzy FR and DF factors).</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">ISP (Iteration Story Points)</button>
+                    <div class="accordion-panel">
+                        <p>In the proposed framework, the calculated effort for an iteration, expressed in adjusted story points. It combines the original Story Points (SP) with the influence of the Adjusted COCOMO Factors (ACF). Calculated using formula (10).</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Iteration</button>
+                    <div class="accordion-panel">
+                        <p>A short, time-bound cycle (often 1-4 weeks) in Agile development during which a team produces a potentially shippable increment of software.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">KLOC (Kilo Lines of Code)</button>
+                    <div class="accordion-panel">
+                        <p>Thousands of Lines of Code. A common, though often criticized, unit for measuring the size of a software project, used as input in models like COCOMO and the fuzzy EEEM.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Membership Function</button>
+                    <div class="accordion-panel">
+                        <p>In fuzzy logic, a curve or function (e.g., triangular, trapezoidal) that defines how each point in the input space is mapped to a membership value (or degree of membership) between 0 and 1 for a particular fuzzy set.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">MRE (Magnitude of Relative Error)</button>
+                    <div class="accordion-panel">
+                        <p>A metric used to evaluate the accuracy of an estimation model. It measures the absolute difference between the predicted effort and the actual effort, relative to the actual effort. Formula: <code>|Actual Effort - Predicted Effort| / Actual Effort</code>.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">PRED(L)</button>
+                    <div class="accordion-panel">
+                        <p>Prediction Level. A metric evaluating estimation accuracy, defined as the percentage of projects whose MRE is less than or equal to a specified level L (e.g., PRED(0.25) is the percentage of projects with MRE <= 0.25).</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Scaling Factors</button>
+                    <div class="accordion-panel">
+                        <p>In COCOMO II, these are five factors (PREC, FLEX, RESL, TEAM, PMAT) that account for economies or diseconomies of scale, affecting the exponent in the effort equation.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Story Points (SP)</button>
+                    <div class="accordion-panel">
+                        <p>A relative unit of measure used in Agile development (especially Scrum) to estimate the overall effort required to fully implement a product backlog item or user story. It considers complexity, uncertainty, and volume of work. Often uses a Fibonacci-like sequence (1, 2, 3, 5, 8, ...).</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">User Story</button>
+                    <div class="accordion-panel">
+                        <p>A short, simple description of a feature told from the perspective of the person who desires the new capability, usually a user or customer. Often follows the format: "As a [type of user], I want [some goal] so that [some reason]."</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Velocity (Agile)</button>
+                    <div class="accordion-panel">
+                        <p>A measure of the amount of work (typically in Story Points) a team can complete during a single iteration (Sprint). It's used for planning future iterations. In the proposed framework, it's calculated using fuzzy logic on Friction Factors (FR) and Dynamic Factors (DF) via formula (9).</p>
+                    </div>
+                </div>
+            </div> <!-- End accordion-container -->
+        </section>
+
+        <!-- Key Concepts Section -->
+        <section id="concepts" class="main-content">
+            <h2>Key Concepts from the Presentation</h2>
+
+            <div class="concept-block">
+                <h3>Agile Software Development & Estimation Challenges</h3>
+                <p>Agile development is <strong>iterative</strong> and <strong>incremental</strong>, designed to handle changing requirements. Key characteristics include modularity, short cycles, time-boxing, adaptability, and collaboration.</p>
+                <p>Estimating effort in Agile can be challenging, especially for <strong>large-scale projects</strong>, due to:</p>
+                <ul>
+                    <li>Coordination overhead between teams.</li>
+                    <li>Uncertainty and evolving requirements.</li>
+                    <li>Difficulty scaling traditional estimation methods.</li>
+                    <li>Need for continuous planning and re-estimation.</li>
+                </ul>
+            </div>
+
+            <div class="concept-block">
+                <h3>Common Estimation Techniques</h3>
+                <p>Two prominent techniques discussed:</p>
+                <ul>
+                    <li><strong>COCOMO (Constructive Cost Model):</strong> Algorithmic model predicting effort/duration based on size (e.g., KLOC) and cost drivers.
+                        <ul>
+                            <li><strong>Basic COCOMO:</strong> Simple model with size and project type (Organic, Semi-detached, Embedded). Formula: <code class="formula">Effort = A * (Size)^B</code></li>
+                            <li><strong>Intermediate COCOMO:</strong> Adds 15 cost drivers (grouped by Product, Computer, Personnel, Project) adjusting nominal effort via EAF. Formula: <code class="formula">EAF = Product(EM_i)</code>, <code class="formula">Effort_adj = Effort_in * EAF</code></li>
+                            <li><strong>COCOMO II:</strong> More sophisticated, with Early Design and Post-Architecture sub-models, 5 Scaling Factors, and 17 Effort Multipliers (Cost Drivers).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Story Points Method:</strong> Relative sizing unit in Agile. Considers complexity, effort, uncertainty. Uses sequences (like Fibonacci) and team estimation (e.g., Planning Poker). Calculates effort based on total story points and team velocity. Formulas:
+                        <ul>
+                           <li>User Story Effort: <code class="formula">Effort = Sum(Complexity * ILF * Story Size)</code> (Note: PDF formula is slightly different: <code>Sum(Complexity * ILF * Story Size)</code> - assuming ILF=1 or part of complexity)</li>
+                           <li>Velocity: Based on team's past performance or initial estimates (e.g., <code>Velocity = Initial_Velocity * DF * FR</code> in the proposed model).</li>
+                           <li>Project Time: <code class="formula">Time = Total Effort / (Velocity * Working Days/Month)</code></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+             <div class="concept-block">
+                <h3>The COCOMO Imprecision Problem & Fuzzy Logic Solution</h3>
+                 <p>COCOMO relies on selecting discrete ratings (e.g., Low, Nominal, High) for cost drivers, each mapping to a precise multiplier. However, real-world assessment is often imprecise (e.g., "slightly higher than Nominal"). This leads to estimation inaccuracies if the actual situation falls between rating categories.</p>
+                 <p><strong>Fuzzy Logic</strong> is proposed to address this:</p>
+                 <ul>
+                    <li><strong>Linguistic Variables:</strong> Use terms like "Very Low", "Low", "Nominal", "High", "Very High", "Extra High".</li>
+                    <li><strong>Membership Functions:</strong> Define how a crisp input (e.g., KLOC, assessment of a factor) belongs to these fuzzy sets (e.g., a project might be 70% "Medium" size and 30% "Large"). Triangular functions are used in the presentation.</li>
+                    <li><strong>Fuzzy Inference:</strong> Use IF-THEN rules based on expert knowledge (e.g., IF RELY is High AND CPLX is Very High THEN Effort_Multiplier is High).</li>
+                    <li><strong>Defuzzification:</strong> Convert the resulting fuzzy output back to a crisp number using methods like Center of Area (COA). Formula: <code class="formula">COA = Sum(mu(x) * x) / Sum(mu(x))</code></li>
+                 </ul>
+                 <p>This allows the model to handle the inherent vagueness and uncertainty in estimating cost drivers and size.</p>
+            </div>
+
+            <div class="concept-block">
+                <h3>The Proposed Enhanced Framework</h3>
+                <p>The presentation introduces a framework combining Story Points and COCOMO II using Fuzzy Logic. It consists of two main models:</p>
+                <ol>
+                    <li><strong>Early Effort Estimation Model (EEEM):</strong>
+                        <ul>
+                            <li><strong>Purpose:</strong> Provides an initial effort estimate *before* detailed architecture is known (envisioning phase).</li>
+                            <li><strong>Inputs:</strong> Fuzzy representations of KLOC, 5 COCOMO II Scaling Factors (PREC, FLEX, RESL, TEAM, PMAT), and 7 Early Design Effort Multipliers (RCPX, RUSE, PDIF, PERS, PREX, SCED, FCIL).</li>
+                            <li><strong>Process:</strong> Uses fuzzy inference to generate intermediate fuzzy outputs (E*, M') which are then combined.</li>
+                            <li><strong>Output:</strong> Initial Estimated Fuzzy Effort (IEF Effort).</li>
+                        </ul>
+                    </li>
+                    <li><strong>Iteration Effort Estimation Model (IEEM):</strong>
+                        <ul>
+                            <li><strong>Purpose:</strong> Estimates effort for each iteration *after* architecture is defined (construction phase).</li>
+                            <li><strong>Inputs:</strong> Fuzzy representations of Dynamic Factors (DF), Friction Factors (FR), COCOMO II Post-Architecture Attributes (grouped: Product, Platform, Personnel, Project - 17 total used for ACF), and Story Points (SP) for the iteration.</li>
+                            <li><strong>Process:</strong> Calculates fuzzy Velocity (V) from FR/DF, calculates Adjusted COCOMO Factors (ACF) from attributes, then calculates Iteration Story Points (ISP).</li>
+                            <li><strong>Output:</strong> Iteration Effort (derived from ISP and Velocity), which updates the overall project effort estimate.</li>
+                        </ul>
+                    </li>
+                </ol>
+                 <p>The overall workflow involves Envisioning (EEEM), Iteration Planning, Iteration Execution (IEEM for estimation), Construction, Deployment, and potentially Retirement.</p>
+            </div>
+
+             <div class="concept-block">
+                <h3>Key Formulas in the Proposed Framework</h3>
+                 <ul>
+                    <li><strong>Center of Area (Defuzzification - Eq. 7):</strong> <code class="formula">COA = Sum[x=a to b](mu_A(x) * x) / Sum[x=a to b](mu_A(x))</code></li>
+                    <li><strong>Adjusted COCOMO Factors (ACF - Eq. 8):</strong> <code class="formula">ACF = Sum[i=1 to 19](mu_A(x)_i * EM_i)</code> (Note: Slides mention 17 attributes for post-arch, but formula uses 19 EMs. Assuming it covers all relevant factors.)</li>
+                    <li><strong>Velocity (V - Eq. 9):</strong> <code class="formula">V = (Product[i=1 to 4] mu_A(x)_i * FR_i) * (Product[j=1 to 9] mu_A(y)_j * DF_j)</code> (Note: Formula uses Pi notation for product/multiplication across fuzzy factors.)</li>
+                    <li><strong>Iteration Story Points (ISP - Eq. 10):</strong> <code class="formula">ISP = Sum[I=1 to num_stories](SP_I + (0.1 * ACF))</code></li>
+                    <li><strong>Project Time (PT - Eq. 11):</strong> <code class="formula">T = (ISP / V) * (1 / working_days_per_month)</code></li>
+                 </ul>
+            </div>
+
+             <div class="concept-block">
+                <h3>Experimental Analysis and Results</h3>
+                <p>The framework was evaluated using:</p>
+                 <ul>
+                    <li><strong>Dataset:</strong> COCOMONASA2 (data from 6 NASA centers).</li>
+                    <li><strong>Metrics:</strong>
+                        <ul>
+                            <li>Magnitude of Relative Error (MRE): <code class="formula">MRE = |Actual Effort - Predicted Effort| / Actual Effort</code> (Eq. 12)</li>
+                            <li>Prediction Level (PRED(L)): Percentage of projects with MRE <= L. Formula: <code class="formula">PRED(L) = (k / N) * 100</code> (Eq. 13), where k is count of projects with MRE <= L, N is total projects.</li>
+                        </ul>
+                    </li>
+                 </ul>
+                 <p><strong>Results:</strong> The presentation showed example calculations for ISP and a summary table for 10 projects. The key outcome highlighted was an improvement in accuracy:</p>
+                 <ul>
+                     <li>The proposed model increased the <strong>PRED(0.25) value from 70% to 80%</strong> compared to some baseline (likely standard COCOMO or another method, though baseline isn't explicitly stated on the slide).</li>
+                     <li>Mean MRE (MMER) reported as 0.25 for the proposed model on the sample projects.</li>
+                 </ul>
+                 <p><strong>Conclusion:** The framework, using fuzzy logic to combine Story Points and COCOMO factors, potentially reduces risk and improves estimation accuracy, especially in the constructive iteration phase.</p>
+            </div>
+
+        </section>
+
+        <!-- Essay Questions Section (Accordion) -->
+        <section id="essay" class="main-content">
+             <h2>Essay Questions</h2>
+            <div id="essay-questions-container" class="accordion-container">
+                <!-- Essay questions based on PDF -->
+                <div class="accordion-item">
+                    <button class="accordion-header">1. Explain the two main phases (models) of the proposed enhanced framework: EEEM and IEEM. What are their respective purposes and when are they used in the project lifecycle?</button>
+                    <div class="accordion-panel">
+                        <p>The proposed enhanced framework consists of two distinct estimation models operating at different stages of an Agile project:</p>
+                        <ol>
+                            <li><strong>Early Effort Estimation Model (EEEM):</strong>
+                                <ul>
+                                    <li><strong>Purpose:</strong> To provide an initial, high-level effort estimate during the project's early stages (Envisioning phase), *before* the detailed software architecture has been defined. It helps in preliminary planning and feasibility assessment.</li>
+                                    <li><strong>Timing:</strong> Used after initial requirements gathering but before detailed design or iteration planning begins.</li>
+                                    <li><strong>Approach:</strong> It utilizes Fuzzy Logic applied to inputs relevant at this early stage, primarily KLOC (estimated size) and COCOMO II's 5 Scaling Factors (PREC, FLEX, RESL, TEAM, PMAT) and 7 early design Effort Multipliers (like RCPX, PERS, etc.).</li>
+                                </ul>
+                            </li>
+                            <li><strong>Iteration Effort Estimation Model (IEEM):</strong>
+                                <ul>
+                                    <li><strong>Purpose:</strong> To provide more refined effort estimates for individual iterations *after* the project architecture is established and during the construction phase. It helps in detailed iteration planning and tracking progress.</li>
+                                    <li><strong>Timing:</strong> Used iteratively during the project's construction iterations, starting after the EEEM phase and detailed architecture definition.</li>
+                                    <li><strong>Approach:</strong> It integrates Agile concepts (Story Points, Velocity) with COCOMO II factors using Fuzzy Logic. Inputs include Story Points for the iteration, fuzzy assessments of Friction Factors (FR) and Dynamic Factors (DF) to calculate Velocity, and fuzzy assessments of 17 COCOMO II post-architecture attributes to calculate the Adjusted COCOMO Factors (ACF).</li>
+                                </ul>
+                        </ol>
+                        <p>In summary, EEEM offers a preliminary estimate based on early, less certain information, while IEEM provides ongoing, more detailed estimates iteration by iteration, incorporating both Agile metrics and refined COCOMO factors within a fuzzy logic framework.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">2. How does the proposed framework utilize Fuzzy Logic? Describe its role in addressing the imprecision problem inherent in traditional COCOMO estimation.</button>
+                    <div class="accordion-panel">
+                        <p>Fuzzy Logic is central to the proposed framework's approach to handling the uncertainty and vagueness common in software effort estimation, particularly addressing the imprecision of COCOMO cost driver ratings.</p>
+                        <p><strong>Role of Fuzzy Logic:</strong></p>
+                        <ul>
+                            <li><strong>Handling Imprecision:</strong> Traditional COCOMO requires selecting discrete ratings (e.g., Nominal, High) for cost drivers, each mapping to a single multiplier value. However, real-world assessments are often subjective and fall between categories (e.g., "slightly higher than nominal"). Fuzzy Logic allows representing these inputs using linguistic variables (Very Low, Low, Nominal, High, Very High, Extra High) and membership functions (often triangular in this framework). This means an input can belong partially to multiple categories simultaneously (e.g., a KLOC value might be 60% 'Medium' and 40% 'Large'), capturing the inherent imprecision.</li>
+                            <li><strong>Modeling Subjectivity:</strong> Factors like 'Team Cohesion' (TEAM) or 'Analyst Capability' (ACAP) are inherently subjective. Fuzzy Logic provides a natural way to model these qualitative assessments using fuzzy sets and rules.</li>
+                            <li><strong>Combining Diverse Factors:</strong> The framework uses fuzzy inference systems (collections of IF-THEN rules) to combine various inputs (like KLOC, Scaling Factors, Cost Drivers, FR, DF) in a way that reflects expert knowledge about how these factors interact to influence effort.</li>
+                            <li><strong>Generating Crisp Outputs:</strong> After fuzzy inference, the resulting fuzzy output (representing estimated effort, velocity, or adjustment factors) is converted back into a precise numerical value using defuzzification methods like the Center of Area (COA), making the result usable for planning.</li>
+                        </ul>
+                        <p><strong>Addressing COCOMO Imprecision Specifically:</strong></p>
+                        <ul>
+                            <li>Instead of forcing an estimator to choose a single rating like 'Low' (e.g., multiplier 1.10 for TOOL) or 'Nominal' (multiplier 1.00), Fuzzy Logic allows the estimator to provide an input (perhaps on a continuous scale or through linguistic terms) that results in partial membership in both 'Low' and 'Nominal'.</li>
+                            <li>The fuzzy inference engine then processes this partial membership through its rule base.</li>
+                            <li>The final defuzzified output (e.g., a specific multiplier value like 1.04) reflects this "in-between" assessment, leading to a potentially more accurate and realistic effort adjustment than forcing a choice between discrete, predefined levels. The presentation slide on 'COCOMO Imprecision Problem' illustrates this where an input of 36% might fall between 'Low' (35%) and 'Nominal' (55%), and fuzzy logic can produce a nuanced multiplier instead of defaulting to either 1.10 or 1.00.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">3. Compare the Story Point method and COCOMO II for effort estimation. How does the proposed framework attempt to leverage the strengths of both?</button>
+                    <div class="accordion-panel">
+                        <p>Story Points and COCOMO II represent different approaches to software effort estimation:</p>
+                        <p><strong>Story Point Method:</strong></p>
+                        <ul>
+                            <li><strong>Nature:</strong> Relative, unit-less measure used primarily within Agile teams (especially Scrum).</li>
+                            <li><strong>Basis:</strong> Estimates the overall effort (complexity, uncertainty, volume) to complete a user story relative to other stories. Often uses non-linear scales (e.g., Fibonacci).</li>
+                            <li><strong>Process:</strong> Team-based estimation (e.g., Planning Poker). Effort is derived from total points and team's measured Velocity.</li>
+                            <li><strong>Strengths:</strong> Fast, team-centric, avoids tying estimates directly to time initially, accounts for team-specific factors implicitly through Velocity, good for iterative planning.</li>
+                            <li><strong>Weaknesses:</strong> Relative nature makes comparison across teams difficult, Velocity can fluctuate, less effective for very early-stage estimation before team/stories exist, doesn't explicitly model external cost factors.</li>
+                        </ul>
+                        <p><strong>COCOMO II:</strong></p>
+                        <ul>
+                            <li><strong>Nature:</strong> Algorithmic model producing absolute effort estimates (e.g., Person-Months).</li>
+                            <li><strong>Basis:</strong> Estimates effort based on project size (e.g., KLOC, Function Points) adjusted by numerous Cost Drivers (Effort Multipliers) and Scaling Factors representing project, product, platform, and personnel characteristics.</li>
+                            <li><strong>Process:</strong> Requires inputting size and rating various factors based on project characteristics. Formulas calculate effort.</li>
+                            <li><strong>Strengths:</strong> Provides absolute estimates useful for budgeting/bidding, considers a wide range of quantifiable factors, models economies/diseconomies of scale, has different models for different project stages.</li>
+                            <li><strong>Weaknesses:</strong> Requires detailed inputs that may be unavailable early on, sensitive to input accuracy (size, ratings), can be complex, suffers from imprecision in rating factors, less adaptable to rapid changes within iterations.</li>
+                        </ul>
+                        <p><strong>How the Proposed Framework Leverages Both:</strong></p>
+                        <p>The framework aims to combine the strengths by:</p>
+                        <ul>
+                            <li><strong>Using COCOMO II Factors for Context:</strong> It incorporates COCOMO II's comprehensive set of Scaling Factors and Cost Drivers (Effort Multipliers) to provide a structured way of accounting for project context (team capability, complexity, platform, process maturity etc.). This addresses a weakness of relying solely on Story Points/Velocity.</li>
+                            <li><strong>Using Story Points for Iteration Scope:</strong> It uses Story Points (SP) as the measure of work scope *within* an iteration, leveraging the team-based, relative sizing common in Agile.</li>
+                            <li><strong>Integrating via Fuzzy Logic:</strong> Fuzzy Logic acts as the bridge. It takes the COCOMO factors (handled fuzzily to mitigate imprecision) and combines their influence into an Adjusted COCOMO Factor (ACF).</li>
+                            <li><strong>Adjusting Story Points:</strong> The framework calculates Iteration Story Points (ISP) by adjusting the raw Story Points (SP) based on the ACF (<code>ISP = Sum(SP_I + 0.1*ACF)</code>). This essentially modulates the iteration's scope estimate based on the broader project context defined by COCOMO factors.</li>
+                            <li><strong>Calculating Fuzzy Velocity:</strong> It also uses fuzzy logic on Agile-relevant factors (FR/DF) to calculate Velocity (V), which then translates the ISP into time (Project Time T).</li>
+                        </ul>
+                        <p>By doing this, the IEEM phase aims for an iteration estimate that reflects both the team's relative sizing (SP) and the objective project characteristics (COCOMO factors), handled with the flexibility of fuzzy logic.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">4. Describe the key inputs and outputs of the Early Effort Estimation Model (EEEM) as depicted in the presentation diagram.</button>
+                    <div class="accordion-panel">
+                        <p>Based on the diagram for the Early Effort Estimation Model (EEEM) on slide 28, the key inputs and outputs are:</p>
+                        <p><strong>Inputs:</strong></p>
+                        <p>The inputs are processed through Fuzzification stages before entering the core logic:</p>
+                        <ol>
+                            <li><strong>COCOMO II Scaling Factors (Group B):</strong> These five factors capture project scale characteristics:
+                                <ul>
+                                    <li>PREC (Precedentedness)</li>
+                                    <li>FLEX (Development Flexibility)</li>
+                                    <li>RESL (Architecture / Risk Resolution)</li>
+                                    <li>TEAM (Team Cohesion)</li>
+                                    <li>PMAT (Process Maturity)</li>
+                                </ul>
+                            </li>
+                            <li><strong>COCOMO II Early Design Effort Multipliers (Group Below B):</strong> These seven factors adjust effort based on early project characteristics:
+                                <ul>
+                                    <li>RCPX (Required Software Reliability & Complexity) - *Note: Diagram shows RCPX, likely combining RELY/CPLX or similar*</li>
+                                    <li>RUSE (Required Reusability)</li>
+                                    <li>PDIF (Platform Difficulty)</li>
+                                    <li>PERS (Personnel Capability) - *Note: Diagram shows PERS, likely combining ACAP/PCAP*</li>
+                                    <li>PREX (Personnel Experience) - *Note: Diagram shows PREX, likely combining APEX/PLEX/LTEX*</li>
+                                    <li>SCED (Required Development Schedule)</li>
+                                    <li>FCIL (Facilities)</li>
+                                    *Note: The specific mapping of diagram labels (RCPX, PERS, PREX) to standard COCOMO II factors might need clarification, but these are the labels shown entering the second fuzzy block.*
+                                </ul>
+                            </li>
+                            <li><strong>Project Size (Group A):</strong>
+                                <ul>
+                                    <li>KLOC (Kilo Lines of Code): The estimated size of the project in thousands of lines of code.</li>
+                                </ul>
+                            </li>
+                        </ol>
+
+                        <p><strong>Outputs:</strong></p>
+                        <p>The fuzzy inputs are processed through fuzzy inference systems and defuzzification stages to produce intermediate and final outputs:</p>
+                        <ol>
+                            <li><strong>Intermediate Output E*:</strong> The defuzzified result from processing the Scaling Factors (Group B). This likely represents a scale exponent or adjustment related to project scale.</li>
+                            <li><strong>Intermediate Output M':</strong> The defuzzified result from processing the Early Design Effort Multipliers (Group below B). This likely represents a combined effort multiplier adjustment.</li>
+                            <li><strong>Intermediate Output from KLOC:</strong> The diagram shows KLOC (Group A) feeding into the final multiplication step, presumably after its own fuzzification/defuzzification or direct use in a formula.</li>
+                            <li><strong>Final Output (IEF Effort):</strong> The diagram shows E*, M', and the processed KLOC input being combined (indicated by the multiplier symbol ⊗) to produce the final Initial Estimated Fuzzy Effort (IEF Effort). This is the main output of the EEEM phase.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">5. Describe the key inputs and outputs of the Iteration Effort Estimation Model (IEEM) as depicted in the presentation diagram.</button>
+                    <div class="accordion-panel">
+                        <p>Based on the diagram for the Iteration Effort Estimation Model (IEEM) on slide 32, the key inputs and outputs are:</p>
+                        <p><strong>Inputs:</strong></p>
+                        <p>The inputs are processed through Fuzzification stages or used directly:</p>
+                        <ol>
+                            <li><strong>Velocity Factors (Top Fuzzy Block):</strong> These factors determine the team's speed:
+                                <ul>
+                                    <li>DF (Dynamic Factors): Factors reflecting expected changes or events during the iteration (e.g., team changes, delays). (Slide 36 lists 9 DFs)</li>
+                                    <li>FR (Friction Factors): Factors reflecting inherent team/environment characteristics (e.g., team composition, process). (Slide 36 lists 4 FRs)</li>
+                                </ul>
+                            </li>
+                            <li><strong>COCOMO Post-Architecture Attributes (Bottom Fuzzy Block):</strong> These factors adjust effort based on defined architecture and project details (17 factors mentioned on slide 18, grouped):
+                                <ul>
+                                    <li>Product Attributes (e.g., RELY, CPLX, RUSE, DOCU - *Note: FAIL, CPLX, RUSE, SECU shown on slide 33*)</li>
+                                    <li>Platform Attributes (e.g., TIME, STOR, PVOL - *Note: PLAT, PVOL shown on slide 33*)</li>
+                                    <li>Personnel Attributes (e.g., ACAP, PCAP, APEX - *Note: ACAP, PCAP, PCON, APEX, PLEX, LTEX, TOOL, SITE shown on slide 33*)</li>
+                                    <li>Project Attributes (e.g., TOOL, SITE, SCED - *Note: PREC, FLEX, RESL, TEAM, PCUS shown on slide 33*)</li>
+                                    *Note: There's overlap/difference between slide 18 grouping and slide 33 list/grouping, but the diagram intends to cover these post-architecture factors.*
+                                </ul>
+                            </li>
+                            <li><strong>Iteration Scope:</strong>
+                                <ul>
+                                    <li>Story Points (SP): The sum of story points allocated to the current iteration. This is a direct input, not fuzzified in this diagram depiction.</li>
+                                </ul>
+                            </li>
+                        </ol>
+
+                        <p><strong>Outputs:</strong></p>
+                        <ol>
+                            <li><strong>Velocity:</strong> The defuzzified output from the top fuzzy block (processing DF and FR). Represents the calculated team velocity for the iteration.</li>
+                            <li><strong>Adjusted COCOMO Factors (ACF):</strong> The defuzzified output from the bottom fuzzy block (processing the post-architecture attributes). Represents the combined effect of COCOMO factors on the iteration's effort.</li>
+                            <li><strong>Effort / Iteration Effort:</strong> The central 'Effort' block takes Story Points, ACF, and Velocity as inputs. It likely calculates the Iteration Story Points (ISP) using SP and ACF (as per Eq. 10), and then uses Velocity (V) to determine the final 'Iteration Effort' (possibly in time units, as per Eq. 11, or adjusted points).</li>
+                            <li><strong>Update Project Effort:</strong> The calculated 'Iteration Effort' is then used to update the overall project effort estimate (indicated by the multiplier/update symbol ⊗).</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">6. Explain the 'COCOMO Imprecision Problem' using the 'TOOL' cost driver example shown in the presentation (slides 19-20).</button>
+                    <div class="accordion-panel">
+                        <p>The 'COCOMO Imprecision Problem' arises because the standard COCOMO model requires estimators to map their assessment of a cost driver onto one of several discrete rating levels (e.g., Very Low, Low, Nominal, High, Very High, Extra High). Each level corresponds to a single, fixed Effort Adjustment Factor (EAF multiplier).</p>
+                        <p>The presentation illustrates this using the <strong>TOOL (Use of Software Tools)</strong> cost driver:</p>
+                        <ul>
+                            <li>Slide 19 shows linguistic ratings (Very Low to Extra High) mapped to percentage ranges of tool usage/capability (e.g., Low=35%, Nominal=55%, High=75%).</li>
+                            <li>Slide 20 shows the corresponding Scaling Factor (SF) or EAF multiplier for each rating (e.g., Low=1.10, Nominal=1.00, High=0.91, Very High=0.83).</li>
+                        </ul>
+                        <p><strong>The Problem:</strong></p>
+                        <p>Imagine an estimator assesses the project's tool usage and judges it to be slightly better than 'Low' but definitely not 'Nominal'. Let's say their assessment corresponds quantitatively to <strong>36%</strong> based on some internal scale (as shown highlighted on slide 20).</p>
+                        <ul>
+                            <li>The 'Low' rating covers up to 35% and has a multiplier of 1.10.</li>
+                            <li>The 'Nominal' rating starts at 55% (implicitly, the range is centered) and has a multiplier of 1.00.</li>
+                        </ul>
+                        <p>In standard COCOMO, the estimator is forced to choose one of the discrete ratings. They might choose 'Low' (SF=1.10) because 36% is closer to 35% than 55%. Or they might round up or make a subjective call. There's no standard way to represent the "in-between" state accurately.</p>
+                        <p>This forced selection introduces inaccuracy because the true impact of the 36% tool usage might be slightly different from the impact associated with the strict 35% 'Low' boundary. The fixed multiplier (1.10 or 1.00) doesn't reflect the nuance of the 36% assessment.</p>
+                        <p><strong>Fuzzy Logic Solution (Implied):</strong> Fuzzy Logic would allow the 36% input to have partial membership in both the 'Low' and 'Nominal' fuzzy sets. The fuzzy inference process would then combine these partial memberships, and defuzzification (e.g., COA) would yield a specific multiplier (perhaps 1.08 or 1.09, something between 1.00 and 1.10) that more accurately reflects the 36% assessment, thus addressing the imprecision problem.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">7. Define Agile Velocity in the context of the proposed framework. Explain how it is calculated using Equation (9) and the role of FR and DF factors.</button>
+                    <div class="accordion-panel">
+                        <p>In Agile development, <strong>Velocity</strong> is typically a measure of the amount of work (usually in Story Points) a team completes within one iteration (Sprint). It reflects the team's demonstrated capacity and is used for future planning.</p>
+                        <p>In the <strong>proposed framework's Iteration Effort Estimation Model (IEEM)</strong>, Velocity (V) is not just a historical measure but is calculated proactively for an upcoming iteration using fuzzy logic to account for anticipated conditions. It represents the *expected* rate of progress for the next iteration.</p>
+                        <p><strong>Calculation using Equation (9):</strong></p>
+                        <p>Equation (9) is given as:</p>
+                        <code class="formula">V = (Π<sup>4</sup><sub>i=1</sub> μ<sub>A(x)i</sub> ⋅ FR<sub>i</sub>) ⋅ (Π<sup>9</sup><sub>j=1</sub> μ<sub>A(y)j</sub> ⋅ DF<sub>j</sub>)</code>
+                        <p>Let's break this down:</p>
+                        <ul>
+                            <li><strong>μ<sub>A(x)i</sub> and μ<sub>A(y)j</sub>:</strong> These represent the membership functions for the fuzzy sets associated with the Friction Factors (FR) and Dynamic Factors (DF) respectively. They determine the degree to which the current assessment of each factor belongs to its fuzzy linguistic representation (e.g., how much does 'Team Composition' belong to the 'High Friction' set).</li>
+                            <li><strong>FR<sub>i</sub> (Friction Factors):</strong> These are factors representing inherent or persistent characteristics that might impede or affect the team's baseline speed. The presentation (slide 36) lists 4 FRs: Team composition, Process, Environmental factors, Team dynamic. The formula implies these are combined multiplicatively (Π notation for product) after being weighted by their fuzzy membership degrees.</li>
+                            <li><strong>DF<sub>j</sub> (Dynamic Factors):</strong> These are factors representing anticipated changes or events specific to the upcoming iteration that could influence the team's velocity. The presentation (slide 36) lists 9 DFs: Expected team change, New tools, Vendor defect, External responsibilities, Personal issues, Stakeholder delay, Ambiguity, Environment changes, Relocation. Similar to FRs, these are combined multiplicatively after fuzzy weighting.</li>
+                            <li><strong>Overall Calculation:</strong> The fuzzy-weighted product of the Friction Factors is multiplied by the fuzzy-weighted product of the Dynamic Factors. The final result, V, is the calculated fuzzy Velocity for the iteration. *Note: The formula shown produces a fuzzy-weighted combination; the actual implementation likely involves fuzzy inference rules combining these factors and then defuzzification (like COA) to get a crisp Velocity value as shown in the IEEM diagram (slide 32).* The formula itself primarily shows the components involved.</li>
+                        </ul>
+                        <p>In essence, the framework calculates an expected Velocity by starting with an implicit baseline (often 1.0) and adjusting it based on the combined, fuzzified impact of anticipated friction and dynamic events for the specific iteration.</p>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">8. Describe the MRE and PRED(L) metrics. How were they used to evaluate the proposed framework, and what key result regarding PRED was highlighted in the conclusion?</button>
+                    <div class="accordion-panel">
+                        <p>MRE and PRED(L) are standard metrics used to evaluate the accuracy of software effort estimation models.</p>
+                        <p><strong>Magnitude of Relative Error (MRE):</strong></p>
+                        <ul>
+                            <li><strong>Definition:</strong> MRE measures the relative size of the estimation error for a single project, regardless of whether the estimate was too high or too low.</li>
+                            <li><strong>Formula (Eq. 12):</strong> <code class="formula">MRE = |Actual Effort - Predicted Effort| / Actual Effort</code></li>
+                            <li><strong>Interpretation:</strong> A lower MRE indicates a more accurate estimate for that specific project. An MRE of 0.1 means the estimate was off by 10% of the actual effort.</li>
+                        </ul>
+                        <p><strong>Prediction Level (PRED(L)):</strong></p>
+                        <ul>
+                            <li><strong>Definition:</strong> PRED(L) measures the overall accuracy of an estimation model across a dataset of projects. It represents the percentage of projects in the dataset whose MRE is less than or equal to a specified threshold L.</li>
+                            <li><strong>Formula (Eq. 13):</strong> <code class="formula">PRED(L) = (k / N) * 100</code>, where 'k' is the number of projects with MRE ≤ L, and 'N' is the total number of projects in the dataset.</li>
+                            <li><strong>Interpretation:</strong> A common threshold used is L=0.25. PRED(0.25) tells us the percentage of projects that were estimated within 25% of their actual effort. A higher PRED(0.25) value indicates a more accurate model overall for practical purposes.</li>
+                        </ul>
+                        <p><strong>Use in Evaluating the Framework:</strong></p>
+                        <p>The presentation used these metrics to assess the performance of the proposed enhanced framework using data from the COCOMONASA2 dataset. For each project in the dataset (or a sample, as shown in the results table), the framework's predicted effort was compared against the actual effort to calculate the MRE. The PRED(0.25) was then calculated based on the MRE values for all projects in the sample.</p>
+                        <p><strong>Key Result Highlighted:</strong></p>
+                        <p>The conclusion (slide 45) explicitly states:</p>
+                        <p>"Moreover, the use of the proposed model increases the value of <strong>PRED from 70% to 80%</strong>. As a result, the accuracy of effort estimation improved."</p>
+                        <p>While the specific threshold (L) for PRED is not mentioned on that concluding slide, it's commonly L=0.25 in estimation research. This result indicates that the proposed framework successfully estimated the effort for 80% of the projects within the specified accuracy threshold (likely 25%), an improvement over a baseline performance of 70%.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">9. What are Cost Drivers (Effort Multipliers) and Scaling Factors in COCOMO II? Provide examples mentioned in the presentation.</button>
+                    <div class="accordion-panel">
+                        <p>In the COCOMO II model, Cost Drivers (also called Effort Multipliers) and Scaling Factors are parameters used to adjust the nominal effort estimate based on various characteristics of the project, product, platform, and personnel.</p>
+                        <p><strong>Cost Drivers (Effort Multipliers - EMs):</strong></p>
+                        <ul>
+                            <li><strong>Role:</strong> These factors multiply the base effort estimate to account for specific project attributes that increase or decrease the required effort. There are 17 EMs in the Post-Architecture model.</li>
+                            <li><strong>Rating:</strong> Each EM is rated on a scale typically ranging from Very Low (VL) to Extra High (XH). Each rating corresponds to a specific numerical multiplier. A multiplier > 1.0 increases effort, while < 1.0 decreases it, relative to the 'Nominal' rating (which always has a multiplier of 1.0).</li>
+                            <li><strong>Examples from Presentation (Slide 33 Table):</strong>
+                                <ul>
+                                    <li><strong>Product Factors:</strong> FAIL (Failure Intensity Objective - renamed from RELY/RELY?), CPLX (Product Complexity), RUSE (Required Reusability), SECU (Security Requirements)</li>
+                                    <li><strong>Platform Factors:</strong> PLAT (Platform Volatility - renamed from PVOL?), PVOL (Platform Volatility)</li>
+                                    <li><strong>Personnel Factors:</strong> ACAP (Analyst Capability), PCAP (Programmer Capability), PCON (Personnel Continuity), APEX (Application Experience), PLEX (Platform Experience), LTEX (Language and Tool Experience), TOOL (Use of Software Tools), SITE (Multisite Development)</li>
+                                    <li><strong>Project Factors:</strong> PREC (Precedentedness - *used as SF too*), FLEX (Development Flexibility - *used as SF too*), RESL (Architecture/Risk Resolution - *used as SF too*), TEAM (Team Cohesion - *used as SF too*), PCUS (Process Maturity - *likely PMAT, used as SF too*)</li>
+                                    *Note: Slide 33 seems to list some Scaling Factors under Project Factors, which is slightly unusual but reflects the table shown.*
+                                </ul>
+                            </li>
+                        </ul>
+                        <p><strong>Scaling Factors (SFs):</strong></p>
+                        <ul>
+                            <li><strong>Role:</strong> These five factors adjust the exponent 'E' in the COCOMO II effort equation (Effort = A * Size<sup>E</sup> * Product(EMs)). They account for economies or diseconomies of scale – how effort changes disproportionately with size depending on these factors.</li>
+                            <li><strong>Rating:</strong> Like EMs, they are rated from Very Low (VL) to Extra High (XH), influencing the value of the exponent E.</li>
+                            <li><strong>The Five Scaling Factors (Slide 24):</strong>
+                                <ul>
+                                    <li>PREC (Precedentedness): How familiar the team is with this type of project.</li>
+                                    <li>FLEX (Development Flexibility): Degree of flexibility in requirements and development process.</li>
+                                    <li>RESL (Architecture / Risk Resolution): Extent to which risks have been identified and mitigated early.</li>
+                                    <li>TEAM (Team Cohesion): How well the team collaborates and communicates.</li>
+                                    <li>PMAT (Process Maturity): Maturity level of the development process used (e.g., based on CMMI).</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p>In essence, Scaling Factors modify the overall relationship between size and effort, while Cost Drivers/Effort Multipliers provide finer-grained adjustments based on specific project attributes.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">10. Discuss the challenges mentioned for large-scale Agile projects (Slides 5-6) and explain how an accurate effort estimation framework, like the one proposed, might help mitigate some of them.</button>
+                    <div class="accordion-panel">
+                        <p>The presentation outlines several challenges specific to applying Agile methods on a large scale:</p>
+                        <p><strong>Challenges Mentioned (Slides 5-6):</strong></p>
+                        <ul>
+                            <li>Interfacing with other organizational units (HR, Marketing, Sales, Product Management).</li>
+                            <li>Realizing continuous testing and handling increased maintenance.</li>
+                            <li>Increased effort with more releases.</li>
+                            <li>Management overhead for coordination between multiple teams.</li>
+                            <li>Late discovery of detailed dependencies due to lack of focus on overall design.</li>
+                            <li>Long requirements engineering duration due to complex decision processes.</li>
+                            <li>Difficulty creating and maintaining requirements priority lists.</li>
+                            <li>Waiting times in the process (e.g., design waiting for requirements).</li>
+                            <li>Reduced test coverage due to project shortages or lack of independent testing.</li>
+                        </ul>
+                        <p><strong>How Accurate Effort Estimation Might Mitigate Challenges:</strong></p>
+                        <p>An accurate effort estimation framework, like the proposed one using EEEM and IEEM with fuzzy logic, can help address several of these challenges, although it's not a complete solution:</p>
+                        <ul>
+                            <li><strong>Improved Planning & Coordination (Mitigates Overhead, Waiting Times):</strong> More reliable effort estimates (from both EEEM and IEEM) allow for better release planning, iteration planning, and resource allocation across teams. This can reduce coordination overhead and minimize waiting times by providing a clearer picture of required effort and duration for different pieces of work. Knowing the estimated effort for dependencies can help sequence work more effectively.</li>
+                            <li><strong>Better Prioritization (Mitigates Priority List Difficulty):</strong> Effort estimates (like ISP) provide crucial input for prioritizing the product backlog. When the Product Owner understands the relative effort required for different features (user stories), they can make more informed trade-offs between business value and implementation cost, leading to more stable and realistic priority lists (Value/Effort ratio).</li>
+                            <li><strong>Realistic Release Planning (Mitigates Increased Effort/Releases):</strong> EEEM provides an early overall estimate, and IEEM refines estimates iteration by iteration. This helps in setting realistic expectations for release scope and timelines, potentially managing the number and content of releases more effectively rather than having release effort spiral unexpectedly.</li>
+                            <li><strong>Risk Management (Mitigates Late Discovery, Test Coverage):</strong> The framework explicitly includes factors like Risk Resolution (RESL) and Complexity (CPLX). By forcing consideration of these factors during estimation, potential risks might be identified earlier. Furthermore, accurate effort allocation derived from estimation can ensure sufficient time is budgeted for crucial activities like integration testing, potentially improving test coverage.</li>
+                            <li><strong>Resource Management (Mitigates Coordination, Shortages):</strong> Better estimates help in forecasting resource needs more accurately, aiding coordination with HR and potentially highlighting potential resource shortages earlier in the planning cycle.</li>
+                        </ul>
+                        <p>While estimation alone doesn't solve coordination or requirements complexity, providing a more reliable and adaptive forecast of the effort involved gives managers and teams a crucial tool for better planning, prioritization, and risk management in complex large-scale Agile environments.</p>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">11. Explain the process of defuzzification using the Center of Area (COA) method as presented in Equation (7).</button>
+                    <div class="accordion-panel">
+                        <p><strong>Defuzzification</strong> is the final step in a fuzzy inference system. Its purpose is to convert the fuzzy output set, which represents the result of the fuzzy reasoning process (often as a combined shape across several output membership functions), back into a single, precise, crisp numerical value that can be used for practical decision-making or control.</p>
+                        <p>The <strong>Center of Area (COA)</strong> method, also known as Center of Gravity (COG) or Centroid method, is one of the most common and intuitive defuzzification techniques.</p>
+                        <p><strong>Equation (7) represents the COA calculation for a continuous output variable:</strong></p>
+                        <code class="formula">COA = ∫ [x * μ<sub>A</sub>(x) dx] / ∫ [μ<sub>A</sub>(x) dx]</code>
+                        <p>*(The presentation slide shows a discrete version, which is more common in practical computation):*</p>
+                        <code class="formula">COA = Σ [x<sub>i</sub> * μ<sub>A</sub>(x<sub>i</sub>)] / Σ [μ<sub>A</sub>(x<sub>i</sub>)]</code> (Summed over all relevant points x<sub>i</sub> in the output universe)</p>
+
+                        <p><strong>Explanation of the (Discrete) COA Process:</strong></p>
+                        <ol>
+                            <li><strong>Identify the Output Fuzzy Set:</strong> After the fuzzy inference engine applies the rules, the result is often an aggregated fuzzy set (a shape) defined over the range of possible output values (e.g., possible effort multipliers, velocity values). Let's call this aggregated membership function μ<sub>A</sub>(x).</li>
+                            <li><strong>Discretize the Output Range:</strong> The range of possible output values (the x-axis) is typically divided into a series of discrete points (x<sub>i</sub>).</li>
+                            <li><strong>Calculate Weighted Sum (Numerator):</strong> For each discrete point x<sub>i</sub>, multiply the point's value (x<sub>i</sub>) by its corresponding membership degree in the aggregated fuzzy set (μ<sub>A</sub>(x<sub>i</sub>)). Sum up all these products. This gives the numerator: Σ [x<sub>i</sub> * μ<sub>A</sub>(x<sub>i</sub>)]. This represents the "moment" or "weighted value" sum.</li>
+                            <li><strong>Calculate Total Area (Denominator):</strong> Sum up the membership degrees (μ<sub>A</sub>(x<sub>i</sub>)) for all the discrete points x<sub>i</sub>. This gives the denominator: Σ [μ<sub>A</sub>(x<sub>i</sub>)]. This represents the "area" under the discrete membership function.</li>
+                            <li><strong>Divide to Find Centroid:</strong> Divide the weighted sum (numerator) by the total area (denominator). The result is the COA, which represents the "balance point" or "center of gravity" of the aggregated fuzzy output set. This crisp value is the final output of the fuzzy system.</li>
+                        </ol>
+                        <p>Essentially, COA finds the point on the output scale where the fuzzy set would "balance" if it were a physical shape, providing a representative crisp value for the fuzzy result.</p>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">12. How are Iteration Story Points (ISP) calculated in the proposed model according to Equation (10)? Explain the components SP<sub>I</sub> and ACF in this formula.</button>
+                    <div class="accordion-panel">
+                        <p>Equation (10) in the presentation defines the calculation for <strong>Iteration Story Points (ISP)</strong> within the Iteration Effort Estimation Model (IEEM):</p>
+                        <code class="formula">ISP = Σ<sup>number of stories</sup><sub>I=1</sub> (SP<sub>I</sub> + (0.1 * ACF))</code>
+
+                        <p><strong>Explanation of the Calculation:</strong></p>
+                        <p>This formula calculates the total adjusted effort for an iteration, expressed in a modified Story Point unit (ISP). It does this by summing up an adjusted value for each individual user story (indexed by 'I') planned for the iteration.</p>
+
+                        <p><strong>Components:</strong></p>
+                        <ol>
+                            <li><strong>SP<sub>I</sub> (Story Points for Story I):</strong>
+                                <ul>
+                                    <li>This represents the original, estimated size of the individual user story 'I' in standard Story Points, as determined by the Agile team (e.g., using Planning Poker). It reflects the team's relative assessment of the effort, complexity, and uncertainty for that specific story.</li>
+                                </ul>
+                            </li>
+                            <li><strong>ACF (Adjusted COCOMO Factors):</strong>
+                                <ul>
+                                    <li>This is a crucial output derived earlier in the IEEM (calculated via Equation 8). It represents the combined, fuzzified influence of the 17 COCOMO II post-architecture cost drivers/effort multipliers (related to product, platform, personnel, and project attributes). It quantifies the overall project context's impact on effort, adjusted for the specific characteristics assessed for this project. A higher ACF indicates factors that tend to increase effort (e.g., high complexity, low team experience), while a lower ACF suggests factors that decrease effort.</li>
+                                </ul>
+                            </li>
+                            <li><strong>(0.1 * ACF):</strong>
+                                <ul>
+                                    <li>This term represents an adjustment applied to *each* story point estimate. The ACF value is scaled down (multiplied by 0.1 in this specific formula - this scaling factor might be empirically derived or calibrated). This scaled ACF value is then *added* to the original Story Points (SP<sub>I</sub>) for each story.</li>
+                                    <li>The purpose of this addition is to incorporate the broader project context (captured by COCOMO factors in ACF) into the iteration's effort calculation. If the project context is challenging (high ACF), the effort for each story (in terms of ISP) is slightly increased. If the context is favorable (low ACF), the effort might be slightly decreased (if ACF could be negative or the formula adjusted, although typically ACF > 0 based on EMs >= 0.7).</li>
+                                </ul>
+                            </li>
+                            <li><strong>Σ (Summation):</strong>
+                                <ul>
+                                    <li>The adjusted value (SP<sub>I</sub> + 0.1 * ACF) is calculated for each story ('I') planned for the iteration, and these values are summed up to get the total ISP for the iteration.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <p>In essence, ISP is not just the sum of raw Story Points but an adjusted sum that reflects both the team's relative sizing (SP) and the objectively assessed project characteristics (ACF), providing a more context-aware measure of the iteration's workload used subsequently with Velocity (V) to estimate time (T).</p>
+                    </div>
+                </div>
+
+
+            </div> <!-- End essay-questions-container -->
+        </section>
+
+
+        <!-- Quiz Sections -->
+        <div id="fill" class="main-content">
+            <h2>Fill in the Blank Questions</h2>
+            <div id="fill-questions">
+                 <!-- Fill-in-the-blank questions based on PDF -->
+            </div>
+        </div>
+
+        <div id="tf" class="main-content">
+            <h2>True/False Questions</h2>
+            <div id="tf-questions">
+                 <!-- True/False questions based on PDF -->
+            </div>
+        </div>
+
+        <div id="mc" class="main-content">
+            <h2>Multiple Choice Questions</h2>
+            <div id="mc-questions">
+                 <!-- Multiple Choice questions based on PDF -->
+            </div>
+        </div>
+
+    </div> <!-- End Container -->
+
+    <script>
+        // --- START OF QUIZ DATA (Based on Agile Effort Estimation PDF) ---
+        const fillInTheBlank = [
+            { question: "COCOMO stands for _______ Cost Model.", options: ["Constructive", "Complex", "Component", "Critical"], answer: "Constructive" },
+            { question: "The proposed framework uses _______ logic to handle the imprecision in COCOMO cost driver ratings.", options: ["Boolean", "Fuzzy", "Predicate", "Temporal"], answer: "Fuzzy" },
+            { question: "Story points provide a _______ measure of effort, often using sequences like Fibonacci.", options: ["Absolute", "Relative", "Time-based", "Monetary"], answer: "Relative" },
+            { question: "The _______ model (EEEM) provides an estimate before the project architecture is defined.", options: ["Iteration", "Early Effort Estimation", "Post-Architecture", "Basic COCOMO"], answer: "Early Effort Estimation" },
+            { question: "In the proposed framework, Agile _______ is calculated using fuzzy Friction Factors (FR) and Dynamic Factors (DF).", options: ["Backlog", "Velocity", "Scope", "Risk"], answer: "Velocity" },
+            { question: "The process of converting a fuzzy output set to a single crisp value is called _______.", options: ["Fuzzification", "Inference", "Defuzzification", "Aggregation"], answer: "Defuzzification" },
+            { question: "COCOMO II includes 5 Scaling Factors and 17 _______ Multipliers (Cost Drivers).", options: ["Effort", "Time", "Risk", "Size"], answer: "Effort" },
+            { question: "The metric _______ measures the percentage of projects estimated within a certain error threshold (e.g., 25%).", options: ["MRE", "MMRE", "RMSE", "PRED"], answer: "PRED" },
+            { question: "The _______ phase of the proposed framework uses Story Points and Adjusted COCOMO Factors (ACF).", options: ["Envisioning", "EEEM", "IEEM", "Deployment"], answer: "IEEM" },
+            { question: "The Center of _______ (COA) method is used in the framework for defuzzification.", options: ["Gravity", "Mass", "Area", "Inference"], answer: "Area" }
+        ];
+
+        const trueOrFalse = [
+            { question: "The proposed framework relies solely on the Story Point method for estimation.", answer: false }, // It combines Story Points and COCOMO II with Fuzzy Logic
+            { question: "COCOMO II uses KLOC as the only measure for project size.", answer: false }, // It can use Function Points and others too, though KLOC is used in the EEEM example.
+            { question: "Fuzzy logic uses crisp boundaries (like 0 or 1) for membership functions.", answer: false }, // It uses degrees of membership between 0 and 1.
+            { question: "The EEEM phase of the framework occurs after the project architecture is defined.", answer: false }, // It occurs before. IEEM occurs after.
+            { question: "The COCOMONASA2 dataset was used for the experimental analysis in the presentation.", answer: true },
+            { question: "MRE stands for Mean Relative Error.", answer: false }, // Magnitude of Relative Error. MMRE is Mean MRE.
+            { question: "In the proposed framework, Adjusted COCOMO Factors (ACF) are calculated in the EEEM phase.", answer: false }, // They are calculated and used in the IEEM phase.
+            { question: "The proposed model reported an improvement in PRED(L) from 70% to 80%.", answer: true },
+            { question: "Intermediate COCOMO uses 5 cost drivers.", answer: false }, // It uses 15 cost drivers.
+            { question: "Velocity in the IEEM is calculated based only on historical team performance.", answer: false } // It's calculated using fuzzy FR and DF factors.
+        ];
+
+        const multipleChoice = [
+            { question: "Which model forms the basis for the COCOMO II development?", options: ["Waterfall Model", "Agile Manifesto", "COCOMO-81", "Function Point Analysis"], answer: "COCOMO-81" },
+            { question: "What technique is primarily used in the proposed framework to handle the subjectivity and vagueness of cost drivers?", options: ["Monte Carlo Simulation", "Expert Judgment", "Fuzzy Logic", "Linear Regression"], answer: "Fuzzy Logic" },
+            { question: "Which phase of the proposed framework estimates effort *after* the architecture is defined, using Story Points?", options: ["EEEM", "Envisioning", "IEEM", "Defuzzification"], answer: "IEEM" },
+            { question: "What does the 'A' in the COA defuzzification method stand for?", options: ["Algorithm", "Area", "Average", "Adjustment"], answer: "Area" },
+            { question: "Which of these is listed as a COCOMO II Scaling Factor?", options: ["CPLX (Complexity)", "TOOL (Use of Tools)", "PMAT (Process Maturity)", "KLOC (Size)"], answer: "PMAT (Process Maturity)" },
+            { question: "In Equation (10) for ISP, what does 'ACF' represent?", options: ["Actual Cost Factor", "Agile Calculation Formula", "Adjusted COCOMO Factors", "Average Cycle Factor"], answer: "Adjusted COCOMO Factors" },
+            { question: "Which metric evaluates the percentage of projects estimated within a specific relative error?", options: ["MRE", "MMRE", "COA", "PRED(L)"], answer: "PRED(L)" },
+            { question: "The Story Point estimation process often involves complexity, implementation level, and _______ estimation.", options: ["Risk", "Velocity", "Budget", "Market"], answer: "Velocity" },
+            { question: "What type of membership functions are shown in the fuzzy set diagrams (Slides 29-30)?", options: ["Trapezoidal", "Gaussian", "Singleton", "Triangular"], answer: "Triangular" },
+            { question: "According to the conclusion, the proposed model aims to reduce the risk of project chaos by providing realistic effort in the _______ phase.", options: ["Envisioning", "Requirements", "Constructive iteration", "Maintenance"], answer: "Constructive iteration" }
+        ];
+
+        // --- START OF ESSAY QUESTION DATA (Based on Agile Effort Estimation PDF) ---
+         const essayQuestions = [
+             // Questions 1-12 are already defined above in the thought process.
+             // Added below directly for inclusion in the script.
+            {
+                question: "1. Explain the two main phases (models) of the proposed enhanced framework: EEEM and IEEM. What are their respective purposes and when are they used in the project lifecycle?",
+                answer: `<p>The proposed enhanced framework consists of two distinct estimation models operating at different stages of an Agile project:</p><ol><li><strong>Early Effort Estimation Model (EEEM):</strong><ul><li><strong>Purpose:</strong> To provide an initial, high-level effort estimate during the project's early stages (Envisioning phase), *before* the detailed software architecture has been defined. It helps in preliminary planning and feasibility assessment.</li><li><strong>Timing:</strong> Used after initial requirements gathering but before detailed design or iteration planning begins.</li><li><strong>Approach:</strong> It utilizes Fuzzy Logic applied to inputs relevant at this early stage, primarily KLOC (estimated size) and COCOMO II's 5 Scaling Factors (PREC, FLEX, RESL, TEAM, PMAT) and 7 early design Effort Multipliers (like RCPX, PERS, etc.).</li></ul></li><li><strong>Iteration Effort Estimation Model (IEEM):</strong><ul><li><strong>Purpose:</strong> To provide more refined effort estimates for individual iterations *after* the project architecture is established and during the construction phase. It helps in detailed iteration planning and tracking progress.</li><li><strong>Timing:</strong> Used iteratively during the project's construction iterations, starting after the EEEM phase and detailed architecture definition.</li><li><strong>Approach:</strong> It integrates Agile concepts (Story Points, Velocity) with COCOMO II factors using Fuzzy Logic. Inputs include Story Points for the iteration, fuzzy assessments of Friction Factors (FR) and Dynamic Factors (DF) to calculate Velocity, and fuzzy assessments of 17 COCOMO II post-architecture attributes to calculate the Adjusted COCOMO Factors (ACF).</li></ul></li></ol><p>In summary, EEEM offers a preliminary estimate based on early, less certain information, while IEEM provides ongoing, more detailed estimates iteration by iteration, incorporating both Agile metrics and refined COCOMO factors within a fuzzy logic framework.</p>`
+            },
+             {
+                question: "2. How does the proposed framework utilize Fuzzy Logic? Describe its role in addressing the imprecision problem inherent in traditional COCOMO estimation.",
+                answer: `<p>Fuzzy Logic is central to the proposed framework's approach to handling the uncertainty and vagueness common in software effort estimation, particularly addressing the imprecision of COCOMO cost driver ratings.</p><p><strong>Role of Fuzzy Logic:</strong></p><ul><li><strong>Handling Imprecision:</strong> Traditional COCOMO requires selecting discrete ratings (e.g., Nominal, High) for cost drivers, each mapping to a single multiplier value. However, real-world assessments are often subjective and fall between categories (e.g., "slightly higher than nominal"). Fuzzy Logic allows representing these inputs using linguistic variables (Very Low, Low, Nominal, High, Very High, Extra High) and membership functions (often triangular in this framework). This means an input can belong partially to multiple categories simultaneously (e.g., a KLOC value might be 60% 'Medium' and 40% 'Large'), capturing the inherent imprecision.</li><li><strong>Modeling Subjectivity:</strong> Factors like 'Team Cohesion' (TEAM) or 'Analyst Capability' (ACAP) are inherently subjective. Fuzzy Logic provides a natural way to model these qualitative assessments using fuzzy sets and rules.</li><li><strong>Combining Diverse Factors:</strong> The framework uses fuzzy inference systems (collections of IF-THEN rules) to combine various inputs (like KLOC, Scaling Factors, Cost Drivers, FR, DF) in a way that reflects expert knowledge about how these factors interact to influence effort.</li><li><strong>Generating Crisp Outputs:</strong> After fuzzy inference, the resulting fuzzy output (representing estimated effort, velocity, or adjustment factors) is converted back into a precise numerical value using defuzzification methods like the Center of Area (COA), making the result usable for planning.</li></ul><p><strong>Addressing COCOMO Imprecision Specifically:</strong></p><ul><li>Instead of forcing an estimator to choose a single rating like 'Low' (e.g., multiplier 1.10 for TOOL) or 'Nominal' (multiplier 1.00), Fuzzy Logic allows the estimator to provide an input (perhaps on a continuous scale or through linguistic terms) that results in partial membership in both 'Low' and 'Nominal'.</li><li>The fuzzy inference engine then processes this partial membership through its rule base.</li><li>The final defuzzified output (e.g., a specific multiplier value like 1.04) reflects this "in-between" assessment, leading to a potentially more accurate and realistic effort adjustment than forcing a choice between discrete, predefined levels. The presentation slide on 'COCOMO Imprecision Problem' illustrates this where an input of 36% might fall between 'Low' (35%) and 'Nominal' (55%), and fuzzy logic can produce a nuanced multiplier instead of defaulting to either 1.10 or 1.00.</li></ul>`
+            },
+             {
+                question: "3. Compare the Story Point method and COCOMO II for effort estimation. How does the proposed framework attempt to leverage the strengths of both?",
+                answer: `<p>Story Points and COCOMO II represent different approaches to software effort estimation:</p><p><strong>Story Point Method:</strong></p><ul><li><strong>Nature:</strong> Relative, unit-less measure used primarily within Agile teams (especially Scrum).</li><li><strong>Basis:</strong> Estimates the overall effort (complexity, uncertainty, volume) to complete a user story relative to other stories. Often uses non-linear scales (e.g., Fibonacci).</li><li><strong>Process:</strong> Team-based estimation (e.g., Planning Poker). Effort is derived from total points and team's measured Velocity.</li><li><strong>Strengths:</strong> Fast, team-centric, avoids tying estimates directly to time initially, accounts for team-specific factors implicitly through Velocity, good for iterative planning.</li><li><strong>Weaknesses:</strong> Relative nature makes comparison across teams difficult, Velocity can fluctuate, less effective for very early-stage estimation before team/stories exist, doesn't explicitly model external cost factors.</li></ul><p><strong>COCOMO II:</strong></p><ul><li><strong>Nature:</strong> Algorithmic model producing absolute effort estimates (e.g., Person-Months).</li><li><strong>Basis:</strong> Estimates effort based on project size (e.g., KLOC, Function Points) adjusted by numerous Cost Drivers (Effort Multipliers) and Scaling Factors representing project, product, platform, and personnel characteristics.</li><li><strong>Process:</strong> Requires inputting size and rating various factors based on project characteristics. Formulas calculate effort.</li><li><strong>Strengths:</strong> Provides absolute estimates useful for budgeting/bidding, considers a wide range of quantifiable factors, models economies/diseconomies of scale, has different models for different project stages.</li><li><strong>Weaknesses:</strong> Requires detailed inputs that may be unavailable early on, sensitive to input accuracy (size, ratings), can be complex, suffers from imprecision in rating factors, less adaptable to rapid changes within iterations.</li></ul><p><strong>How the Proposed Framework Leverages Both:</strong></p><p>The framework aims to combine the strengths by:</p><ul><li><strong>Using COCOMO II Factors for Context:</strong> It incorporates COCOMO II's comprehensive set of Scaling Factors and Cost Drivers (Effort Multipliers) to provide a structured way of accounting for project context (team capability, complexity, platform, process maturity etc.). This addresses a weakness of relying solely on Story Points/Velocity.</li><li><strong>Using Story Points for Iteration Scope:</strong> It uses Story Points (SP) as the measure of work scope *within* an iteration, leveraging the team-based, relative sizing common in Agile.</li><li><strong>Integrating via Fuzzy Logic:</strong> Fuzzy Logic acts as the bridge. It takes the COCOMO factors (handled fuzzily to mitigate imprecision) and combines their influence into an Adjusted COCOMO Factor (ACF).</li><li><strong>Adjusting Story Points:</strong> The framework calculates Iteration Story Points (ISP) by adjusting the raw Story Points (SP) based on the ACF (<code class='formula'>ISP = Sum(SP_I + 0.1*ACF)</code>). This essentially modulates the iteration's scope estimate based on the broader project context defined by COCOMO factors.</li><li><strong>Calculating Fuzzy Velocity:</strong> It also uses fuzzy logic on Agile-relevant factors (FR/DF) to calculate Velocity (V), which then translates the ISP into time (Project Time T).</li></ul><p>By doing this, the IEEM phase aims for an iteration estimate that reflects both the team's relative sizing (SP) and the objective project characteristics (COCOMO factors), handled with the flexibility of fuzzy logic.</p>`
+            },
+            {
+                question: "4. Describe the key inputs and outputs of the Early Effort Estimation Model (EEEM) as depicted in the presentation diagram.",
+                 answer: `<p>Based on the diagram for the Early Effort Estimation Model (EEEM) on slide 28, the key inputs and outputs are:</p><p><strong>Inputs:</strong></p><p>The inputs are processed through Fuzzification stages before entering the core logic:</p><ol><li><strong>COCOMO II Scaling Factors (Group B):</strong> These five factors capture project scale characteristics:<ul><li>PREC (Precedentedness)</li><li>FLEX (Development Flexibility)</li><li>RESL (Architecture / Risk Resolution)</li><li>TEAM (Team Cohesion)</li><li>PMAT (Process Maturity)</li></ul></li><li><strong>COCOMO II Early Design Effort Multipliers (Group Below B):</strong> These seven factors adjust effort based on early project characteristics:<ul><li>RCPX (Required Software Reliability & Complexity) - *Note: Likely combining RELY/CPLX or similar*</li><li>RUSE (Required Reusability)</li><li>PDIF (Platform Difficulty)</li><li>PERS (Personnel Capability) - *Note: Likely combining ACAP/PCAP*</li><li>PREX (Personnel Experience) - *Note: Likely combining APEX/PLEX/LTEX*</li><li>SCED (Required Development Schedule)</li><li>FCIL (Facilities)</li></ul></li><li><strong>Project Size (Group A):</strong><ul><li>KLOC (Kilo Lines of Code): The estimated size of the project.</li></ul></li></ol><p><strong>Outputs:</strong></p><p>The fuzzy inputs are processed through fuzzy inference systems and defuzzification stages:</p><ol><li><strong>Intermediate Output E*:</strong> The defuzzified result from processing the Scaling Factors (Group B).</li><li><strong>Intermediate Output M':</strong> The defuzzified result from processing the Early Design Effort Multipliers (Group below B).</li><li><strong>Final Output (IEF Effort):</strong> The diagram shows E*, M', and the processed KLOC input being combined (indicated by the multiplier symbol ⊗) to produce the final Initial Estimated Fuzzy Effort (IEF Effort).</li></ol>`
+             },
+            {
+                 question: "5. Describe the key inputs and outputs of the Iteration Effort Estimation Model (IEEM) as depicted in the presentation diagram.",
+                 answer: `<p>Based on the diagram for the Iteration Effort Estimation Model (IEEM) on slide 32, the key inputs and outputs are:</p><p><strong>Inputs:</strong></p><p>The inputs are processed through Fuzzification stages or used directly:</p><ol><li><strong>Velocity Factors (Top Fuzzy Block):</strong><ul><li>DF (Dynamic Factors): Factors reflecting expected changes during the iteration.</li><li>FR (Friction Factors): Factors reflecting inherent team/environment characteristics.</li></ul></li><li><strong>COCOMO Post-Architecture Attributes (Bottom Fuzzy Block):</strong> 17 factors related to:<ul><li>Product Attributes</li><li>Platform Attributes</li><li>Personnel Attributes</li><li>Project Attributes</li></ul></li><li><strong>Iteration Scope:</strong><ul><li>Story Points (SP): The sum of story points for the iteration.</li></ul></li></ol><p><strong>Outputs:</strong></p><ol><li><strong>Velocity:</strong> The defuzzified output from the top fuzzy block (processing DF and FR).</li><li><strong>Adjusted COCOMO Factors (ACF):</strong> The defuzzified output from the bottom fuzzy block (processing post-architecture attributes).</li><li><strong>Effort / Iteration Effort:</strong> Calculated using Story Points, ACF, and Velocity (likely via ISP calculation).</li><li><strong>Update Project Effort:</strong> The Iteration Effort updates the overall project estimate.</li></ol>`
+            },
+            {
+                 question: "6. Explain the 'COCOMO Imprecision Problem' using the 'TOOL' cost driver example shown in the presentation (slides 19-20).",
+                 answer: `<p>The 'COCOMO Imprecision Problem' stems from the need to map subjective assessments of cost drivers onto discrete rating levels (e.g., Low, Nominal, High) with fixed multipliers, losing nuance.</p><p>The <strong>TOOL (Use of Software Tools)</strong> example illustrates this:</p><ul><li>Ratings (Low, Nominal, High) correspond to percentage ranges (35%, 55%, 75%) and specific multipliers (1.10, 1.00, 0.91).</li><li>If an assessment falls *between* categories (e.g., at <strong>36%</strong>, between Low's 35% and Nominal's 55%), standard COCOMO forces a choice (likely Low, multiplier 1.10).</li><li>This forced choice ignores the fact that 36% is slightly different from the boundary condition (35%) and likely warrants a multiplier slightly different from 1.10 (maybe 1.08 or 1.09).</li></ul><p>This loss of precision when mapping continuous or subjective assessments to discrete categories can lead to inaccuracies in the final effort estimate. Fuzzy Logic addresses this by allowing partial membership in multiple categories and calculating a nuanced output value.</p>`
+            },
+            {
+                 question: "7. Define Agile Velocity in the context of the proposed framework. Explain how it is calculated using Equation (9) and the role of FR and DF factors.",
+                 answer: `<p>In the proposed framework's IEEM, <strong>Velocity (V)</strong> is a calculated, forward-looking measure representing the *expected* rate of progress (in adjusted story points per unit time) for the upcoming iteration, considering anticipated conditions.</p><p><strong>Calculation (Equation 9):</strong></p><code class="formula">V = (Π<sup>4</sup><sub>i=1</sub> μ<sub>A(x)i</sub> ⋅ FR<sub>i</sub>) ⋅ (Π<sup>9</sup><sub>j=1</sub> μ<sub>A(y)j</sub> ⋅ DF<sub>j</sub>)</code><p>This formula indicates Velocity is calculated by:</p><ol><li>Taking the <strong>Friction Factors (FR<sub>i</sub>)</strong> (e.g., team composition, process) which represent inherent drags on speed.</li><li>Taking the <strong>Dynamic Factors (DF<sub>j</sub>)</strong> (e.g., expected team changes, delays) which represent anticipated iteration-specific events.</li><li>Applying fuzzy membership functions (μ<sub>A</sub>) to determine the degree of influence of the current assessment of each FR and DF factor.</li><li>Combining the fuzzy-weighted FR factors multiplicatively (Π product symbol).</li><li>Combining the fuzzy-weighted DF factors multiplicatively.</li><li>Multiplying the combined FR effect and the combined DF effect together.</li></ol><p>The result (after subsequent fuzzy inference and defuzzification, not fully shown in Eq. 9 itself) is a single Velocity value adjusted from a baseline based on the fuzzy assessment of friction and dynamic conditions for the iteration.</p>`
+            },
+             {
+                 question: "8. Describe the MRE and PRED(L) metrics. How were they used to evaluate the proposed framework, and what key result regarding PRED was highlighted in the conclusion?",
+                 answer: `<p><strong>Magnitude of Relative Error (MRE):</strong></p><ul><li>Measures the size of the estimation error for one project relative to its actual effort.</li><li>Formula: <code class="formula">MRE = |Actual Effort - Predicted Effort| / Actual Effort</code></li><li>Lower MRE = better accuracy for that project.</li></ul><p><strong>Prediction Level (PRED(L)):</strong></p><ul><li>Measures overall model accuracy across multiple projects.</li><li>Definition: Percentage of projects with MRE less than or equal to a threshold L (e.g., L=0.25).</li><li>Formula: <code class="formula">PRED(L) = (k / N) * 100</code> (k = count projects with MRE ≤ L, N = total projects).</li><li>Higher PRED(L) = better overall model accuracy.</li></ul><p><strong>Evaluation & Result:</strong></p><ul><li>The framework was tested against the COCOMONASA2 dataset. MRE was calculated for each project, and then PRED(L) was determined.</li><li>The key conclusion highlighted (slide 45) was that the proposed model <strong>increased PRED from 70% to 80%</strong> (likely PRED(0.25)), indicating improved estimation accuracy compared to a baseline.</li></ul>`
+            },
+            {
+                 question: "9. What are Cost Drivers (Effort Multipliers) and Scaling Factors in COCOMO II? Provide examples mentioned in the presentation.",
+                 answer: `<p>In COCOMO II:</p><p><strong>Cost Drivers (Effort Multipliers - EMs):</strong></p><ul><li><strong>Role:</strong> Adjust the nominal effort based on specific project/product/platform/personnel attributes. 17 are used in the Post-Architecture model. Multipliers modify effort ( >1 increases, <1 decreases).</li><li><strong>Examples (from Slide 33):</strong> CPLX (Complexity), RUSE (Reusability), ACAP (Analyst Capability), TOOL (Use of Tools), SCED (Schedule Constraint - although SCED often impacts duration more directly).</li></ul><p><strong>Scaling Factors (SFs):</strong></p><ul><li><strong>Role:</strong> Adjust the exponent in the effort equation (Effort = A * Size<sup>E</sup> * Product(EMs)) to model economies/diseconomies of scale. There are 5 SFs.</li><li><strong>Examples (from Slide 24):</strong> PREC (Precedentedness), FLEX (Development Flexibility), RESL (Risk Resolution), TEAM (Team Cohesion), PMAT (Process Maturity).</li></ul><p>Scaling Factors affect the overall size-effort relationship, while Cost Drivers provide specific adjustments.</p>`
+            },
+            {
+                 question: "10. Discuss the challenges mentioned for large-scale Agile projects (Slides 5-6) and explain how an accurate effort estimation framework, like the one proposed, might help mitigate some of them.",
+                 answer: `<p><strong>Large-Scale Agile Challenges (Summary):</strong> Coordination overhead, testing complexity, managing releases, dependency discovery, long requirements/decision cycles, priority list maintenance, process waiting times, test coverage issues.</p><p><strong>How Accurate Estimation Helps Mitigation:</strong></p><ul><li><strong>Better Planning & Coordination:</strong> Reliable estimates (EEEM/IEEM) aid release/iteration planning, reducing overhead and waiting times.</li><li><strong>Informed Prioritization:</strong> Knowing effort helps Product Owners balance value vs. cost for backlog items, stabilizing priorities.</li><li><strong>Realistic Expectations:</strong> Helps manage release scope/timelines, preventing effort spiraling.</li><li><strong>Risk Identification:</strong> Considering factors like RESL/CPLX during estimation highlights risks earlier. Budgeting adequate time based on estimates can improve testing.</li><li><strong>Resource Management:</strong> Better forecasting aids coordination with HR and identifies potential bottlenecks sooner.</li></ul><p>While not a silver bullet, accurate estimation provides critical data for managing complexity in large Agile projects.</p>`
+            },
+            {
+                 question: "11. Explain the process of defuzzification using the Center of Area (COA) method as presented in Equation (7).",
+                 answer: `<p><strong>Defuzzification</strong> converts a fuzzy output set (from fuzzy inference) into a single, crisp numerical value.</p><p>The <strong>Center of Area (COA)</strong> method finds the "balance point" or "center of gravity" of the output fuzzy set's membership function (μ<sub>A</sub>(x)).</p><p><strong>Equation (7) (Discrete form):</strong></p><code class="formula">COA = Σ [x<sub>i</sub> * μ<sub>A</sub>(x<sub>i</sub>)] / Σ [μ<sub>A</sub>(x<sub>i</sub>)]</code><p><strong>Process:</strong></p><ol><li>The output range is divided into discrete points (x<sub>i</sub>).</li><li>For each point x<sub>i</sub>, its value is multiplied by its membership degree μ<sub>A</sub>(x<sub>i</sub>) in the final fuzzy output set.</li><li>These products (weighted values) are summed up (Numerator).</li><li>The membership degrees μ<sub>A</sub>(x<sub>i</sub>) are summed up (Denominator - represents the 'area').</li><li>The numerator is divided by the denominator to find the centroid (COA), which is the crisp output value.</li></ol><p>It provides a representative value for the fuzzy result based on its overall shape and weighting.</p>`
+            },
+            {
+                 question: "12. How are Iteration Story Points (ISP) calculated in the proposed model according to Equation (10)? Explain the components SP<sub>I</sub> and ACF in this formula.",
+                 answer: `<p><strong>Iteration Story Points (ISP)</strong> represent the adjusted effort for an iteration in the proposed framework.</p><p><strong>Equation (10):</strong></p><code class="formula">ISP = Σ<sup>number of stories</sup><sub>I=1</sub> (SP<sub>I</sub> + (0.1 * ACF))</code><p><strong>Components:</strong></p><ul><li><strong>SP<sub>I</sub>:</strong> The original Story Point estimate for an individual user story 'I', as determined by the team. It reflects the relative size/effort of that story.</li><li><strong>ACF (Adjusted COCOMO Factors):</strong> A single value calculated earlier in IEEM, representing the combined, fuzzified impact of various COCOMO II post-architecture cost drivers (project context like complexity, team skills, etc.).</li><li><strong>(0.1 * ACF):</strong> A scaled adjustment factor derived from the project context (ACF). The scaling (0.1) might be empirical.</li><li><strong>(SP<sub>I</sub> + (0.1 * ACF)):</strong> The core calculation adjusts the effort for *each* story by adding the scaled context factor. Challenging contexts (high ACF) increase the effort per story point; favorable contexts decrease it.</li><li><strong>Σ (Summation):</strong> The adjusted efforts for all stories in the iteration are summed to get the total ISP.</li></ul><p>ISP integrates the team's relative sizing (SP) with objective project characteristics (ACF) for a context-aware iteration workload measure.</p>`
+            }
+        ];
+        // --- END OF ESSAY QUESTION DATA ---
+
+
+        // --- START OF SCRIPT LOGIC ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Select main tabs and content sections
+            const mainTabButtons = document.querySelectorAll('.main-tabs .tab-button');
+            const mainTabContents = document.querySelectorAll('.main-content');
+
+            // Select content containers for dynamic loading
+            const glossaryContainer = document.getElementById('glossary').querySelector('.accordion-container'); // Target accordion container within glossary
+            const essayContainer = document.getElementById('essay-questions-container');
+            const fillContainer = document.getElementById('fill-questions');
+            const tfContainer = document.getElementById('tf-questions');
+            const mcContainer = document.getElementById('mc-questions');
+
+
+            // --- Main Tab Switching Logic ---
+            mainTabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab'); // Get the ID of the target content
+
+                    // Deactivate all main buttons and content
+                    mainTabButtons.forEach(btn => btn.classList.remove('active'));
+                    mainTabContents.forEach(content => content.classList.remove('active'));
+
+                    // Activate the clicked button
+                    button.classList.add('active');
+
+                    // Activate the corresponding content section
+                    const targetContent = document.getElementById(tabId);
+                    if (targetContent) {
+                        targetContent.classList.add('active');
+                         // If activating essay, ensure accordion listeners are set
+                         if (tabId === 'essay') {
+                             setupAccordionListeners('#essay-questions-container');
+                         } else if (tabId === 'glossary') {
+                             setupAccordionListeners('#glossary .accordion-container');
+                         }
+                    }
+                });
+            });
+
+             // --- Function to Setup Accordion Listeners ---
+             // Takes a selector for the container holding accordion items
+             function setupAccordionListeners(containerSelector) {
+                 const container = document.querySelector(containerSelector);
+                 if (!container) return; // Exit if container not found
+
+                 const headers = container.querySelectorAll('.accordion-header');
+                 headers.forEach(header => {
+                     // Check if listener already exists to avoid duplicates (simple check)
+                     if (header.getAttribute('data-listener-set')) {
+                         return;
+                     }
+
+                    header.addEventListener('click', function() {
+                        const panel = this.nextElementSibling;
+                        const isActive = this.classList.contains('active');
+                         // Find the parent container *specifically* for closing siblings
+                        const parentAccordionContainer = this.closest('.accordion-container');
+
+                         // Close other accordions in the SAME container
+                        if (parentAccordionContainer) {
+                             parentAccordionContainer.querySelectorAll('.accordion-item').forEach(item => {
+                                const otherHeader = item.querySelector('.accordion-header');
+                                const otherPanel = item.querySelector('.accordion-panel');
+                                if (otherHeader !== this && otherHeader.classList.contains('active')) {
+                                    otherHeader.classList.remove('active');
+                                    otherPanel.style.maxHeight = null;
+                                    otherPanel.classList.remove('open');
+                                }
+                            });
+                        }
+
+                         // Toggle current accordion
+                         if (isActive) {
+                             this.classList.remove('active');
+                             panel.style.maxHeight = null;
+                             panel.classList.remove('open');
+                         } else {
+                             this.classList.add('active');
+                             // Calculate scrollHeight *after* adding content, before setting maxHeight
+                             // Ensure panel content is fully rendered before calculating scrollHeight if needed
+                             setTimeout(() => { // Use timeout for safety for dynamic content height calc
+                                 panel.style.maxHeight = panel.scrollHeight + 40 + "px"; // Use scrollHeight + buffer
+                                 panel.classList.add('open');
+                             }, 0); // Timeout 0 pushes execution after current stack
+                         }
+                     });
+                     header.setAttribute('data-listener-set', 'true'); // Mark as listener set
+                 });
+             }
+
+
+            // --- Function to handle option selection within a question ---
+            function handleOptionSelection(button, questionDiv) {
+                const siblings = questionDiv.querySelectorAll('.option-button.selected');
+                siblings.forEach(sib => sib.classList.remove('selected'));
+                button.classList.add('selected');
+                const existingFeedback = questionDiv.querySelector('.feedback');
+                if (existingFeedback) {
+                    existingFeedback.remove();
+                }
+            }
+
+            // --- Function to create and append feedback ---
+            function showFeedback(questionDiv, isCorrect, correctAnswer) {
+                const existingFeedback = questionDiv.querySelector('.feedback');
+                if (existingFeedback) {
+                    existingFeedback.remove();
+                }
+
+                const feedback = document.createElement('div');
+                feedback.className = 'feedback';
+                if (isCorrect) {
+                    feedback.classList.add('correct');
+                    feedback.textContent = 'Correct!';
+                } else {
+                    feedback.classList.add('incorrect');
+                     let displayAnswer = correctAnswer;
+                     if (typeof correctAnswer === 'boolean') {
+                         displayAnswer = correctAnswer ? 'True' : 'False';
+                     }
+                    feedback.textContent = `Incorrect. Correct answer: ${displayAnswer}`;
+                }
+                const checkButton = questionDiv.querySelector('.check-answer');
+                 if (checkButton) {
+                    checkButton.parentNode.insertBefore(feedback, checkButton.nextSibling);
+                } else {
+                     questionDiv.appendChild(feedback);
+                }
+            }
+
+            // --- Load Essay Questions ---
+             function loadEssayQuestions() {
+                essayContainer.innerHTML = ''; // Clear previous content
+                 essayQuestions.forEach((q, index) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'accordion-item';
+
+                    const headerButton = document.createElement('button');
+                    headerButton.className = 'accordion-header';
+                    // Question number is already in the question text
+                    headerButton.textContent = `${q.question}`;
+
+                    const panelDiv = document.createElement('div');
+                    panelDiv.className = 'accordion-panel';
+                    panelDiv.innerHTML = q.answer; // Use innerHTML for rich content
+
+                    itemDiv.appendChild(headerButton);
+                    itemDiv.appendChild(panelDiv);
+                    essayContainer.appendChild(itemDiv);
+                 });
+                  // Setup listeners after loading
+                 setupAccordionListeners('#essay-questions-container');
+             }
+
+
+            // --- Load Fill in the Blank Questions ---
+            function loadFillInTheBlankQuestions() {
+                fillContainer.innerHTML = '';
+                fillInTheBlank.forEach((q, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question';
+                    questionDiv.id = `fill-q-${index}`;
+
+                    const questionText = document.createElement('p');
+                    questionText.innerHTML = `${index + 1}. ` + q.question.replace('_______', '<span style="color: #007bff; font-weight:bold;">_______</span>');
+                    questionDiv.appendChild(questionText);
+
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'options';
+
+                    const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+                    shuffledOptions.forEach(option => {
+                        const optionButton = document.createElement('button');
+                        optionButton.className = 'option-button';
+                        optionButton.textContent = option;
+                        optionButton.addEventListener('click', () => handleOptionSelection(optionButton, questionDiv));
+                        optionsDiv.appendChild(optionButton);
+                    });
+                    questionDiv.appendChild(optionsDiv);
+
+                    const checkButton = document.createElement('button');
+                    checkButton.className = 'check-answer';
+                    checkButton.textContent = 'Check Answer';
+                    checkButton.addEventListener('click', () => {
+                        const selected = questionDiv.querySelector('.option-button.selected');
+                        if (selected) {
+                            showFeedback(questionDiv, selected.textContent === q.answer, q.answer);
+                        } else {
+                             showFeedback(questionDiv, false, q.answer); // Indicate incorrect if nothing selected
+                        }
+                    });
+                    questionDiv.appendChild(checkButton);
+                    fillContainer.appendChild(questionDiv);
+                });
+            }
+
+
+            // --- Load True/False Questions ---
+            function loadTrueFalseQuestions() {
+                tfContainer.innerHTML = '';
+                trueOrFalse.forEach((q, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question';
+                    questionDiv.id = `tf-q-${index}`;
+
+                    const questionText = document.createElement('p');
+                    questionText.textContent = `${index + 1}. ` + q.question;
+                    questionDiv.appendChild(questionText);
+
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'options';
+
+                    const trueButton = document.createElement('button');
+                    trueButton.className = 'option-button';
+                    trueButton.textContent = 'True';
+                    trueButton.addEventListener('click', () => handleOptionSelection(trueButton, questionDiv));
+                    optionsDiv.appendChild(trueButton);
+
+                    const falseButton = document.createElement('button');
+                    falseButton.className = 'option-button';
+                    falseButton.textContent = 'False';
+                    falseButton.addEventListener('click', () => handleOptionSelection(falseButton, questionDiv));
+                    optionsDiv.appendChild(falseButton);
+
+                    questionDiv.appendChild(optionsDiv);
+
+                    const checkButton = document.createElement('button');
+                    checkButton.className = 'check-answer';
+                    checkButton.textContent = 'Check Answer';
+                    checkButton.addEventListener('click', () => {
+                        const selected = questionDiv.querySelector('.option-button.selected');
+                        if (selected) {
+                            const isCorrect = (selected.textContent === 'True' && q.answer === true) || (selected.textContent === 'False' && q.answer === false);
+                            showFeedback(questionDiv, isCorrect, q.answer);
+                        } else {
+                            showFeedback(questionDiv, false, q.answer);
+                        }
+                    });
+                    questionDiv.appendChild(checkButton);
+                    tfContainer.appendChild(questionDiv);
+                });
+            }
+
+            // --- Load Multiple Choice Questions ---
+            function loadMultipleChoiceQuestions() {
+                mcContainer.innerHTML = '';
+                multipleChoice.forEach((q, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question';
+                    questionDiv.id = `mc-q-${index}`;
+
+                    const questionText = document.createElement('p');
+                    questionText.textContent = `${index + 1}. ` + q.question;
+                    questionDiv.appendChild(questionText);
+
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'options';
+
+                    const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+                    shuffledOptions.forEach(option => {
+                        const optionButton = document.createElement('button');
+                        optionButton.className = 'option-button';
+                        optionButton.textContent = option;
+                        optionButton.addEventListener('click', () => handleOptionSelection(optionButton, questionDiv));
+                        optionsDiv.appendChild(optionButton);
+                    });
+                    questionDiv.appendChild(optionsDiv);
+
+                    const checkButton = document.createElement('button');
+                    checkButton.className = 'check-answer';
+                    checkButton.textContent = 'Check Answer';
+                    checkButton.addEventListener('click', () => {
+                        const selected = questionDiv.querySelector('.option-button.selected');
+                        if (selected) {
+                            showFeedback(questionDiv, selected.textContent === q.answer, q.answer);
+                        } else {
+                             showFeedback(questionDiv, false, q.answer);
+                        }
+                    });
+                    questionDiv.appendChild(checkButton);
+                    mcContainer.appendChild(questionDiv);
+                });
+            }
+
+            // --- Initial Load ---
+            loadEssayQuestions(); // Load essay questions first
+            loadFillInTheBlankQuestions();
+            loadTrueFalseQuestions();
+            loadMultipleChoiceQuestions();
+
+             // Setup accordion listeners for the glossary initially
+             setupAccordionListeners('#glossary .accordion-container');
+
+
+        }); // End DOMContentLoaded
+        // --- END OF SCRIPT LOGIC ---
+    </script>
+</body>
+</html>
