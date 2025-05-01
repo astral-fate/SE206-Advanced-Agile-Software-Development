@@ -47,7 +47,7 @@
             margin-bottom: 15px;
             color: #007bff; /* Lighter Blue */
         }
-         ul {
+         ul, ol { /* Applied to ordered lists too */
             list-style-type: disc;
             padding-left: 20px;
             margin-top: 10px;
@@ -76,11 +76,11 @@
         }
 
         .main-tabs .tab-button {
-            padding: 12px 20px; /* Adjusted padding slightly */
+            padding: 12px 18px; /* Adjusted padding slightly */
             border: none;
             background: none;
             color: #0056b3;
-            font-size: 0.95em; /* Slightly smaller font */
+            font-size: 0.9em; /* Slightly smaller font */
             font-weight: bold;
             cursor: pointer;
             border-radius: 5px 5px 0 0;
@@ -116,11 +116,13 @@
         }
 
 
-        /* --- Accordion Styles (for Glossary) --- */
+        /* --- Accordion Styles (for Glossary & Essay) --- */
+        /* Using .glossary-accordion class for both for style consistency */
         .glossary-accordion {
             border: 1px solid #dee2e6;
             border-radius: 5px;
             overflow: hidden; /* Contain borders */
+            margin-top: 20px; /* Add some space above the accordion */
         }
 
         .accordion-item {
@@ -132,7 +134,8 @@
 
         .accordion-header {
             background-color: #f8f9fa;
-            color: #dc3545; /* Highlight Red for terms */
+            /* Using Lighter Blue for essay questions for less intensity than red */
+            color: #007bff; /* Lighter Blue */
             cursor: pointer;
             padding: 15px 20px;
             width: 100%;
@@ -144,6 +147,11 @@
             transition: background-color 0.3s ease;
             position: relative; /* For the indicator */
         }
+        /* Specific override for Glossary Term color if needed */
+        #glossary .accordion-header {
+             color: #dc3545; /* Highlight Red for terms */
+        }
+
 
         .accordion-header:hover {
             background-color: #e9ecef;
@@ -176,10 +184,18 @@
             overflow: hidden;
             transition: max-height 0.3s ease-out, padding 0.3s ease-out; /* Smooth transition */
         }
-        .accordion-panel p, .accordion-panel ul { /* Apply margin to lists too */
-            margin: 15px 0; /* Add margin back when panel is open */
-            color: #333; /* Reset color for definition */
+        /* Ensure content inside the panel has appropriate margins */
+        .accordion-panel p, .accordion-panel ul, .accordion-panel ol {
+            margin: 15px 0;
+            color: #333; /* Standard text color for definition/answer */
         }
+        .accordion-panel ul, .accordion-panel ol {
+            padding-left: 30px; /* Indent lists within answers */
+        }
+        .accordion-panel strong { /* Make strong text slightly darker blue */
+            color: #004085;
+        }
+
 
         /* --- End Accordion Styles --- */
 
@@ -286,6 +302,7 @@
         <div class="main-tabs">
             <button class="tab-button active" data-tab="glossary">Glossary</button>
             <button class="tab-button" data-tab="concepts">Key Concepts</button>
+            <button class="tab-button" data-tab="essay">Essay Questions</button> <!-- Added Essay Tab -->
             <button class="tab-button" data-tab="fill">Fill in the Blank</button>
             <button class="tab-button" data-tab="tf">True/False</button>
             <button class="tab-button" data-tab="mc">Multiple Choice</button>
@@ -295,7 +312,6 @@
         <section id="glossary" class="main-content active">
             <h2>Glossary of Terms</h2>
             <div class="glossary-accordion">
-                <!-- Add terms based on SE206 Unit 5 (Application/Evaluation/RE) -->
                  <div class="accordion-item">
                     <button class="accordion-header">Agile SPM</button>
                     <div class="accordion-panel">
@@ -429,11 +445,183 @@
                     <li><strong>Validation:</strong> Check if specified requirements meet user needs.</li>
                     <li><strong>Management:</strong> Handle changes to requirements.</li>
                  </ol>
-                 <p><strong>RE in Agile:</strong> While the steps exist conceptually, they are more iterative and continuous. Elicitation, specification, validation happen frequently within iterations, often using User Stories and direct customer feedback instead of a large upfront SRS.</p>
+                 <p><strong>RE in Agile:</strong> While the steps exist conceptually, they are more iterative and continuous. Elicitation, specification, validation happen frequently within iterations, often using User Stories and direct customer feedback instead of a large upfront SRS. Agile breaks tasks into smaller iterations (1-4 weeks), allowing for flexibility and risk minimization. Each iteration typically involves a full cycle: planning, analysis, design, coding, testing.</p>
                  <p><strong>SRS (Software Requirement Specification):</strong> A detailed document describing functional and non-functional requirements. Key characteristics of a good SRS include: Correctness, Completeness, Consistency, Unambiguousness, Modifiability, Verifiability, Traceability, Design Independence, Testability, Understandability.</p>
 
              </div>
+        </section>
 
+        <!-- Essay Questions Section -->
+        <section id="essay" class="main-content">
+            <h2>Essay Questions</h2>
+            <p>Click on a question to reveal the answer based on the unit material.</p>
+            <div class="glossary-accordion"> <!-- Reusing glossary accordion style -->
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">1. Describe the Requirement Engineering (RE) process outlined in the slides. What are its main steps?</button>
+                    <div class="accordion-panel">
+                        <p>Requirement Engineering (RE) is defined as the process of defining, documenting, and maintaining requirements during the engineering design process. It provides mechanisms to understand customer desires, analyze needs, assess feasibility, negotiate solutions, specify clearly, validate specifications, and manage requirements as they evolve.</p>
+                        <p>The slides outline a five-step RE process (visualized in slide 23):</p>
+                        <ol>
+                            <li><strong>Feasibility Study:</strong> Assesses the practicality and reasons for developing the software, considering technical, operational, and economic factors. A Feasibility Report is often produced.</li>
+                            <li><strong>Requirement Elicitation and Analysis:</strong> Involves gathering requirements from customers, stakeholders, and existing systems. This phase identifies needs, resolves conflicts, and understands the problem domain.</li>
+                            <li><strong>Software Requirement Specification (SRS):</strong> Involves documenting the gathered requirements, often in an SRS document. This uses models like ER diagrams, DFDs, and data dictionaries to create a technical representation understood by the development team.</li>
+                            <li><strong>Software Requirement Validation:</strong> Checks the documented requirements (e.g., in the SRS) for correctness, completeness, consistency, lack of ambiguity, and whether they truly meet user needs. Techniques include reviews, prototyping, and test-case generation.</li>
+                            <li><strong>Software Requirement Management:</strong> Handles changes to requirements that inevitably occur during the development process, managing different priorities and evolving needs.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">2. Explain the three types of Feasibility Studies mentioned in the context of RE and their purpose.</button>
+                    <div class="accordion-panel">
+                        <p>The Feasibility Study is the first step in the RE process, aiming to establish the rationale for developing the software, ensuring it's acceptable to users, flexible, and meets standards. The slides mention three specific types of feasibility (slide 24-25):</p>
+                        <ul>
+                            <li><strong>Technical Feasibility:</strong> This evaluates the availability and capability of the current technologies needed to meet the customer's requirements within the given time and budget constraints. It asks: "Can we build it with the technology we have or can acquire?"</li>
+                            <li><strong>Operational Feasibility:</strong> This assesses how well the proposed software solution will work within the organization's existing operational environment and meet the business needs and customer requirements. It considers how the software will fit into the workflow and solve the intended business problems.</li>
+                            <li><strong>Economic Feasibility:</strong> This determines if the project is financially viable. It analyzes the costs of development versus the expected benefits (like financial profits) for the organization. It asks: "Is the project a good financial investment?"</li>
+                        </ul>
+                        <p>The overall purpose is to determine if the project is practical and justifiable from technical, operational, and financial perspectives before significant resources are committed.</p>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">3. What is a Software Requirement Specification (SRS)? Describe three key characteristics of a *good* SRS based on the slides.</button>
+                    <div class="accordion-panel">
+                        <p>A Software Requirement Specification (SRS) is a document created by a software analyst after gathering requirements from various sources. It translates customer needs (often expressed in ordinary language) into a technical language that the development team can understand and use. It details what the software will do and how it's expected to perform, including functional and non-functional requirements, and may use models like ER diagrams and DFDs (Slide 28-29).</p>
+                        <p>The slides list several characteristics of a good SRS (Slide 36). Here are three key ones with explanations derived from slides 37-48:</p>
+                        <ul>
+                            <li><strong>Correctness (Slide 37):</strong> An SRS is correct if it accurately represents all the requirements that are truly expected from the system. It must cover the actual needs of the user. User reviews are essential to ensure this accuracy. Importance: Ensures the developed system actually solves the user's problem.</li>
+                            <li><strong>Unambiguousness (Slide 40):</strong> Every requirement stated in the SRS must have only one possible interpretation. If terms or methods with multiple meanings are used, they must be clearly defined within the SRS context. Importance: Prevents misunderstandings between stakeholders and developers, leading to fewer errors and rework.</li>
+                            <li><strong>Completeness (Slide 38):</strong> The SRS must include all essential requirements (functional, performance, design constraints, interfaces), define the software's response to all possible inputs and situations, and properly label/reference all diagrams, tables, and define all terms used. Importance: Ensures nothing critical is missed and provides a full picture for development and testing.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">4. Explain the difference between Functional and Non-functional requirements as categorized in the slides.</button>
+                    <div class="accordion-panel">
+                        <p>The slides categorize software requirements into two main types (Slides 34-35):</p>
+                        <ul>
+                            <li><strong>Functional Requirements (Slide 34):</strong> These define the specific functions or behaviors that a system or system element must perform. They describe *what* the system does. They detail the operations, transformations, and processing the software must carry out, often related to specific user tasks or business processes. Example: A requirement stating "The system shall allow users to add items to a shopping cart" is functional.</li>
+                            <li><strong>Non-functional Requirements (Slide 35):</strong> These specify criteria used to judge the *operation* of a system, rather than its specific behaviors. They define *how* the system should perform its functions or constrain the system's design. They describe qualities or properties of the system. The slides further divide these into:
+                                <ul>
+                                    <li><strong>Execution Qualities:</strong> Observable at runtime, such as <strong>security</strong> (e.g., access control) and <strong>usability</strong> (e.g., ease of use).</li>
+                                    <li><strong>Evolution Qualities:</strong> Related to the static structure and long-term maintenance of the system, such as <strong>testability</strong> (ease of testing), <strong>maintainability</strong> (ease of modification/bug fixing), <strong>extensibility</strong> (ease of adding features), and <strong>scalability</strong> (ability to handle increased load).</li>
+                                </ul>
+                                Example: A requirement stating "The system login page must load within 2 seconds" or "The system must encrypt user passwords" is non-functional.
+                            </li>
+                        </ul>
+                        <p>In essence, functional requirements define what the system *must do*, while non-functional requirements define *how well* the system must do it or impose constraints on it.</p>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">5. What is Requirement Validation and why is it important? Name two techniques used for validation mentioned in the slides.</button>
+                    <div class="accordion-panel">
+                        <p>Requirement Validation is a step in the Requirement Engineering process that occurs after the requirements have been specified (e.g., in an SRS document). Its purpose is to check that the documented requirements accurately reflect the customer's actual needs and are correct, complete, consistent, and feasible (Slide 30).</p>
+                        <p>Validation is crucial because stakeholders might request impossible or conflicting features, or analysts might misinterpret needs. Without validation, the team might build a system based on flawed requirements, leading to a product that doesn't meet user expectations, requires extensive rework, or fails completely.</p>
+                        <p>The slides mention four validation techniques (Slide 31):</p>
+                        <ol>
+                            <li><strong>Requirements reviews/inspections:</strong> A systematic manual analysis of the requirements document by a team (including stakeholders, developers, testers) to find errors, ambiguities, and omissions.</li>
+                            <li><strong>Prototyping:</strong> Creating an executable model or mock-up of the system (or parts of it) based on the requirements. Users can interact with the prototype to check if it matches their understanding and needs, providing early feedback.</li>
+                            <li><em>(Test-case generation: Developing tests based on requirements to check if they are specific enough to be tested (testability).)</em></li>
+                            <li><em>(Automated consistency analysis: Using tools to check structured requirement descriptions for logical inconsistencies.)</em></li>
+                        </ol>
+                        <p>Reviews and Prototyping are two common and effective techniques mentioned.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">6. Describe the concept of 'Consistency' as a characteristic of a good SRS. Provide an example of inconsistency.</button>
+                    <div class="accordion-panel">
+                        <p>According to slide 39, an SRS is considered **Consistent** if, and only if, no subset of individual requirements described within it conflict with each other. Consistency ensures that different parts of the specification do not contradict one another.</p>
+                        <p>The slides highlight potential types of conflicts:</p>
+                        <ul>
+                            <li><strong>Conflict in characteristics of real-world objects:</strong> Different requirements might describe the same entity or feature in incompatible ways.</li>
+                            <li><strong>Logical or temporal conflict between specified actions:</strong> Two requirements might specify actions that cannot logically occur together or contradict each other in terms of process flow.</li>
+                        </ul>
+                        <p><strong>Example of Inconsistency (based on slide 39):</strong></p>
+                        <p>An SRS document contains the following two requirements:</p>
+                        <ul>
+                            <li>Requirement A: "The system shall generate the monthly sales summary report in a tabular format."</li>
+                            <li>Requirement B: "The monthly sales summary report must be presented as a free-form textual document."</li>
+                        </ul>
+                        <p>This represents an inconsistency because the format of the *same* output (the monthly sales summary report) is described in conflicting ways (tabular vs. textual). A consistent SRS would specify only one format or clearly define conditions under which each format is used.</p>
+                        <p>Another example provided: One requirement states the program will *add* two inputs, while another states the program will *multiply* them under the same conditions.</p>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">7. What is Requirement Management in the context of RE? Why is it necessary?</button>
+                    <div class="accordion-panel">
+                        <p>Requirement Management, as described in slide 32, is the process of managing **changing requirements** throughout the requirements engineering process and the subsequent system development lifecycle.</p>
+                        <p>It involves activities like identifying, controlling, tracking, and reporting requirements and the changes made to them.</p>
+                        <p>Requirement Management is necessary because:</p>
+                        <ul>
+                            <li><strong>Requirements Evolve:</strong> Business needs, user expectations, market conditions, and technical possibilities change over time. Requirements defined at the start of a project are rarely static.</li>
+                            <li><strong>Changing Priorities:</strong> The importance or priority of different requirements can shift during development due to feedback, budget constraints, or strategic decisions (as mentioned in slide 32).</li>
+                            <li><strong>Stakeholder Understanding Improves:</strong> As the project progresses and stakeholders see prototypes or early versions, their understanding of their own needs may evolve, leading to new or modified requirements.</li>
+                            <li><strong>Complexity:</strong> In large projects, managing numerous requirements and their interdependencies requires a structured approach to avoid chaos and ensure changes are handled consistently and their impact is understood.</li>
+                        </ul>
+                        <p>Without effective requirement management, projects risk scope creep, confusion, inconsistencies, budget overruns, and delivering a system that doesn't meet the *final* user needs.</p>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">8. Explain the software quality attribute 'Maintainability' and why it is important.</button>
+                    <div class="accordion-panel">
+                        <p>Maintainability is defined in slide 19 as a quality attribute indicating how easily a software product can be modified. This includes several aspects:</p>
+                        <ul>
+                            <li><strong>Correcting Bugs:</strong> Bugs discovered after release can be easily located and fixed.</li>
+                            <li><strong>Adding New Tasks/Features:</strong> New functionality can be incorporated into the existing system without excessive effort or breaking existing parts.</li>
+                            <li><strong>Modifying Functionality:</strong> Existing features can be adapted or changed to meet new requirements.</li>
+                        </ul>
+                        <p>Essentially, a maintainable software product is easy to understand, modify, and enhance over its lifespan.</p>
+                        <p>Maintainability is important because:</p>
+                        <ul>
+                            <li><strong>Reduced Costs:</strong> Software maintenance (bug fixing, updates, enhancements) often consumes a significant portion of the total software lifecycle cost. High maintainability reduces this effort and cost.</li>
+                            <li><strong>Faster Updates:</strong> Changes and fixes can be implemented more quickly, allowing the software to adapt to changing user needs or market conditions faster.</li>
+                            <li><strong>Lower Risk:</strong> Modifying highly maintainable code is less likely to introduce new errors (regressions) compared to modifying complex, poorly structured code.</li>
+                            <li><strong>Longer Lifespan:</strong> Software that is easy to maintain can remain useful and relevant for a longer period, maximizing the initial investment.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">9. Discuss the challenges mentioned in Requirement Elicitation and Analysis.</button>
+                    <div class="accordion-panel">
+                        <p>Requirement Elicitation and Analysis is the process of gathering requirements from stakeholders and understanding the problem domain. Slide 26 highlights several common challenges faced during this phase:</p>
+                        <ul>
+                            <li><strong>Identifying the Right People:</strong> Ensuring that all relevant stakeholders are involved, and only the relevant ones, can be difficult. Missing key stakeholders means missing requirements; involving irrelevant people wastes time.</li>
+                            <li><strong>Stakeholders Don't Know What They Want:</strong> Often, stakeholders have a vague idea of their needs but struggle to articulate specific, complete, and consistent requirements, especially for innovative systems.</li>
+                            <li><strong>Communication Barriers:</strong> Stakeholders often express requirements in their own domain-specific terms or natural language, which might be ambiguous or misunderstood by the analysts or development team.</li>
+                            <li><strong>Conflicting Requirements:</strong> Different stakeholders may have different needs or priorities that conflict with each other. Resolving these conflicts requires negotiation and prioritization.</li>
+                            <li><strong>Changing Requirements:</strong> Requirements often change even during the elicitation and analysis phase itself, as understanding evolves or external factors shift. This requires flexibility and management.</li>
+                            <li><strong>Organizational and Political Factors:</strong> The requirements gathered can be influenced by internal politics, organizational structure, or individual agendas, potentially skewing the true needs of the system.</li>
+                        </ul>
+                        <p>Overcoming these challenges requires skilled analysts who can use various elicitation techniques (interviews, workshops, observation, etc.), facilitate communication, manage conflicts, and iteratively refine understanding.</p>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">10. Explain 'Traceability' in the context of an SRS. What are the two types mentioned?</button>
+                    <div class="accordion-panel">
+                        <p>Traceability, as a characteristic of a good SRS (Slide 44), refers to the ability to follow the life of a requirement both forwards and backwards. An SRS is traceable if:</p>
+                        <ol>
+                            <li>The origin (source) of each requirement is clear.</li>
+                            <li>It facilitates referencing each requirement in future development phases (design, coding, testing) or subsequent documentation (e.g., enhancement specifications).</li>
+                        </ol>
+                        <p>Traceability helps in understanding the purpose of a requirement, managing changes (assessing the impact of changing a requirement), and verifying that all requirements have been addressed in the final system.</p>
+                        <p>The slides mention two types of traceability:</p>
+                        <ul>
+                            <li><strong>Backward Traceability:</strong> This links each requirement in the SRS back to its source. The source could be an earlier document (like a business case or feasibility study), a specific stakeholder request, or a high-level system goal. It answers the question: "Why does this requirement exist?"</li>
+                            <li><strong>Forward Traceability:</strong> This ensures each requirement in the SRS has a unique identifier (name or reference number) so that it can be referenced by design elements, code modules, test cases, and other downstream artifacts. It answers the question: "Where is this requirement implemented and tested?"</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div> <!-- End glossary-accordion -->
         </section>
 
         <!-- Quiz Sections -->
@@ -476,8 +664,8 @@
             { question: "E-Government faces challenges like the Digital Divide.", answer: true },
             { question: "Refactoring involves adding new functionality to the software.", answer: false }, // Improves internal structure, doesn't change external behavior/functionality
             { question: "The 'On-Site Customer' rule in XP means the customer visits the team once per iteration.", answer: false }, // Means customer is available full-time or very frequently
-            { question: "An SRS should ideally include detailed design specifications.", answer: false }, // Should be Design Independent
-            { question: "Requirement Validation checks if the documented requirements meet the actual user needs.", answer: true },
+            { question: "An SRS should ideally include detailed design specifications.", answer: false }, // Should be Design Independent (Slide 45)
+            { question: "Requirement Validation checks if the documented requirements meet the actual user needs.", answer: true }, // Slides 30, 31
             { question: "The 4-DAT framework is a specific Agile methodology like Scrum or XP.", answer: false }, // It's an analytical tool/framework for selection
             { question: "Collective Code Ownership means only one specific person owns and can change a piece of code.", answer: false } // Means anyone on the team can change any code
         ];
@@ -485,18 +673,18 @@
         const multipleChoice = [
             { question: "Which XP Rule emphasizes having a shared understanding of the system's overall operation through an analogy?", options: ["Simple Design", "Planning Game", "Metaphor", "Small Releases"], answer: "Metaphor" },
             { question: "What does GQM stand for?", options: ["Goal-Quality-Metric", "Goal-Question-Measure", "Goal-Question-Metric", "General Quality Management"], answer: "Goal-Question-Metric" },
-            { question: "Which RE activity involves checking requirements for correctness, completeness, and consistency?", options: ["Elicitation", "Specification", "Validation", "Management"], answer: "Validation" },
-            { question: "Which characteristic is NOT desirable for a good SRS?", options: ["Correct", "Ambiguous", "Consistent", "Modifiable"], answer: "Ambiguous" },
+            { question: "Which RE activity involves checking requirements for correctness, completeness, and consistency?", options: ["Elicitation", "Specification", "Validation", "Management"], answer: "Validation" }, // Slide 22, 30
+            { question: "Which characteristic is NOT desirable for a good SRS?", options: ["Correct", "Ambiguous", "Consistent", "Modifiable"], answer: "Ambiguous" }, // Slide 40 defines Unambiguousness as desirable
             { question: "The 4-DAT framework is used for what purpose in the context of Agile E-Government?", options: ["Estimating project cost", "Selecting suitable Agile methodologies", "Writing user stories", "Performing automated tests"], answer: "Selecting suitable Agile methodologies" },
             { question: "Which XP practice directly supports Collective Code Ownership?", options: ["Test-First Development", "Pair Programming", "Small Releases", "Planning Game"], answer: "Pair Programming" }, // Also CI, Refactoring implicitly support it
-            { question: "What is the primary focus of Requirement Elicitation?", options: ["Writing the SRS document", "Testing the requirements", "Managing changes to requirements", "Gathering requirements from stakeholders"], answer: "Gathering requirements from stakeholders" },
-            { question: "Which is a major challenge for implementing E-Government services?", options: ["Lack of available technology", "Digital Divide", "Too many government regulations", "Absence of Agile methods"], answer: "Digital Divide" },
+            { question: "What is the primary focus of Requirement Elicitation?", options: ["Writing the SRS document", "Testing the requirements", "Managing changes to requirements", "Gathering requirements from stakeholders"], answer: "Gathering requirements from stakeholders" }, // Slide 26
+            { question: "Which is a major challenge for implementing E-Government services?", options: ["Lack of available technology", "Digital Divide", "Too many government regulations", "Absence of Agile methods"], answer: "Digital Divide" }, // Mentioned in Concepts section based on likely source material
             { question: "The XP rule encouraging frequent delivery of working software in short cycles is:", options: ["Continuous Integration", "Small Releases", "Planning Game", "40-Hour Week"], answer: "Small Releases" },
             { question: "Agile SPM primarily focuses on integrating _______ within Agile development.", options: ["Testing practices", "Product management activities", "Hardware development", "Database administration"], answer: "Product management activities" }
         ];
         // --- END OF QUIZ DATA ---
 
-        // --- START OF SCRIPT LOGIC (PASTE FROM PREVIOUS EXAMPLE) ---
+        // --- START OF SCRIPT LOGIC (NO CHANGES NEEDED HERE FOR ESSAY TAB) ---
         document.addEventListener('DOMContentLoaded', () => {
             // Select main tabs and content sections
             const mainTabButtons = document.querySelectorAll('.main-tabs .tab-button');
@@ -507,7 +695,7 @@
             const tfContainer = document.getElementById('tf-questions');
             const mcContainer = document.getElementById('mc-questions');
 
-             // Select accordion elements
+             // Select accordion elements (this will now include Glossary AND Essay questions)
             const accordionHeaders = document.querySelectorAll('.accordion-header');
 
 
@@ -531,7 +719,8 @@
                 });
             });
 
-            // --- Accordion Logic (for Glossary) ---
+            // --- Accordion Logic (for Glossary AND Essay Questions) ---
+            // This existing code works for any element with .accordion-header
              accordionHeaders.forEach(header => {
                 header.addEventListener('click', function() {
                     // Toggle active class on the header for styling (+) (-) sign
@@ -547,24 +736,29 @@
                         panel.style.padding = "0 20px"; // Remove padding when closing
                     } else {
                          // If panel is closed, open it
-                        panel.style.maxHeight = panel.scrollHeight + 40 + "px"; // Add some buffer
+                        // Ensure scrollHeight is calculated correctly after content is potentially loaded
+                        panel.style.maxHeight = panel.scrollHeight + 40 + "px"; // Add some buffer for padding
                         panel.style.padding = "15px 20px"; // Add padding back when opening
                     }
 
                     // --- Optional: Close other accordions ---
+                    // Uncomment this block if you want only one accordion item open at a time within its section
+                    /*
                     accordionHeaders.forEach(otherHeader => {
-                        if (otherHeader !== this && otherHeader.classList.contains('active')) {
+                        // Check if the other header belongs to the same accordion parent as the clicked one
+                        if (otherHeader !== this && otherHeader.parentNode.parentNode === this.parentNode.parentNode && otherHeader.classList.contains('active')) {
                             otherHeader.classList.remove('active');
                             otherHeader.nextElementSibling.style.maxHeight = null;
                             otherHeader.nextElementSibling.style.padding = "0 20px";
                         }
                     });
+                    */
                     // --- End Optional Close Others ---
                 });
             });
 
 
-            // --- Function to handle option selection within a question ---
+            // --- Function to handle option selection within a quiz question ---
             function handleOptionSelection(button, questionDiv) {
                 // Deselect siblings within the same question
                 const siblings = questionDiv.querySelectorAll('.option-button.selected');
@@ -578,7 +772,7 @@
                 }
             }
 
-            // --- Function to create and append feedback ---
+            // --- Function to create and append feedback for quiz questions ---
             function showFeedback(questionDiv, isCorrect, correctAnswer) {
                  // Remove existing feedback first
                 const existingFeedback = questionDiv.querySelector('.feedback');
@@ -756,6 +950,28 @@
             loadFillInTheBlankQuestions();
             loadTrueFalseQuestions();
             loadMultipleChoiceQuestions();
+
+            // Set the default active tab (Glossary) correctly on load
+            // Find the initially active button and content and ensure they are displayed
+             const initialActiveButton = document.querySelector('.main-tabs .tab-button.active');
+             const initialActiveTabId = initialActiveButton ? initialActiveButton.getAttribute('data-tab') : null;
+             if (initialActiveTabId) {
+                 const initialActiveContent = document.getElementById(initialActiveTabId);
+                 // Ensure all content is hidden first
+                 mainTabContents.forEach(content => content.classList.remove('active'));
+                 // Then show the one corresponding to the active button
+                 if (initialActiveContent) {
+                     initialActiveContent.classList.add('active');
+                 }
+             } else {
+                 // Fallback: if no button is marked active, activate the first one
+                 const firstButton = document.querySelector('.main-tabs .tab-button');
+                 const firstContent = document.querySelector('.main-content');
+                 if(firstButton && firstContent){
+                     firstButton.classList.add('active');
+                     firstContent.classList.add('active');
+                 }
+             }
 
 
         }); // End DOMContentLoaded
