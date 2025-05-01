@@ -3,979 +3,294 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SE206 - Unit 5: Applying and Evaluating Agile</title>
+    <title>SE206 Course Index - Advanced Agile Software Development</title>
     <style>
-        /* Paste the CSS from the SE205 unit1.html example here */
+        /* Copied CSS from your SE205 index.html example */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            margin: 0;
-            padding: 20px;
+            font-family: sans-serif;
             line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
             color: #333;
         }
-
         .container {
-            max-width: 900px;
+            width: 80%;
+            max-width: 1200px;
             margin: 20px auto;
-            padding: 30px;
             background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 25px 40px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
-
-        h1, h2, h3 {
-            color: #0056b3; /* Cairo University Blue */
-        }
-
         h1 {
             text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid #dee2e6;
-            padding-bottom: 15px;
-        }
-
-        h2 {
-            margin-top: 20px; /* Reduced top margin for sections */
-            margin-bottom: 20px;
-            border-bottom: 1px solid #e9ecef;
+            color: #0056b3; /* Cairo Uni Blue */
+            border-bottom: 2px solid #eee;
             padding-bottom: 10px;
+            margin-bottom: 20px;
         }
-
-        h3 {
-            margin-top: 25px;
-            margin-bottom: 15px;
+        h2 {
             color: #007bff; /* Lighter Blue */
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+            margin-top: 30px;
         }
-         ul, ol { /* Applied to ordered lists too */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.9em; /* Adjust font size for better fit */
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px 12px; /* Adjust padding */
+            text-align: left;
+            vertical-align: top; /* Align content to top */
+        }
+        th {
+            background-color: #e9ecef;
+            font-weight: bold;
+            color: #495057;
+        }
+        tbody tr:nth-child(odd) {
+            background-color: #f8f9fa;
+        }
+        tbody tr:hover {
+            background-color: #e2e6ea;
+        }
+        a {
+            color: #0056b3;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        /* Adjust column widths */
+        th:nth-child(1), td:nth-child(1) { width: 8%; } /* Unit */
+        th:nth-child(2), td:nth-child(2) { width: 25%; } /* Main Topics */
+        th:nth-child(3), td:nth-child(3) { width: 42%; } /* Key Concepts */
+        th:nth-child(4), td:nth-child(4) { width: 25%; } /* Methodologies/Tools */
+
+        ul {
             list-style-type: disc;
             padding-left: 20px;
-            margin-top: 10px;
+            margin-top: 5px;
+            margin-bottom: 5px;
         }
-         li {
-             margin-bottom: 8px;
-         }
-        code {
-            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-            background-color: #e9ecef;
-            padding: 2px 5px;
-            border-radius: 3px;
-            font-size: 0.95em;
+        li {
+             margin-bottom: 5px;
         }
-        strong {
-             color: #dc3545; /* Red emphasis */
+        strong { /* For grading percentages */
+            color: #28a745; /* Green */
         }
-
-        /* Main Tabs Styles */
-        .main-tabs {
-            display: flex;
-            justify-content: space-around; /* Or flex-start, center */
-            flex-wrap: wrap; /* Allow wrapping on smaller screens */
-            margin-bottom: 25px;
-            border-bottom: 2px solid #0056b3;
-        }
-
-        .main-tabs .tab-button {
-            padding: 12px 18px; /* Adjusted padding slightly */
-            border: none;
-            background: none;
-            color: #0056b3;
-            font-size: 0.9em; /* Slightly smaller font */
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 5px 5px 0 0;
-            transition: background-color 0.3s ease, color 0.3s ease;
-            margin-bottom: -2px; /* Overlap border */
-            border-bottom: 2px solid transparent;
+        .course-desc {
             text-align: center;
-        }
-
-        .main-tabs .tab-button.active {
-            background: #0056b3;
-            color: white;
-            border-bottom: 2px solid #0056b3;
-        }
-        .main-tabs .tab-button:hover:not(.active) {
-            background-color: #e9ecef;
-            border-bottom: 2px solid #adb5bd;
-        }
-
-        /* Content Sections */
-        .main-content {
-            display: none; /* Hide all main content sections by default */
-            animation: fadeIn 0.5s;
-        }
-
-        .main-content.active {
-            display: block; /* Show only the active one */
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-
-        /* --- Accordion Styles (for Glossary & Essay) --- */
-        /* Using .glossary-accordion class for both for style consistency */
-        .glossary-accordion {
-            border: 1px solid #dee2e6;
-            border-radius: 5px;
-            overflow: hidden; /* Contain borders */
-            margin-top: 20px; /* Add some space above the accordion */
-        }
-
-        .accordion-item {
-            border-bottom: 1px solid #dee2e6; /* Separator */
-        }
-        .accordion-item:last-child {
-            border-bottom: none;
-        }
-
-        .accordion-header {
-            background-color: #f8f9fa;
-            /* Using Lighter Blue for essay questions for less intensity than red */
-            color: #007bff; /* Lighter Blue */
-            cursor: pointer;
-            padding: 15px 20px;
-            width: 100%;
-            border: none;
-            text-align: left;
-            outline: none;
+            margin-bottom: 20px;
             font-size: 1.1em;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-            position: relative; /* For the indicator */
-        }
-        /* Specific override for Glossary Term color if needed */
-        #glossary .accordion-header {
-             color: #dc3545; /* Highlight Red for terms */
-        }
-
-
-        .accordion-header:hover {
-            background-color: #e9ecef;
-        }
-
-        /* Indicator (+/-) */
-        .accordion-header::after {
-            content: '\002B'; /* + sign */
-            color: #0056b3;
-            font-weight: bold;
-            float: right;
-            margin-left: 5px;
-            transition: transform 0.2s ease-in-out;
-        }
-
-        .accordion-header.active::after {
-            content: "\2212"; /* - sign */
-            transform: rotate(180deg); /* Optional: animate the sign itself */
-        }
-        /* Optional: Slightly different style for active header */
-        .accordion-header.active {
-             background-color: #e7f1ff;
-        }
-
-
-        .accordion-panel {
-            padding: 0 20px; /* Start with 0 padding top/bottom */
-            background-color: white;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out, padding 0.3s ease-out; /* Smooth transition */
-        }
-        /* Ensure content inside the panel has appropriate margins */
-        .accordion-panel p, .accordion-panel ul, .accordion-panel ol {
-            margin: 15px 0;
-            color: #333; /* Standard text color for definition/answer */
-        }
-        .accordion-panel ul, .accordion-panel ol {
-            padding-left: 30px; /* Indent lists within answers */
-        }
-        .accordion-panel strong { /* Make strong text slightly darker blue */
-            color: #004085;
-        }
-
-
-        /* --- End Accordion Styles --- */
-
-        /* Concepts Section Styles */
-        #concepts .concept-block {
-            background-color: #f8f9fa;
-            border: 1px solid #e9ecef;
-            padding: 20px;
-            border-radius: 5px;
-            margin-bottom: 25px;
-        }
-         #concepts .concept-block h3 {
-            margin-top: 0;
-            color: #007bff;
-            border-bottom: 1px dotted #ccc;
-            padding-bottom: 8px;
-            margin-bottom: 15px;
-        }
-
-        /* Quiz Styles (apply within #fill, #tf, #mc) */
-        .question {
-            margin-bottom: 25px;
-            padding: 20px;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            background-color: #ffffff; /* White background for questions */
-            position: relative; /* For feedback positioning */
-        }
-
-        .question p {
-            margin: 0 0 15px;
-            font-weight: bold;
-            font-size: 1.05em;
-        }
-
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .option-button {
-            padding: 10px 15px;
-            border: 1px solid #ced4da;
-            background: #f8f9fa; /* Light background for options */
-            color: #495057;
-            cursor: pointer;
-            border-radius: 5px;
-            text-align: left;
-            transition: background-color 0.2s ease, border-color 0.2s ease;
-            width: 100%;
-        }
-        .option-button:hover {
-             background-color: #e9ecef;
-             border-color: #adb5bd;
-        }
-
-        .option-button.selected {
-            background: #007bff;
-            color: white;
-            border-color: #0056b3;
-        }
-
-        .check-answer {
-            margin-top: 15px;
-            padding: 10px 20px;
-            border: none;
-            background: #28a745; /* Success Green */
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-            font-weight: bold;
-            transition: background-color 0.2s ease;
-        }
-        .check-answer:hover {
-             background-color: #218838;
-        }
-
-        .feedback {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-
-        .feedback.correct {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .feedback.incorrect {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            color: #555;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>SE206 - Unit 5: Applying and Evaluating Agile</h1>
-
-        <!-- Main Tab Buttons -->
-        <div class="main-tabs">
-            <button class="tab-button active" data-tab="glossary">Glossary</button>
-            <button class="tab-button" data-tab="concepts">Key Concepts</button>
-            <button class="tab-button" data-tab="essay">Essay Questions</button> <!-- Added Essay Tab -->
-            <button class="tab-button" data-tab="fill">Fill in the Blank</button>
-            <button class="tab-button" data-tab="tf">True/False</button>
-            <button class="tab-button" data-tab="mc">Multiple Choice</button>
-        </div>
-
-        <!-- Glossary Section (Accordion) -->
-        <section id="glossary" class="main-content active">
-            <h2>Glossary of Terms</h2>
-            <div class="glossary-accordion">
-                 <div class="accordion-item">
-                    <button class="accordion-header">Agile SPM</button>
-                    <div class="accordion-panel">
-                        <p>(Agile Software Product Management) An approach that integrates product management activities within an Agile development context, focusing on defining requirements flexibly and managing product backlogs.</p>
-                    </div>
-                </div>
-                 <div class="accordion-item">
-                    <button class="accordion-header">Digital Divide</button>
-                    <div class="accordion-panel">
-                        <p>The gap between demographics and regions that have access to modern information and communications technology (ICT), and those that don't or have restricted access. A challenge for E-Government initiatives.</p>
-                    </div>
-                </div>
-                 <div class="accordion-item">
-                    <button class="accordion-header">E-Government</button>
-                    <div class="accordion-panel">
-                        <p>The use of Information and Communication Technology (ICT), particularly the internet, to provide government services, information dissemination, communication transactions, and integration of various stand-alone systems.</p>
-                    </div>
-                </div>
-                 <div class="accordion-item">
-                    <button class="accordion-header">Feasibility Study</button>
-                    <div class="accordion-panel">
-                        <p>An assessment of the practicality of a proposed project or system. In Requirement Engineering, it evaluates technical, operational, and economic feasibility.</p>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <button class="accordion-header">4-DAT</button>
-                    <div class="accordion-panel">
-                        <p>(4-Dimensional Analytical Tools) A framework mentioned for selecting appropriate Agile methodologies based on analyzing dimensions like Scope, Agile Values, Software Process, and Agility.</p>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <button class="accordion-header">GQM Method</button>
-                    <div class="accordion-panel">
-                        <p>(Goal-Question-Metric) A structured approach for defining and measuring software project goals. Goals lead to specific Questions, which are answered by quantifiable Metrics.</p>
-                    </div>
-                </div>
-                 <div class="accordion-item">
-                    <button class="accordion-header">Requirement Elicitation</button>
-                    <div class="accordion-panel">
-                        <p>The process of gathering requirements from stakeholders, users, and existing systems. A key part of Requirement Engineering.</p>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <button class="accordion-header">Requirement Engineering (RE)</button>
-                    <div class="accordion-panel">
-                        <p>The process of defining, documenting, and maintaining requirements. Includes feasibility study, elicitation, specification, validation, and management.</p>
-                    </div>
-                </div>
-                 <div class="accordion-item">
-                    <button class="accordion-header">Requirement Management</button>
-                    <div class="accordion-panel">
-                        <p>The process of managing changing requirements during the requirements engineering process and system development.</p>
-                    </div>
-                </div>
-                 <div class="accordion-item">
-                    <button class="accordion-header">Requirement Validation</button>
-                    <div class="accordion-panel">
-                        <p>The process of checking that the defined requirements are complete, consistent, correct, and accurately reflect the customer's needs.</p>
-                    </div>
-                </div>
-                 <div class="accordion-item">
-                    <button class="accordion-header">Software Requirement Specification (SRS)</button>
-                    <div class="accordion-panel">
-                        <p>A document that describes what the software will do and how it will be expected to perform. Details functional and non-functional requirements.</p>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <button class="accordion-header">XP Rules</button>
-                    <div class="accordion-panel">
-                        <p>Specific guidelines derived from XP practices, such as Planning Game, Small Releases, Metaphor, Simple Design, Testing, Refactoring, Pair Programming, Collective Ownership, Continuous Integration, 40-Hour Week, On-Site Customer, Coding Standards.</p>
-                    </div>
-                </div>
-
-            </div> <!-- End glossary-accordion -->
-        </section>
-
-        <!-- Key Concepts Section -->
-        <section id="concepts" class="main-content">
-            <h2>Key Concepts from Unit 5</h2>
-
-            <div class="concept-block">
-                <h3>Evaluating XP Implementation</h3>
-                <p>Evaluating the effectiveness of XP involves assessing its core practices:</p>
-                <ul>
-                    <li><strong>Refactoring:</strong> Improves code efficiency and understandability but needs discipline. Automated testing simplifies checking if changes broke functionality.</li>
-                    <li><strong>Test-First Development:</strong> Clarifies requirements, ensures testability, but requires effort to write and maintain tests.</li>
-                    <li><strong>Pair Programming:</strong> Improves code quality, knowledge sharing, and serves as informal review, though requires compatible pairs.</li>
-                    <li><strong>The XP Release Cycle:</strong> Involves selecting stories, breaking into tasks, development/integration/testing, evaluation, and release.</li>
-                </ul>
-                <p>The <strong>GQM (Goal-Question-Metric)</strong> method can be applied to measure the implementation success of specific XP practices by defining goals (e.g., Improve code quality via Refactoring), questions (e.g., How often is code refactored?), and metrics (e.g., % of code changed per iteration).</p>
-            </div>
-
-            <div class="concept-block">
-                <h3>XP Rules Summary</h3>
-                <p>XP practices translate into operational rules:</p>
-                <ol>
-                    <li><strong>Planning Game:</strong> Collaborative planning using story cards.</li>
-                    <li><strong>Small Releases:</strong> Frequent delivery of testable features (e.g., 3-4 weeks).</li>
-                    <li><strong>Metaphor:</strong> A shared story or analogy explaining the system's overall design/operation.</li>
-                    <li><strong>Simple Design:</strong> Meet current needs with the simplest possible design.</li>
-                    <li><strong>Testing:</strong> Programmers write unit tests, customers write functional/acceptance tests.</li>
-                    <li><strong>Refactoring:</strong> Continuously improve code structure without changing behavior.</li>
-                    <li><strong>Pair Programming:</strong> Two developers, one computer.</li>
-                    <li><strong>Collective Code Ownership:</strong> Anyone can improve any code.</li>
-                    <li><strong>Continuous Integration:</strong> Integrate and test code many times a day.</li>
-                    <li><strong>40-Hour Week:</strong> Maintain a sustainable pace.</li>
-                    <li><strong>On-Site Customer:</strong> Customer available full-time to answer questions and provide feedback.</li>
-                    <li><strong>Coding Standards:</strong> Team agrees on common coding rules.</li>
-                </ol>
-            </div>
-
-             <div class="concept-block">
-                <h3>Agile in E-Government</h3>
-                <p>E-Government involves using ICT for government services.</p>
-                <ul>
-                    <li><strong>Challenges:</strong> Digital Divide (unequal access), financial barriers, integrating legacy systems.</li>
-                    <li><strong>Applying Agile:</strong> Agile methods can help E-Gov projects adapt to changing policies, user needs, and technology.</li>
-                    <li><strong>4-DAT Framework:</strong> A tool to analyze project dimensions (Scope, Agile Values, Process, Agility) to help select suitable Agile methods (like XP or Scrum) for specific E-Gov contexts.</li>
-                    <li><strong>Agile SPM:</strong> Enables flexible requirement definition and management suitable for evolving E-Gov services.</li>
-                </ul>
-             </div>
-
-            <div class="concept-block">
-                <h3>Requirement Engineering (RE) in Agile</h3>
-                 <p>RE is the process of defining, documenting, and maintaining requirements.</p>
-                 <p><strong>Traditional RE Process:</strong></p>
-                 <ol>
-                    <li><strong>Feasibility Study:</strong> Assess practicality (Technical, Operational, Economic).</li>
-                    <li><strong>Elicitation and Analysis:</strong> Gather requirements from stakeholders.</li>
-                    <li><strong>Specification:</strong> Document requirements (e.g., in an SRS).</li>
-                    <li><strong>Validation:</strong> Check if specified requirements meet user needs.</li>
-                    <li><strong>Management:</strong> Handle changes to requirements.</li>
-                 </ol>
-                 <p><strong>RE in Agile:</strong> While the steps exist conceptually, they are more iterative and continuous. Elicitation, specification, validation happen frequently within iterations, often using User Stories and direct customer feedback instead of a large upfront SRS. Agile breaks tasks into smaller iterations (1-4 weeks), allowing for flexibility and risk minimization. Each iteration typically involves a full cycle: planning, analysis, design, coding, testing.</p>
-                 <p><strong>SRS (Software Requirement Specification):</strong> A detailed document describing functional and non-functional requirements. Key characteristics of a good SRS include: Correctness, Completeness, Consistency, Unambiguousness, Modifiability, Verifiability, Traceability, Design Independence, Testability, Understandability.</p>
-
-             </div>
-        </section>
-
-        <!-- Essay Questions Section -->
-        <section id="essay" class="main-content">
-            <h2>Essay Questions</h2>
-            <p>Click on a question to reveal the answer based on the unit material.</p>
-            <div class="glossary-accordion"> <!-- Reusing glossary accordion style -->
-
-                 <div class="accordion-item">
-                    <button class="accordion-header">1. Describe the Requirement Engineering (RE) process outlined in the slides. What are its main steps?</button>
-                    <div class="accordion-panel">
-                        <p>Requirement Engineering (RE) is defined as the process of defining, documenting, and maintaining requirements during the engineering design process. It provides mechanisms to understand customer desires, analyze needs, assess feasibility, negotiate solutions, specify clearly, validate specifications, and manage requirements as they evolve.</p>
-                        <p>The slides outline a five-step RE process (visualized in slide 23):</p>
-                        <ol>
-                            <li><strong>Feasibility Study:</strong> Assesses the practicality and reasons for developing the software, considering technical, operational, and economic factors. A Feasibility Report is often produced.</li>
-                            <li><strong>Requirement Elicitation and Analysis:</strong> Involves gathering requirements from customers, stakeholders, and existing systems. This phase identifies needs, resolves conflicts, and understands the problem domain.</li>
-                            <li><strong>Software Requirement Specification (SRS):</strong> Involves documenting the gathered requirements, often in an SRS document. This uses models like ER diagrams, DFDs, and data dictionaries to create a technical representation understood by the development team.</li>
-                            <li><strong>Software Requirement Validation:</strong> Checks the documented requirements (e.g., in the SRS) for correctness, completeness, consistency, lack of ambiguity, and whether they truly meet user needs. Techniques include reviews, prototyping, and test-case generation.</li>
-                            <li><strong>Software Requirement Management:</strong> Handles changes to requirements that inevitably occur during the development process, managing different priorities and evolving needs.</li>
-                        </ol>
-                    </div>
-                </div>
-
-                 <div class="accordion-item">
-                    <button class="accordion-header">2. Explain the three types of Feasibility Studies mentioned in the context of RE and their purpose.</button>
-                    <div class="accordion-panel">
-                        <p>The Feasibility Study is the first step in the RE process, aiming to establish the rationale for developing the software, ensuring it's acceptable to users, flexible, and meets standards. The slides mention three specific types of feasibility (slide 24-25):</p>
-                        <ul>
-                            <li><strong>Technical Feasibility:</strong> This evaluates the availability and capability of the current technologies needed to meet the customer's requirements within the given time and budget constraints. It asks: "Can we build it with the technology we have or can acquire?"</li>
-                            <li><strong>Operational Feasibility:</strong> This assesses how well the proposed software solution will work within the organization's existing operational environment and meet the business needs and customer requirements. It considers how the software will fit into the workflow and solve the intended business problems.</li>
-                            <li><strong>Economic Feasibility:</strong> This determines if the project is financially viable. It analyzes the costs of development versus the expected benefits (like financial profits) for the organization. It asks: "Is the project a good financial investment?"</li>
-                        </ul>
-                        <p>The overall purpose is to determine if the project is practical and justifiable from technical, operational, and financial perspectives before significant resources are committed.</p>
-                    </div>
-                </div>
-
-                 <div class="accordion-item">
-                    <button class="accordion-header">3. What is a Software Requirement Specification (SRS)? Describe three key characteristics of a *good* SRS based on the slides.</button>
-                    <div class="accordion-panel">
-                        <p>A Software Requirement Specification (SRS) is a document created by a software analyst after gathering requirements from various sources. It translates customer needs (often expressed in ordinary language) into a technical language that the development team can understand and use. It details what the software will do and how it's expected to perform, including functional and non-functional requirements, and may use models like ER diagrams and DFDs (Slide 28-29).</p>
-                        <p>The slides list several characteristics of a good SRS (Slide 36). Here are three key ones with explanations derived from slides 37-48:</p>
-                        <ul>
-                            <li><strong>Correctness (Slide 37):</strong> An SRS is correct if it accurately represents all the requirements that are truly expected from the system. It must cover the actual needs of the user. User reviews are essential to ensure this accuracy. Importance: Ensures the developed system actually solves the user's problem.</li>
-                            <li><strong>Unambiguousness (Slide 40):</strong> Every requirement stated in the SRS must have only one possible interpretation. If terms or methods with multiple meanings are used, they must be clearly defined within the SRS context. Importance: Prevents misunderstandings between stakeholders and developers, leading to fewer errors and rework.</li>
-                            <li><strong>Completeness (Slide 38):</strong> The SRS must include all essential requirements (functional, performance, design constraints, interfaces), define the software's response to all possible inputs and situations, and properly label/reference all diagrams, tables, and define all terms used. Importance: Ensures nothing critical is missed and provides a full picture for development and testing.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                 <div class="accordion-item">
-                    <button class="accordion-header">4. Explain the difference between Functional and Non-functional requirements as categorized in the slides.</button>
-                    <div class="accordion-panel">
-                        <p>The slides categorize software requirements into two main types (Slides 34-35):</p>
-                        <ul>
-                            <li><strong>Functional Requirements (Slide 34):</strong> These define the specific functions or behaviors that a system or system element must perform. They describe *what* the system does. They detail the operations, transformations, and processing the software must carry out, often related to specific user tasks or business processes. Example: A requirement stating "The system shall allow users to add items to a shopping cart" is functional.</li>
-                            <li><strong>Non-functional Requirements (Slide 35):</strong> These specify criteria used to judge the *operation* of a system, rather than its specific behaviors. They define *how* the system should perform its functions or constrain the system's design. They describe qualities or properties of the system. The slides further divide these into:
-                                <ul>
-                                    <li><strong>Execution Qualities:</strong> Observable at runtime, such as <strong>security</strong> (e.g., access control) and <strong>usability</strong> (e.g., ease of use).</li>
-                                    <li><strong>Evolution Qualities:</strong> Related to the static structure and long-term maintenance of the system, such as <strong>testability</strong> (ease of testing), <strong>maintainability</strong> (ease of modification/bug fixing), <strong>extensibility</strong> (ease of adding features), and <strong>scalability</strong> (ability to handle increased load).</li>
-                                </ul>
-                                Example: A requirement stating "The system login page must load within 2 seconds" or "The system must encrypt user passwords" is non-functional.
-                            </li>
-                        </ul>
-                        <p>In essence, functional requirements define what the system *must do*, while non-functional requirements define *how well* the system must do it or impose constraints on it.</p>
-                    </div>
-                </div>
-
-                 <div class="accordion-item">
-                    <button class="accordion-header">5. What is Requirement Validation and why is it important? Name two techniques used for validation mentioned in the slides.</button>
-                    <div class="accordion-panel">
-                        <p>Requirement Validation is a step in the Requirement Engineering process that occurs after the requirements have been specified (e.g., in an SRS document). Its purpose is to check that the documented requirements accurately reflect the customer's actual needs and are correct, complete, consistent, and feasible (Slide 30).</p>
-                        <p>Validation is crucial because stakeholders might request impossible or conflicting features, or analysts might misinterpret needs. Without validation, the team might build a system based on flawed requirements, leading to a product that doesn't meet user expectations, requires extensive rework, or fails completely.</p>
-                        <p>The slides mention four validation techniques (Slide 31):</p>
-                        <ol>
-                            <li><strong>Requirements reviews/inspections:</strong> A systematic manual analysis of the requirements document by a team (including stakeholders, developers, testers) to find errors, ambiguities, and omissions.</li>
-                            <li><strong>Prototyping:</strong> Creating an executable model or mock-up of the system (or parts of it) based on the requirements. Users can interact with the prototype to check if it matches their understanding and needs, providing early feedback.</li>
-                            <li><em>(Test-case generation: Developing tests based on requirements to check if they are specific enough to be tested (testability).)</em></li>
-                            <li><em>(Automated consistency analysis: Using tools to check structured requirement descriptions for logical inconsistencies.)</em></li>
-                        </ol>
-                        <p>Reviews and Prototyping are two common and effective techniques mentioned.</p>
-                    </div>
-                </div>
-
-                <div class="accordion-item">
-                    <button class="accordion-header">6. Describe the concept of 'Consistency' as a characteristic of a good SRS. Provide an example of inconsistency.</button>
-                    <div class="accordion-panel">
-                        <p>According to slide 39, an SRS is considered **Consistent** if, and only if, no subset of individual requirements described within it conflict with each other. Consistency ensures that different parts of the specification do not contradict one another.</p>
-                        <p>The slides highlight potential types of conflicts:</p>
-                        <ul>
-                            <li><strong>Conflict in characteristics of real-world objects:</strong> Different requirements might describe the same entity or feature in incompatible ways.</li>
-                            <li><strong>Logical or temporal conflict between specified actions:</strong> Two requirements might specify actions that cannot logically occur together or contradict each other in terms of process flow.</li>
-                        </ul>
-                        <p><strong>Example of Inconsistency (based on slide 39):</strong></p>
-                        <p>An SRS document contains the following two requirements:</p>
-                        <ul>
-                            <li>Requirement A: "The system shall generate the monthly sales summary report in a tabular format."</li>
-                            <li>Requirement B: "The monthly sales summary report must be presented as a free-form textual document."</li>
-                        </ul>
-                        <p>This represents an inconsistency because the format of the *same* output (the monthly sales summary report) is described in conflicting ways (tabular vs. textual). A consistent SRS would specify only one format or clearly define conditions under which each format is used.</p>
-                        <p>Another example provided: One requirement states the program will *add* two inputs, while another states the program will *multiply* them under the same conditions.</p>
-                    </div>
-                </div>
-
-                 <div class="accordion-item">
-                    <button class="accordion-header">7. What is Requirement Management in the context of RE? Why is it necessary?</button>
-                    <div class="accordion-panel">
-                        <p>Requirement Management, as described in slide 32, is the process of managing **changing requirements** throughout the requirements engineering process and the subsequent system development lifecycle.</p>
-                        <p>It involves activities like identifying, controlling, tracking, and reporting requirements and the changes made to them.</p>
-                        <p>Requirement Management is necessary because:</p>
-                        <ul>
-                            <li><strong>Requirements Evolve:</strong> Business needs, user expectations, market conditions, and technical possibilities change over time. Requirements defined at the start of a project are rarely static.</li>
-                            <li><strong>Changing Priorities:</strong> The importance or priority of different requirements can shift during development due to feedback, budget constraints, or strategic decisions (as mentioned in slide 32).</li>
-                            <li><strong>Stakeholder Understanding Improves:</strong> As the project progresses and stakeholders see prototypes or early versions, their understanding of their own needs may evolve, leading to new or modified requirements.</li>
-                            <li><strong>Complexity:</strong> In large projects, managing numerous requirements and their interdependencies requires a structured approach to avoid chaos and ensure changes are handled consistently and their impact is understood.</li>
-                        </ul>
-                        <p>Without effective requirement management, projects risk scope creep, confusion, inconsistencies, budget overruns, and delivering a system that doesn't meet the *final* user needs.</p>
-                    </div>
-                </div>
-
-                 <div class="accordion-item">
-                    <button class="accordion-header">8. Explain the software quality attribute 'Maintainability' and why it is important.</button>
-                    <div class="accordion-panel">
-                        <p>Maintainability is defined in slide 19 as a quality attribute indicating how easily a software product can be modified. This includes several aspects:</p>
-                        <ul>
-                            <li><strong>Correcting Bugs:</strong> Bugs discovered after release can be easily located and fixed.</li>
-                            <li><strong>Adding New Tasks/Features:</strong> New functionality can be incorporated into the existing system without excessive effort or breaking existing parts.</li>
-                            <li><strong>Modifying Functionality:</strong> Existing features can be adapted or changed to meet new requirements.</li>
-                        </ul>
-                        <p>Essentially, a maintainable software product is easy to understand, modify, and enhance over its lifespan.</p>
-                        <p>Maintainability is important because:</p>
-                        <ul>
-                            <li><strong>Reduced Costs:</strong> Software maintenance (bug fixing, updates, enhancements) often consumes a significant portion of the total software lifecycle cost. High maintainability reduces this effort and cost.</li>
-                            <li><strong>Faster Updates:</strong> Changes and fixes can be implemented more quickly, allowing the software to adapt to changing user needs or market conditions faster.</li>
-                            <li><strong>Lower Risk:</strong> Modifying highly maintainable code is less likely to introduce new errors (regressions) compared to modifying complex, poorly structured code.</li>
-                            <li><strong>Longer Lifespan:</strong> Software that is easy to maintain can remain useful and relevant for a longer period, maximizing the initial investment.</li>
-                        </ul>
-                    </div>
-                </div>
-
-                 <div class="accordion-item">
-                    <button class="accordion-header">9. Discuss the challenges mentioned in Requirement Elicitation and Analysis.</button>
-                    <div class="accordion-panel">
-                        <p>Requirement Elicitation and Analysis is the process of gathering requirements from stakeholders and understanding the problem domain. Slide 26 highlights several common challenges faced during this phase:</p>
-                        <ul>
-                            <li><strong>Identifying the Right People:</strong> Ensuring that all relevant stakeholders are involved, and only the relevant ones, can be difficult. Missing key stakeholders means missing requirements; involving irrelevant people wastes time.</li>
-                            <li><strong>Stakeholders Don't Know What They Want:</strong> Often, stakeholders have a vague idea of their needs but struggle to articulate specific, complete, and consistent requirements, especially for innovative systems.</li>
-                            <li><strong>Communication Barriers:</strong> Stakeholders often express requirements in their own domain-specific terms or natural language, which might be ambiguous or misunderstood by the analysts or development team.</li>
-                            <li><strong>Conflicting Requirements:</strong> Different stakeholders may have different needs or priorities that conflict with each other. Resolving these conflicts requires negotiation and prioritization.</li>
-                            <li><strong>Changing Requirements:</strong> Requirements often change even during the elicitation and analysis phase itself, as understanding evolves or external factors shift. This requires flexibility and management.</li>
-                            <li><strong>Organizational and Political Factors:</strong> The requirements gathered can be influenced by internal politics, organizational structure, or individual agendas, potentially skewing the true needs of the system.</li>
-                        </ul>
-                        <p>Overcoming these challenges requires skilled analysts who can use various elicitation techniques (interviews, workshops, observation, etc.), facilitate communication, manage conflicts, and iteratively refine understanding.</p>
-                    </div>
-                </div>
-
-                 <div class="accordion-item">
-                    <button class="accordion-header">10. Explain 'Traceability' in the context of an SRS. What are the two types mentioned?</button>
-                    <div class="accordion-panel">
-                        <p>Traceability, as a characteristic of a good SRS (Slide 44), refers to the ability to follow the life of a requirement both forwards and backwards. An SRS is traceable if:</p>
-                        <ol>
-                            <li>The origin (source) of each requirement is clear.</li>
-                            <li>It facilitates referencing each requirement in future development phases (design, coding, testing) or subsequent documentation (e.g., enhancement specifications).</li>
-                        </ol>
-                        <p>Traceability helps in understanding the purpose of a requirement, managing changes (assessing the impact of changing a requirement), and verifying that all requirements have been addressed in the final system.</p>
-                        <p>The slides mention two types of traceability:</p>
-                        <ul>
-                            <li><strong>Backward Traceability:</strong> This links each requirement in the SRS back to its source. The source could be an earlier document (like a business case or feasibility study), a specific stakeholder request, or a high-level system goal. It answers the question: "Why does this requirement exist?"</li>
-                            <li><strong>Forward Traceability:</strong> This ensures each requirement in the SRS has a unique identifier (name or reference number) so that it can be referenced by design elements, code modules, test cases, and other downstream artifacts. It answers the question: "Where is this requirement implemented and tested?"</li>
-                        </ul>
-                    </div>
-                </div>
-
-            </div> <!-- End glossary-accordion -->
-        </section>
-
-        <!-- Quiz Sections -->
-        <div id="fill" class="main-content">
-            <h2>Fill in the Blank Questions</h2>
-            <div id="fill-questions"></div>
-        </div>
-
-        <div id="tf" class="main-content">
-            <h2>True/False Questions</h2>
-            <div id="tf-questions"></div>
-        </div>
-
-        <div id="mc" class="main-content">
-            <h2>Multiple Choice Questions</h2>
-            <div id="mc-questions"></div>
-        </div>
-
-    </div> <!-- End Container -->
-
-    <script>
-        // --- START OF QUIZ DATA (SE206 UNIT 5 - Applying/Evaluating/RE) ---
-        const fillInTheBlank = [
-            { question: "The method for defining and measuring software goals using Goals, Questions, and Metrics is called _______.", options: ["SRS", "XP", "GQM", "SPM"], answer: "GQM" },
-            { question: "The XP rule stating that the customer should be available full-time to the team is the _______ Customer rule.", options: ["Remote", "Part-Time", "On-Site", "Proxy"], answer: "On-Site" },
-            { question: "_______ Engineering is the process of defining, documenting, and maintaining software requirements.", options: ["Software", "Systems", "Requirement", "Agile"], answer: "Requirement" },
-            { question: "A _______ Requirement Specification (SRS) is a document detailing what software should do.", options: ["System", "Software", "Solution", "Stakeholder"], answer: "Software" },
-            { question: "The gap in access to technology between different groups is known as the _______ Divide.", options: ["Information", "Economic", "Digital", "Social"], answer: "Digital" },
-            { question: "The XP practice of improving code structure without changing its behavior is _______.", options: ["Testing", "Debugging", "Refactoring", "Integrating"], answer: "Refactoring" },
-            { question: "Using ICT, especially the internet, to deliver government services is known as _______-Government.", options: ["Agile", "Digital", "E", "Smart"], answer: "E" },
-            { question: "The 4-DAT framework analyzes project dimensions to help _______ appropriate Agile methodologies.", options: ["Implement", "Evaluate", "Select", "Discard"], answer: "Select" },
-            { question: "The RE step involving gathering requirements from stakeholders is called _______.", options: ["Specification", "Validation", "Elicitation", "Management"], answer: "Elicitation" },
-            { question: "An SRS should be _______, meaning each requirement has only one interpretation.", options: ["Consistent", "Complete", "Unambiguous", "Modifiable"], answer: "Unambiguous" }
-        ];
-
-        const trueOrFalse = [
-            { question: "GQM stands for Goal-Quality-Measurement.", answer: false }, // Goal-Question-Metric
-            { question: "The XP rule '40-Hour Week' encourages working overtime to meet deadlines.", answer: false }, // Encourages sustainable pace
-            { question: "Requirement Engineering in Agile typically involves creating a large, detailed SRS document upfront.", answer: false }, // RE is iterative, uses lighter artifacts like user stories initially
-            { question: "E-Government faces challenges like the Digital Divide.", answer: true },
-            { question: "Refactoring involves adding new functionality to the software.", answer: false }, // Improves internal structure, doesn't change external behavior/functionality
-            { question: "The 'On-Site Customer' rule in XP means the customer visits the team once per iteration.", answer: false }, // Means customer is available full-time or very frequently
-            { question: "An SRS should ideally include detailed design specifications.", answer: false }, // Should be Design Independent (Slide 45)
-            { question: "Requirement Validation checks if the documented requirements meet the actual user needs.", answer: true }, // Slides 30, 31
-            { question: "The 4-DAT framework is a specific Agile methodology like Scrum or XP.", answer: false }, // It's an analytical tool/framework for selection
-            { question: "Collective Code Ownership means only one specific person owns and can change a piece of code.", answer: false } // Means anyone on the team can change any code
-        ];
-
-        const multipleChoice = [
-            { question: "Which XP Rule emphasizes having a shared understanding of the system's overall operation through an analogy?", options: ["Simple Design", "Planning Game", "Metaphor", "Small Releases"], answer: "Metaphor" },
-            { question: "What does GQM stand for?", options: ["Goal-Quality-Metric", "Goal-Question-Measure", "Goal-Question-Metric", "General Quality Management"], answer: "Goal-Question-Metric" },
-            { question: "Which RE activity involves checking requirements for correctness, completeness, and consistency?", options: ["Elicitation", "Specification", "Validation", "Management"], answer: "Validation" }, // Slide 22, 30
-            { question: "Which characteristic is NOT desirable for a good SRS?", options: ["Correct", "Ambiguous", "Consistent", "Modifiable"], answer: "Ambiguous" }, // Slide 40 defines Unambiguousness as desirable
-            { question: "The 4-DAT framework is used for what purpose in the context of Agile E-Government?", options: ["Estimating project cost", "Selecting suitable Agile methodologies", "Writing user stories", "Performing automated tests"], answer: "Selecting suitable Agile methodologies" },
-            { question: "Which XP practice directly supports Collective Code Ownership?", options: ["Test-First Development", "Pair Programming", "Small Releases", "Planning Game"], answer: "Pair Programming" }, // Also CI, Refactoring implicitly support it
-            { question: "What is the primary focus of Requirement Elicitation?", options: ["Writing the SRS document", "Testing the requirements", "Managing changes to requirements", "Gathering requirements from stakeholders"], answer: "Gathering requirements from stakeholders" }, // Slide 26
-            { question: "Which is a major challenge for implementing E-Government services?", options: ["Lack of available technology", "Digital Divide", "Too many government regulations", "Absence of Agile methods"], answer: "Digital Divide" }, // Mentioned in Concepts section based on likely source material
-            { question: "The XP rule encouraging frequent delivery of working software in short cycles is:", options: ["Continuous Integration", "Small Releases", "Planning Game", "40-Hour Week"], answer: "Small Releases" },
-            { question: "Agile SPM primarily focuses on integrating _______ within Agile development.", options: ["Testing practices", "Product management activities", "Hardware development", "Database administration"], answer: "Product management activities" }
-        ];
-        // --- END OF QUIZ DATA ---
-
-        // --- START OF SCRIPT LOGIC (NO CHANGES NEEDED HERE FOR ESSAY TAB) ---
-        document.addEventListener('DOMContentLoaded', () => {
-            // Select main tabs and content sections
-            const mainTabButtons = document.querySelectorAll('.main-tabs .tab-button');
-            const mainTabContents = document.querySelectorAll('.main-content');
-
-            // Select quiz content containers
-            const fillContainer = document.getElementById('fill-questions');
-            const tfContainer = document.getElementById('tf-questions');
-            const mcContainer = document.getElementById('mc-questions');
-
-             // Select accordion elements (this will now include Glossary AND Essay questions)
-            const accordionHeaders = document.querySelectorAll('.accordion-header');
-
-
-            // --- Main Tab Switching Logic ---
-            mainTabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const tabId = button.getAttribute('data-tab'); // Get the ID of the target content
-
-                    // Deactivate all main buttons and content
-                    mainTabButtons.forEach(btn => btn.classList.remove('active'));
-                    mainTabContents.forEach(content => content.classList.remove('active'));
-
-                    // Activate the clicked button
-                    button.classList.add('active');
-
-                    // Activate the corresponding content section
-                    const targetContent = document.getElementById(tabId);
-                    if (targetContent) {
-                        targetContent.classList.add('active');
-                    }
-                });
-            });
-
-            // --- Accordion Logic (for Glossary AND Essay Questions) ---
-            // This existing code works for any element with .accordion-header
-             accordionHeaders.forEach(header => {
-                header.addEventListener('click', function() {
-                    // Toggle active class on the header for styling (+) (-) sign
-                    this.classList.toggle('active');
-
-                    // Get the panel sibling
-                    const panel = this.nextElementSibling;
-
-                    // Toggle the max-height for smooth transition
-                    if (panel.style.maxHeight) {
-                        // If panel is open, close it
-                        panel.style.maxHeight = null;
-                        panel.style.padding = "0 20px"; // Remove padding when closing
-                    } else {
-                         // If panel is closed, open it
-                        // Ensure scrollHeight is calculated correctly after content is potentially loaded
-                        panel.style.maxHeight = panel.scrollHeight + 40 + "px"; // Add some buffer for padding
-                        panel.style.padding = "15px 20px"; // Add padding back when opening
-                    }
-
-                    // --- Optional: Close other accordions ---
-                    // Uncomment this block if you want only one accordion item open at a time within its section
-                    /*
-                    accordionHeaders.forEach(otherHeader => {
-                        // Check if the other header belongs to the same accordion parent as the clicked one
-                        if (otherHeader !== this && otherHeader.parentNode.parentNode === this.parentNode.parentNode && otherHeader.classList.contains('active')) {
-                            otherHeader.classList.remove('active');
-                            otherHeader.nextElementSibling.style.maxHeight = null;
-                            otherHeader.nextElementSibling.style.padding = "0 20px";
-                        }
-                    });
-                    */
-                    // --- End Optional Close Others ---
-                });
-            });
-
-
-            // --- Function to handle option selection within a quiz question ---
-            function handleOptionSelection(button, questionDiv) {
-                // Deselect siblings within the same question
-                const siblings = questionDiv.querySelectorAll('.option-button.selected');
-                siblings.forEach(sib => sib.classList.remove('selected'));
-                // Select clicked button
-                button.classList.add('selected');
-                 // Clear previous feedback when a new option is selected
-                const existingFeedback = questionDiv.querySelector('.feedback');
-                if (existingFeedback) {
-                    existingFeedback.remove();
-                }
-            }
-
-            // --- Function to create and append feedback for quiz questions ---
-            function showFeedback(questionDiv, isCorrect, correctAnswer) {
-                 // Remove existing feedback first
-                const existingFeedback = questionDiv.querySelector('.feedback');
-                if (existingFeedback) {
-                    existingFeedback.remove();
-                }
-
-                const feedback = document.createElement('div');
-                feedback.className = 'feedback';
-                if (isCorrect) {
-                    feedback.classList.add('correct');
-                    feedback.textContent = 'Correct!';
-                } else {
-                    feedback.classList.add('incorrect');
-                     // For T/F, explicitly show the boolean value
-                     let displayAnswer = correctAnswer;
-                     if (typeof correctAnswer === 'boolean') {
-                         displayAnswer = correctAnswer ? 'True' : 'False';
-                     }
-                    feedback.textContent = `Incorrect. Correct answer: ${displayAnswer}`;
-                }
-                // Append feedback after the check button
-                const checkButton = questionDiv.querySelector('.check-answer');
-                 if (checkButton) {
-                    // Insert after the check button if it exists
-                    checkButton.parentNode.insertBefore(feedback, checkButton.nextSibling);
-                } else {
-                     // Otherwise, append to the end of the question div
-                     questionDiv.appendChild(feedback);
-                }
-            }
-
-            // --- Load Fill in the Blank Questions ---
-            function loadFillInTheBlankQuestions() {
-                fillContainer.innerHTML = ''; // Clear previous content
-                fillInTheBlank.forEach((q, index) => { // Added index for unique IDs if needed
-                    const questionDiv = document.createElement('div');
-                    questionDiv.className = 'question';
-                    questionDiv.id = `fill-q-${index}`;
-
-                    const questionText = document.createElement('p');
-                    // Find the blank spot indicated by _______ and replace it for display
-                    questionText.innerHTML = q.question.replace('_______', '<span style="color: #007bff; font-weight:bold;">_______</span>');
-                    questionDiv.appendChild(questionText);
-
-                    const optionsDiv = document.createElement('div');
-                    optionsDiv.className = 'options';
-
-                    // Shuffle options for variety (optional)
-                    const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
-
-
-                    shuffledOptions.forEach(option => { // Use shuffled options
-                        const optionButton = document.createElement('button');
-                        optionButton.className = 'option-button';
-                        optionButton.textContent = option;
-                        optionButton.addEventListener('click', () => handleOptionSelection(optionButton, questionDiv));
-                        optionsDiv.appendChild(optionButton);
-                    });
-                    questionDiv.appendChild(optionsDiv);
-
-                    const checkButton = document.createElement('button');
-                    checkButton.className = 'check-answer';
-                    checkButton.textContent = 'Check Answer';
-                    checkButton.addEventListener('click', () => {
-                        const selected = questionDiv.querySelector('.option-button.selected');
-                        if (selected) {
-                            showFeedback(questionDiv, selected.textContent === q.answer, q.answer);
-                        } else {
-                             // Optionally show feedback that an answer must be selected
-                             showFeedback(questionDiv, false, q.answer); // Or provide specific feedback
-                        }
-                    });
-                    questionDiv.appendChild(checkButton);
-
-                    fillContainer.appendChild(questionDiv);
-                });
-            }
-
-
-            // --- Load True/False Questions ---
-            function loadTrueFalseQuestions() {
-                tfContainer.innerHTML = ''; // Clear previous content
-                trueOrFalse.forEach((q, index) => { // Added index
-                    const questionDiv = document.createElement('div');
-                    questionDiv.className = 'question';
-                    questionDiv.id = `tf-q-${index}`;
-
-                    const questionText = document.createElement('p');
-                    questionText.textContent = q.question;
-                    questionDiv.appendChild(questionText);
-
-                     const optionsDiv = document.createElement('div'); // Keep consistent structure
-                    optionsDiv.className = 'options';
-
-                    const trueButton = document.createElement('button');
-                    trueButton.className = 'option-button';
-                    trueButton.textContent = 'True';
-                    trueButton.addEventListener('click', () => handleOptionSelection(trueButton, questionDiv));
-                    optionsDiv.appendChild(trueButton);
-
-                    const falseButton = document.createElement('button');
-                    falseButton.className = 'option-button';
-                    falseButton.textContent = 'False';
-                    falseButton.addEventListener('click', () => handleOptionSelection(falseButton, questionDiv));
-                    optionsDiv.appendChild(falseButton);
-
-                    questionDiv.appendChild(optionsDiv);
-
-                    const checkButton = document.createElement('button');
-                    checkButton.className = 'check-answer';
-                    checkButton.textContent = 'Check Answer';
-                    checkButton.addEventListener('click', () => {
-                        const selected = questionDiv.querySelector('.option-button.selected');
-                        if (selected) {
-                            // Check boolean answer correctly
-                            const isCorrect = (selected.textContent === 'True' && q.answer === true) || (selected.textContent === 'False' && q.answer === false);
-                            showFeedback(questionDiv, isCorrect, q.answer); // Pass boolean directly
-                        } else {
-                            showFeedback(questionDiv, false, q.answer); // Pass boolean directly
-                        }
-                    });
-                    questionDiv.appendChild(checkButton);
-
-                    tfContainer.appendChild(questionDiv);
-                });
-            }
-
-            // --- Load Multiple Choice Questions ---
-            function loadMultipleChoiceQuestions() {
-                mcContainer.innerHTML = ''; // Clear previous content
-                multipleChoice.forEach((q, index) => { // Added index
-                    const questionDiv = document.createElement('div');
-                    questionDiv.className = 'question';
-                    questionDiv.id = `mc-q-${index}`;
-
-                    const questionText = document.createElement('p');
-                    questionText.textContent = q.question;
-                    questionDiv.appendChild(questionText);
-
-                    const optionsDiv = document.createElement('div');
-                    optionsDiv.className = 'options';
-
-                    // Shuffle options for variety (optional)
-                    const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
-
-                    shuffledOptions.forEach(option => { // Use shuffled options
-                        const optionButton = document.createElement('button');
-                        optionButton.className = 'option-button';
-                        optionButton.textContent = option;
-                        optionButton.addEventListener('click', () => handleOptionSelection(optionButton, questionDiv));
-                        optionsDiv.appendChild(optionButton);
-                    });
-                    questionDiv.appendChild(optionsDiv);
-
-                    const checkButton = document.createElement('button');
-                    checkButton.className = 'check-answer';
-                    checkButton.textContent = 'Check Answer';
-                    checkButton.addEventListener('click', () => {
-                        const selected = questionDiv.querySelector('.option-button.selected');
-                        if (selected) {
-                            showFeedback(questionDiv, selected.textContent === q.answer, q.answer);
-                        } else {
-                             showFeedback(questionDiv, false, q.answer);
-                        }
-                    });
-                    questionDiv.appendChild(checkButton);
-
-                    mcContainer.appendChild(questionDiv);
-                });
-            }
-
-            // --- Initial Load ---
-            // Load all quiz questions initially so they are ready when tabs are clicked
-            loadFillInTheBlankQuestions();
-            loadTrueFalseQuestions();
-            loadMultipleChoiceQuestions();
-
-            // Set the default active tab (Glossary) correctly on load
-            // Find the initially active button and content and ensure they are displayed
-             const initialActiveButton = document.querySelector('.main-tabs .tab-button.active');
-             const initialActiveTabId = initialActiveButton ? initialActiveButton.getAttribute('data-tab') : null;
-             if (initialActiveTabId) {
-                 const initialActiveContent = document.getElementById(initialActiveTabId);
-                 // Ensure all content is hidden first
-                 mainTabContents.forEach(content => content.classList.remove('active'));
-                 // Then show the one corresponding to the active button
-                 if (initialActiveContent) {
-                     initialActiveContent.classList.add('active');
-                 }
-             } else {
-                 // Fallback: if no button is marked active, activate the first one
-                 const firstButton = document.querySelector('.main-tabs .tab-button');
-                 const firstContent = document.querySelector('.main-content');
-                 if(firstButton && firstContent){
-                     firstButton.classList.add('active');
-                     firstContent.classList.add('active');
-                 }
-             }
-
-
-        }); // End DOMContentLoaded
-        // --- END OF SCRIPT LOGIC ---
-    </script>
+        <h1>SE206: Advanced Agile Software Development</h1>
+        <p class="course-desc">
+             This course is part of the
+            <a href="https://github.com/astral-fate/Cairo-University-Software-Engineering-Professional-Master-s-Degree" target="_blank" rel="noopener noreferrer">Cairo University Software Engineering Professional Master's Degree</a> program.
+            Focuses on Agile principles, methodologies, and practices.
+        </p>
+
+        <h2>Course Syllabus</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Unit</th>
+                    <th>Main Topics</th>
+                    <th>Key Concepts</th>
+                    <th>Methodologies / Tools</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong><a href="chapters/se206_unit1.html">Unit 1</a></strong></td>
+                    <td>
+                        - Introduction to Agile<br>
+                        - Agile vs. Traditional<br>
+                        - Agile Manifesto & Principles<br>
+                        - Agile Characteristics & Advantages<br>
+                        - Overview of Methodologies
+                    </td>
+                    <td>
+                        - Software Development Life Cycle (SDLC)<br>
+                        - Waterfall Model Limitations<br>
+                        - Agile Definition (Iterative, Incremental, Self-organizing)<br>
+                        - Traditional (Fixed) vs. Agile (Flexible) Tradeoffs<br>
+                        - Agile Manifesto (4 Values)<br>
+                        - Key Agile Principles (Customer Satisfaction, Welcome Change, Frequent Delivery, Collaboration, Simplicity, Self-organization)<br>
+                        - Agile Characteristics (Modularity, Iterative, Time-bound, Adaptive, People-oriented, Collaborative)<br>
+                        - Advantages (Early Realization, Visibility, Respond to Change)
+                    </td>
+                    <td>
+                        - SDLC<br>
+                        - Waterfall Model<br>
+                        - Agile Manifesto<br>
+                        - XP (Intro)<br>
+                        - Scrum (Intro)<br>
+                        - DSDM, FDD, Crystal, ASD, UP (Mentioned)
+                        - strong><a href="chapters/quiz.html">Agile Quiz</a></strong>
+                    </td>
+                </tr>
+                 <!-- Unit 4 (Estimation) moved here and becomes Unit 2 -->
+                 <tr>
+                    <td><strong><a href="chapters/se206_unit2.html">Unit 2</a></strong></td>
+                    <td>
+                        - Agile Effort Estimation<br>
+                        - Large-Scale Challenges<br>
+                        - COCOMO Models<br>
+                        - Story Points<br>
+                        - Fuzzy Logic Approach
+                    </td>
+                    <td>
+                        - Definition & Purpose of Estimation (Budgeting, Risk, Planning)<br>
+                        - Challenges in Large Scale Agile (Scaling, Coordination, Dependencies)<br>
+                        - COCOMO I (Constructive Cost Model) Basics<br>
+                        - COCOMO Intermediate (Cost Drivers, EAF)<br>
+                        - COCOMO II (Scaling Factors, Post-Architecture)<br>
+                        - COCOMO Imprecision Problem<br>
+                        - Story Points (Fibonacci, Planning Poker)<br>
+                        - Fuzzy Logic (Inference Engine, Defuzzification)<br>
+                        - Proposed Framework (EEEM, IEEM, ACF, Velocity Calc)<br>
+                        - Evaluation Metrics (MRE, PRED)
+                    </td>
+                    <td>
+                        - COCOMO / COCOMO II<br>
+                        - Cost Drivers<br>
+                        - Story Points<br>
+                        - Planning Poker<br>
+                        - Fuzzy Logic / MATLAB<br>
+                        - MRE / PRED<br>
+                        - Iteration Story Points (ISP)
+                    </td>
+                 </tr>
+                 <!-- Unit 2 (XP) moved here and becomes Unit 3 -->
+                 <tr>
+                    <td><strong><a href="chapters/se206_unit3.html">Unit 3</a></strong></td>
+                    <td>
+                        - Extreme Programming (XP)<br>
+                        - XP Lifecycle & Values<br>
+                        - XP Roles & Practices<br>
+                        - XP Documents
+                    </td>
+                    <td>
+                        - Suitability (New/Incomplete projects, Small teams)<br>
+                        - XP Lifecycle Phases (Exploration, Planning, Iterations, Productionizing, Maintenance, Death)<br>
+                        - XP Values (Communication, Simplicity, Feedback, Courage, Respect)<br>
+                        - XP Roles (Manager, Coach, Tracker, Programmer, Tester, Customer)<br>
+                        - XP Practices (Sit Together, Informative Workspace, Pair Programming, Stories, Weekly Cycle, Slack, Test-First, Continuous Integration, Daily Meetings)<br>
+                        - XP Documents (User Stories, Task List, CRC Cards, Acceptance Tests)
+                    </td>
+                    <td>
+                        - Extreme Programming (XP)<br>
+                        - User Stories<br>
+                        - CRC Cards<br>
+                        - Pair Programming<br>
+                        - Test-First Development (TDD)<br>
+                        - Continuous Integration (CI)<br>
+                        - Wall Graphs
+                    </td>
+                 </tr>
+                 <!-- Unit 3 (Scrum) moved here and becomes Unit 4 - Content replaced with summarized E-Gov Framework -->
+                 <tr>
+                    <td><strong><a href="chapters/se206_unit4.html">Unit 4</a></strong></td>
+                    <td>
+                        - E-Government Context<br>
+                        - Proposed Agile Framework for E-Gov<br>
+                        - Framework Components (SPM, 4-DAT)<br>
+                        - Implementation & Case Study (BSIC)<br>
+                        - Framework Evaluation
+                    </td>
+                    <td>
+                        - E-Government Definition & Challenges<br>
+                        - Proposed Framework Structure & Process Flow<br>
+                        - Agile Software Product Management (SPM) for Requirements<br>
+                        - 4-Dimensional Analytical Tool (4-DAT) for Methodology Selection<br>
+                        - Integration of XP/SCRUM within the Framework<br>
+                        - BSIC Case Study Application<br>
+                        - Evaluation Metrics (Effectivity Score, Satisfaction Surveys)<br>
+                        - Comparison with Traditional Methods
+                    </td>
+                    <td>
+                        - Proposed E-Gov Framework<br>
+                        - Agile SPM<br>
+                        - 4-DAT<br>
+                        - XP / SCRUM (Integrated)<br>
+                        - ITPOSMO Checklist<br>
+                        - DFD / Use Cases<br>
+                        - SPSS / Likert Scale (for Evaluation)
+                    </td>
+                 </tr>
+                 <!-- Unit 5 content replaced with summarized RE/Quality/Agile Fundamentals -->
+                 <tr>
+                    <td><strong><a href="chapters/se206_unit5.html">Unit 5</a></strong></td>
+                    <td>
+                        - Agile Development Fundamentals<br>
+                        - Software Quality Definition & Attributes<br>
+                        - Requirement Engineering (RE) Process<br>
+                        - SRS & Requirement Management
+                    </td>
+                    <td>
+                        - Agile: Iterative, time-boxed, adaptive approach.<br>
+                        - Agile Lifecycle: Plan, Analyze, Design, Code, Test per iteration.<br>
+                        - Software Quality: "Fitness for purpose", satisfying SRS.<br>
+                        - Quality Attributes: Portability, Usability, Reusability, Correctness, Maintainability, etc.<br>
+                        - RE: Defining, documenting, maintaining requirements.<br>
+                        - RE Steps: Feasibility, Elicitation/Analysis, Specification (SRS), Validation, Management.<br>
+                        - SRS: Translates customer needs to technical specs.<br>
+                        - Requirement Categories: Functional, Non-functional.<br>
+                        - Characteristics of Good SRS: Correct, Complete, Consistent, Unambiguous, Verifiable, Traceable, etc.
+                    </td>
+                    <td>
+                        - Agile Development Cycle Diagram<br>
+                        - SRS Document<br>
+                        - RE Process Flowcharts<br>
+                        - Feasibility Study Types<br>
+                        - Elicitation Techniques<br>
+                        - Validation Techniques (Reviews, Prototyping)<br>
+                        - DFDs, ER Diagrams, Data Dictionaries
+                    </td>
+                 </tr>
+            </tbody>
+        </table>
+
+        <h2>Course Objectives</h2>
+        <ul>
+            <li>Understand the difference between Agile and Traditional development methods.</li>
+            <li>Learn Agile principles and characteristics.</li>
+            <li>Gain in-depth knowledge of Agile methodologies like Extreme Programming (XP) and Scrum.</li>
+            <li>Understand Agile roles, practices, and artifacts (User Stories, Backlogs, Sprints, etc.).</li>
+            <li>Explore techniques for Agile effort estimation (Story Points, COCOMO adaptations).</li>
+            <li>Learn about applying and evaluating Agile practices (GQM, 4-DAT).</li>
+            <li>Understand Requirement Engineering concepts within an Agile context.</li>
+            <!-- Add specific objectives from the PDF if needed -->
+        </ul>
+
+         <h2>Grading</h2>
+         <!-- Based on Slide 4 -->
+        <ul>
+            <li><strong>40%</strong>: Final Exam</li>
+            <li><strong>30%</strong>: Mid-Term Exam</li>
+            <li><strong>10%</strong>: Quiz</li>
+            <li><strong>15%</strong>: Assignments/Projects</li>
+            <li><strong>5%</strong>: Attendance/Class Participation</li>
+            <li><strong>Total: 100%</strong></li>
+        </ul>
+
+        <h2>Assignments</h2>
+        <ul>
+            <li>(Assignments and Projects details will be provided during the course)</li>
+            <!-- Specific assignments are not detailed in the provided PDF excerpts -->
+        </ul>
+    </div>
 </body>
 </html>
