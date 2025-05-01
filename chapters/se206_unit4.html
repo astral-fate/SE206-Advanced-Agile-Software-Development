@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SE206 - Unit 4: Agile Effort Estimation</title>
+    <title>SE206 - Unit 5: Applying and Evaluating Agile in E-Government</title>
     <style>
         /* Paste the CSS from the SE205 unit1.html example here */
         body {
@@ -47,10 +47,11 @@
             margin-bottom: 15px;
             color: #007bff; /* Lighter Blue */
         }
-         ul {
-            list-style-type: disc;
-            padding-left: 20px;
+         ul, ol { /* Applied to ordered lists too */
+            /* list-style-type: disc; */ /* Default is disc */
+            padding-left: 30px; /* Increased indent for lists */
             margin-top: 10px;
+            margin-bottom: 10px; /* Added bottom margin */
         }
          li {
              margin-bottom: 8px;
@@ -61,10 +62,17 @@
             padding: 2px 5px;
             border-radius: 3px;
             font-size: 0.95em;
+            color: #c7254e; /* Different color for code */
         }
         strong {
-             color: #dc3545; /* Red emphasis */
+             /* color: #dc3545; */ /* Red emphasis - Removed, using standard bold */
+             font-weight: bold;
         }
+        em { /* For emphasizing specific terms within text */
+             font-style: italic;
+             color: #0056b3;
+        }
+
 
         /* Main Tabs Styles */
         .main-tabs {
@@ -76,11 +84,11 @@
         }
 
         .main-tabs .tab-button {
-            padding: 12px 20px; /* Adjusted padding slightly */
+            padding: 12px 18px; /* Adjusted padding slightly */
             border: none;
             background: none;
             color: #0056b3;
-            font-size: 0.95em; /* Slightly smaller font */
+            font-size: 0.9em; /* Slightly smaller font */
             font-weight: bold;
             cursor: pointer;
             border-radius: 5px 5px 0 0;
@@ -116,11 +124,13 @@
         }
 
 
-        /* --- Accordion Styles (for Glossary) --- */
+        /* --- Accordion Styles (for Glossary & Essay) --- */
+        /* Using .glossary-accordion class for both for style consistency */
         .glossary-accordion {
             border: 1px solid #dee2e6;
             border-radius: 5px;
             overflow: hidden; /* Contain borders */
+            margin-top: 20px; /* Add some space above the accordion */
         }
 
         .accordion-item {
@@ -132,7 +142,6 @@
 
         .accordion-header {
             background-color: #f8f9fa;
-            color: #dc3545; /* Highlight Red for terms */
             cursor: pointer;
             padding: 15px 20px;
             width: 100%;
@@ -144,6 +153,15 @@
             transition: background-color 0.3s ease;
             position: relative; /* For the indicator */
         }
+        /* Specific override for Glossary Term color */
+        #glossary .accordion-header {
+             color: #dc3545; /* Highlight Red for terms */
+        }
+        /* Specific override for Essay Question color */
+        #essay .accordion-header {
+             color: #007bff; /* Lighter Blue for questions */
+        }
+
 
         .accordion-header:hover {
             background-color: #e9ecef;
@@ -176,10 +194,19 @@
             overflow: hidden;
             transition: max-height 0.3s ease-out, padding 0.3s ease-out; /* Smooth transition */
         }
-        .accordion-panel p, .accordion-panel ul { /* Apply margin to lists too */
-            margin: 15px 0; /* Add margin back when panel is open */
-            color: #333; /* Reset color for definition */
+        /* Ensure content inside the panel has appropriate margins */
+        .accordion-panel p, .accordion-panel ul, .accordion-panel ol {
+            margin: 15px 0;
+            color: #333; /* Standard text color for definition/answer */
         }
+        .accordion-panel ul, .accordion-panel ol {
+            padding-left: 30px; /* Indent lists within answers */
+        }
+        .accordion-panel strong { /* Make strong text slightly darker blue */
+            color: #004085;
+            font-weight: bold;
+        }
+
 
         /* --- End Accordion Styles --- */
 
@@ -197,6 +224,17 @@
             border-bottom: 1px dotted #ccc;
             padding-bottom: 8px;
             margin-bottom: 15px;
+        }
+        #concepts .concept-block .formula {
+             font-family: 'Courier New', Courier, monospace;
+             background-color: #e9ecef;
+             padding: 10px;
+             border: 1px solid #dee2e6;
+             border-radius: 4px;
+             display: block; /* Make it block level */
+             margin: 10px 0;
+             white-space: pre; /* Preserve whitespace */
+             color: #333;
         }
 
         /* Quiz Styles (apply within #fill, #tf, #mc) */
@@ -280,12 +318,13 @@
 </head>
 <body>
     <div class="container">
-        <h1>SE206 - Unit 4: Agile Effort Estimation</h1>
+        <h1>SE206 - Unit 5: Applying and Evaluating Agile in E-Government</h1>
 
         <!-- Main Tab Buttons -->
         <div class="main-tabs">
             <button class="tab-button active" data-tab="glossary">Glossary</button>
             <button class="tab-button" data-tab="concepts">Key Concepts</button>
+            <button class="tab-button" data-tab="essay">Essay Questions</button> <!-- Added Essay Tab -->
             <button class="tab-button" data-tab="fill">Fill in the Blank</button>
             <button class="tab-button" data-tab="tf">True/False</button>
             <button class="tab-button" data-tab="mc">Multiple Choice</button>
@@ -295,89 +334,88 @@
         <section id="glossary" class="main-content active">
             <h2>Glossary of Terms</h2>
             <div class="glossary-accordion">
-                <!-- Add terms based on SE206 Unit 4 (Estimation) -->
-                <div class="accordion-item">
-                    <button class="accordion-header">COCOMO</button>
-                    <div class="accordion-panel">
-                        <p>(Constructive Cost Model) A procedural software cost estimation model. COCOMO I (Basic, Intermediate, Detailed) and COCOMO II are prominent versions, using parameters like project size (LOC/FP) and cost drivers.</p>
-                    </div>
-                </div>
                  <div class="accordion-item">
-                    <button class="accordion-header">Cost Driver</button>
+                    <button class="accordion-header">Agile Characteristics</button>
                     <div class="accordion-panel">
-                        <p>In COCOMO, factors that affect the effort required to complete a software project, such as required reliability, database size, personnel capability, tool use, etc. Each driver has a rating and associated effort multiplier.</p>
-                    </div>
-                </div>
-                 <div class="accordion-item">
-                    <button class="accordion-header">Defuzzification</button>
-                    <div class="accordion-panel">
-                        <p>The process of converting a fuzzy output set (resulting from fuzzy inference) into a single crisp numerical value, often used in control systems or decision making (e.g., Center of Area method).</p>
+                        <p>Key traits of Agile development methodologies mentioned: Modularity, Iterative (short cycles), Time-bound (1-6 week cycles), Adaptive (to risks), People-oriented, Collaborative, and Communicative (Slide 12).</p>
                     </div>
                 </div>
                 <div class="accordion-item">
-                    <button class="accordion-header">Effort Estimation</button>
+                    <button class="accordion-header">Agile SPM</button>
                     <div class="accordion-panel">
-                        <p>The process of predicting the amount of effort (typically in person-months or person-hours) required to develop or maintain software. Used for budgeting, planning, and risk analysis.</p>
+                        <p>(Agile Software Product Management) A component integrated into the proposed framework. It enables flexible requirement definition, handles large projects at a high management level, and facilitates links between project modules. Includes a Requirement Refinery process (Vision, Theme, Concept, Definition) (Slides 33-35, 41, 44, 48).</p>
                     </div>
                 </div>
                  <div class="accordion-item">
-                    <button class="accordion-header">Fibonacci Sequence</button>
+                    <button class="accordion-header">Digital Divide</button>
                     <div class="accordion-panel">
-                        <p>A sequence of numbers where each number is the sum of the two preceding ones, usually starting with 0 and 1 (e.g., 0, 1, 1, 2, 3, 5, 8, 13...). Often used for Story Point scales in Agile estimation because the increasing gaps reflect increasing uncertainty.</p>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <button class="accordion-header">Fuzzy Logic</button>
-                    <div class="accordion-panel">
-                        <p>A form of many-valued logic dealing with reasoning that is approximate rather than fixed and exact. It uses "degrees of truth" (membership functions) rather than Boolean true/false. Used here to handle the imprecision in estimation factors.</p>
+                        <p>Large differences in the level of access to the internet and related technologies, affecting the ability to benefit from E-Government. Considered a major challenge (Slide 7).</p>
                     </div>
                 </div>
                  <div class="accordion-item">
-                    <button class="accordion-header">Fuzzy Inference System (FIS)</button>
+                    <button class="accordion-header">E-Government</button>
                     <div class="accordion-panel">
-                        <p>A system based on fuzzy set theory, fuzzy if-then rules, and fuzzy reasoning. Maps inputs to outputs using fuzzy logic.</p>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <button class="accordion-header">MATLAB</button>
-                    <div class="accordion-panel">
-                        <p>A high-level language and interactive environment for numerical computation, visualization, and programming. Often used for developing algorithms, including fuzzy inference systems.</p>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <button class="accordion-header">MRE (Magnitude of Relative Error)</button>
-                    <div class="accordion-panel">
-                        <p>A metric used to measure the accuracy of an estimation model. Calculated as the absolute difference between the actual and predicted values, divided by the actual value. `MRE = |Actual - Predicted| / Actual`.</p>
+                        <p>The use of Information and Communication Technology (ICT), particularly the internet, as a tool to achieve better government services and operations (Slide 5).</p>
                     </div>
                 </div>
                  <div class="accordion-item">
-                    <button class="accordion-header">Planning Poker</button>
+                    <button class="accordion-header">E-Government Architecture</button>
                     <div class="accordion-panel">
-                        <p>A consensus-based Agile estimation technique, commonly used for estimating Story Points. Team members privately select estimate cards (often Fibonacci), then reveal simultaneously and discuss discrepancies until consensus is reached.</p>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <button class="accordion-header">PRED(L)</button>
-                    <div class="accordion-panel">
-                        <p>(Prediction Level) A metric indicating the percentage of projects whose estimates fall within a certain MRE level (L). For example, PRED(0.25) is the percentage of projects with MRE less than or equal to 0.25 (25%).</p>
+                        <p>A layered structure proposed, including Access Layer (PCs, mobile), E-government Layer (web portal), E-business Layer (ERP, DMS, data), and Infrastructure Layer (Servers, Networks) (Slide 9).</p>
                     </div>
                 </div>
                  <div class="accordion-item">
-                    <button class="accordion-header">Scaling Factor (COCOMO II)</button>
+                    <button class="accordion-header">Effectivity Score</button>
                     <div class="accordion-panel">
-                        <p>In COCOMO II, five factors (Precedentedness, Flexibility, Risk Resolution, Team Cohesion, Process Maturity) that influence the exponent in the effort equation, reflecting economies or diseconomies of scale.</p>
-                    </div>
-                </div>
-                 <div class="accordion-item">
-                    <button class="accordion-header">Story Point</button>
-                    <div class="accordion-panel">
-                        <p>A relative unit of measure used in Agile development for estimating the overall effort required to fully implement a product backlog item or any other piece of work. Considers complexity, uncertainty, and amount of work.</p>
+                        <p>A metric proposed to measure the efficiency of sprints based on planned vs. actual time. Formula: <code>(1 - (Unfinished Hours / Estimated Hours)) * 100</code>. Used to evaluate framework performance (Slides 65, 67, 69, 86).</p>
                     </div>
                 </div>
                 <div class="accordion-item">
-                    <button class="accordion-header">Velocity</button>
+                    <button class="accordion-header">Extreme Programming (XP)</button>
                     <div class="accordion-panel">
-                        <p>In Agile, a measure of the amount of work (typically in Story Points) a team can complete during a single iteration (Sprint). Used for planning future iterations.</p>
+                        <p>An Agile methodology suited for new/incomplete projects with changing requirements, focusing on the development process itself. Designed for small, collocated teams (2-12 members). Key practices include short cycles, refactoring, pair programming, test-first, etc. (Slides 19, 22, 24, 25, 42, 46, 50).</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">4-DAT</button>
+                    <div class="accordion-panel">
+                        <p>(4-Dimensional Analytical Tool) A tool integrated into the proposed framework used to select the appropriate Agile methodology (XP or Scrum) for specific tasks/modules based on project characteristics (Scope, Agility, Agile Values, Software Process dimensions) (Slides 21, 30, 37-39, 49, 50, 60-64, 84).</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">ITPOSMO</button>
+                    <div class="accordion-panel">
+                        <p>A checklist/model (Heeks, 2006) for understanding the components of an e-government system: Information, Technology, Processes, Objectives & values, Staffing & skills, Management systems & structures, Other resources (Slide 6).</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Likert Scale</button>
+                    <div class="accordion-panel">
+                        <p>A scale used to interpret the weighted average scores from satisfaction questionnaires (e.g., 1-5 scale where results are mapped to levels like Poor, Accepted, Agreeable, Satisfactory, Enriching) (Slides 82, 83, 87, 88).</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Product Backlog</button>
+                    <div class="accordion-panel">
+                        <p>A prioritized list of features, functions, requirements, enhancements, and fixes that constitute the changes to be made to the product in future releases. Used in Scrum and the proposed framework (Slides 27, 30, 34, 45, 47, 59).</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Refactoring</button>
+                    <div class="accordion-panel">
+                        <p>A core XP practice of restructuring existing computer code—changing the factoring—without changing its external behavior. Used to improve code simplicity, understandability, and maintainability (Slides 24, 46).</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Scrum</button>
+                    <div class="accordion-panel">
+                        <p>An Agile framework focused on project management, suitable for environments with changing variables (requirements, tech). Works well for small teams (<10) and distributed teams. Key elements include Sprints, Daily Meetings, Product Backlog, Scrum Master (Slides 19, 26-28, 45, 47, 50).</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Sprint</button>
+                    <div class="accordion-panel">
+                        <p>A fixed-length iteration (typically 1-4 weeks, shown as 30 days or 2-6 weeks in diagrams) in Scrum, during which a potentially shippable product increment is created (Slides 27, 44, 45, 47, 48, 67-72).</p>
                     </div>
                 </div>
 
@@ -386,90 +424,334 @@
 
         <!-- Key Concepts Section -->
         <section id="concepts" class="main-content">
-            <h2>Key Concepts from Unit 4</h2>
+            <h2>Key Concepts from Unit 5</h2>
 
             <div class="concept-block">
-                <h3>Need for Effort Estimation</h3>
-                <p>Software effort estimation is crucial for:</p>
+                <h3>E-Government Fundamentals</h3>
                 <ul>
-                    <li><strong>Budgeting:</strong> Determining project costs.</li>
-                    <li><strong>Trade-off and Risk Analysis:</strong> Evaluating different approaches.</li>
-                    <li><strong>Project Planning and Control:</strong> Scheduling and tracking progress.</li>
-                    <li><strong>Investment Analysis:</strong> Justifying software improvement initiatives.</li>
+                    <li><strong>Definition:</strong> Using ICT (esp. internet) for better government (Slide 5).</li>
+                    <li><strong>Environment:</strong> Influenced by Technology, People, Process, Social Culture (Slide 4).</li>
+                    <li><strong>Model (Heeks):</strong> ITPOSMO checklist helps analyze components (Slide 6).</li>
+                    <li><strong>Challenges:</strong> Primarily Digital Divide, also financial and legal barriers (Slide 7).</li>
+                    <li><strong>Architecture:</strong> Layered approach - Access, E-Gov, E-Business, Infrastructure (Slide 9). E-Gov layer affected by culture, feedback, policy, HCI (Slide 10).</li>
                 </ul>
             </div>
 
             <div class="concept-block">
-                <h3>Challenges in Large-Scale Agile</h3>
-                <p>Scaling Agile methods presents challenges:</p>
+                <h3>Agile Principles & Comparison</h3>
                 <ul>
-                    <li>Interfacing with other organizational units (HR, Marketing).</li>
-                    <li>Lack of sufficient architecture planning upfront.</li>
-                    <li>Coordination overhead between teams.</li>
-                    <li>Difficulty discovering detailed dependencies early.</li>
-                    <li>Managing requirements priority lists.</li>
-                    <li>Continuous testing and increased maintenance needs.</li>
-                </ul>
-            </div>
-
-             <div class="concept-block">
-                <h3>COCOMO (Constructive Cost Model)</h3>
-                <p>A widely used algorithmic cost estimation model.</p>
-                <ul>
-                    <li>Predicts <strong>effort</strong> (person-months) and <strong>duration</strong> based on project <strong>size</strong> (e.g., KLOC - Thousands of Lines of Code) and various <strong>cost drivers</strong>.</li>
-                    <li><strong>COCOMO I Models:</strong>
+                    <li><strong>Characteristics:</strong> Iterative, Time-bound, Adaptive, People-oriented, Collaborative, Modular (Slide 12).</li>
+                    <li><strong>Advantages:</strong> Incremental delivery, early feedback/issue detection, response to change, customer satisfaction (Slides 13, 14).</li>
+                    <li><strong>Agile vs. Traditional:</strong>
                         <ul>
-                            <li><strong>Basic:</strong> Simple calculation based on size and project type (Organic, Semi-detached, Embedded).</li>
-                            <li><strong>Intermediate:</strong> Refines Basic model by incorporating 15 cost drivers (e.g., Reliability, Complexity, Capability). Effort = Nominal Effort x EAF (Effort Adjustment Factor derived from drivers).</li>
-                            <li><strong>Detailed:</strong> Applies drivers at the phase level (not covered in detail here).</li>
+                            <li><em>Traditional:</em> Fixed Functionality, Flexible Time/Resources. Sequential approach (Slide 15, 17).</li>
+                            <li><em>Agile:</em> Fixed Time/Resources, Flexible Functionality. Iterative approach with feedback loops (Slide 15, 16).</li>
                         </ul>
                     </li>
-                    <li><strong>COCOMO II:</strong> Updated model addressing modern practices. Includes <strong>Scaling Factors</strong> (e.g., Precedentedness, Team Cohesion) affecting the size exponent and revised cost drivers. Has sub-models like Early Design and Post-Architecture.</li>
-                    <li><strong>Imprecision Problem:</strong> Cost driver ratings are often subjective ranges (e.g., Low, Nominal, High), leading to potential inaccuracies.</li>
-                 </ul>
-             </div>
-
-             <div class="concept-block">
-                <h3>Story Points</h3>
-                 <p>An Agile estimation technique focusing on relative sizing:</p>
-                 <ul>
-                     <li>Measures the overall effort (complexity, uncertainty, volume) of a user story.</li>
-                     <li>Uses a relative scale, often the <strong>Fibonacci sequence</strong> (1, 2, 3, 5, 8, 13...) to reflect increasing uncertainty.</li>
-                     <li>Team typically uses <strong>Planning Poker</strong> to reach consensus on story point estimates.</li>
-                     <li><strong>Velocity:</strong> The number of story points a team typically completes per iteration, used for forecasting.</li>
-                 </ul>
-             </div>
-
-             <div class="concept-block">
-                <h3>Proposed Framework (Using Fuzzy Logic)</h3>
-                <p>The presented research proposes a hybrid approach to improve estimation accuracy:</p>
-                 <ul>
-                     <li>Combines <strong>Story Points</strong> with <strong>COCOMO II Cost Drivers</strong>.</li>
-                     <li>Addresses COCOMO's imprecision using <strong>Fuzzy Logic</strong>:
-                         <ul>
-                            <li>Cost drivers and scaling factors are represented as fuzzy sets with membership functions (e.g., using triangular shapes for Low, Nominal, High).</li>
-                            <li>Uses a <strong>Fuzzy Inference System</strong> (FIS) with IF-THEN rules.</li>
-                            <li>Applies <strong>Defuzzification</strong> (e.g., Center of Area - COA) to get crisp outputs for Effort Adjustment Factors (EAF) or Velocity factors.</li>
-                         </ul>
-                     </li>
-                     <li><strong>Models:</strong>
-                        <ul>
-                            <li><strong>EEEM (Early Effort Estimation Model):</strong> For preliminary estimation using fuzzy COCOMO II scaling factors and cost drivers.</li>
-                            <li><strong>IEEM (Iteration Effort Estimation Model):</strong> For iterative estimation, using fuzzy velocity factors (FR/DF) and potentially adjusted COCOMO factors based on iteration details. Calculates Iteration Story Points (ISP).</li>
-                        </ul>
-                     </li>
-                 </ul>
+                    <li><strong>Applicability (Radar Chart):</strong> Agile often suits higher Dynamism, smaller Teams/Size (initially), cultures thriving on change, and lower Criticality projects compared to traditional methods (Slide 18).</li>
+                </ul>
             </div>
 
-            <div class="concept-block">
-                <h3>Evaluation Metrics</h3>
-                 <p>Used to assess the accuracy of estimation models:</p>
+             <div class="concept-block">
+                <h3>XP and Scrum Overview</h3>
                  <ul>
-                     <li><strong>MRE (Magnitude of Relative Error):</strong> Measures the percentage error for a single project estimate: `|Actual - Predicted| / Actual`.</li>
-                     <li><strong>PRED(L):</strong> Measures the percentage of projects whose MRE is less than or equal to a specific level L (e.g., PRED(0.25) for estimates within 25% accuracy). Higher PRED values indicate better model accuracy.</li>
+                     <li><strong>XP (Extreme Programming):</strong> Suited for changing requirements, small collocated teams. Focuses on <em>development practices</em> (refactoring, pairing, TDD). Strengths: Simple solutions, code quality. Limitations: Scalability, collocation requirement (Slides 22, 24, 25).</li>
+                     <li><strong>Scrum:</strong> Suited for changing environments, small or distributed teams. Focuses on <em>project management</em> (sprints, roles, meetings). Strengths: Handles large teams via division, adapts to change. Limitations: Less focus on specific engineering practices (Slides 26, 28).</li>
+                     <li><strong>Comparison:</strong> XP/Scrum combination scores highly on productivity, quality, satisfaction. Both show high degrees of agility (Slides 20, 21).</li>
                  </ul>
              </div>
 
+             <div class="concept-block">
+                <h3>Proposed E-Government Agile Framework</h3>
+                <ul>
+                    <li><strong>Objective:</strong> Utilize merits of Agile (XP, Scrum) enhanced by SPM and 4-DAT for E-Government projects (Slide 29).</li>
+                    <li><strong>Components:</strong> Vision -> SPM Phase (Requirement Refining/Estimation) -> Product Backlog (PMSB) -> 4-DAT (Method Selection) -> Development Phase (XP or Scrum) -> Integration/Testing -> Update Backlog (Slide 30).</li>
+                    <li><strong>Agile SPM Role:</strong> Flexible requirement definition (Vision->Theme->Concept->Definition), high-level management for large projects, standardizes interfaces (Slides 33, 34).</li>
+                    <li><strong>4-DAT Role:</strong> Analytical tool to choose between XP or Scrum based on task/module characteristics (Scope, Agility, Values, Process) (Slides 37-39).</li>
+                    <li><strong>Integration:</strong> Framework combines SPM's planning with 4-DAT's selection mechanism to feed into either XP's development-focused cycle or Scrum's management-focused cycle (Slides 41-45).</li>
+                     <li><strong>Features:</strong> Aims to combine the strengths of SPM, 4-DAT, XP, and Scrum (Slide 50).</li>
+                 </ul>
+             </div>
+
+             <div class="concept-block">
+                 <h3>Framework Evaluation Approach</h3>
+                 <ul>
+                     <li><strong>Methods:</strong>
+                         <ul>
+                             <li>Quantitative: Sprint efficiency measured by <em>Effectivity Score</em>.</li>
+                             <li>Qualitative: Stakeholder, User, and Teamwork satisfaction measured via questionnaires and analyzed using SPSS and Likert scales (Slides 65, 74).</li>
+                         </ul>
+                     </li>
+                     <li><strong>Effectivity Score:</strong> Measures time efficiency per sprint.
+                        <span class="formula">Effectivity Score = (1 - (Unfinished Hours / Estimated Hours)) * 100</span>
+                        (Slide 69). <em>Unfinished Hours</em> represent the deviation (over/under) from the estimate.
+                     </li>
+                     <li><strong>Average Metrics:</strong> Formulas provided for calculating average effectivity score (weighted by estimated hours) and average sprint performance (weighted by number of tasks) across multiple sprints (Slides 71, 72).
+                        <span class="formula">Avg Effectivity = (Σ(E_i * H_i) / Σ(H_j)) * 100</span>
+                        <span class="formula">Avg Performance = (Σ(E_i * S_i) / Σ(S_j)) * 100</span>
+                        Where E=Effectivity, H=Estimated Hours, S=Tasks, i/j=sprint index.
+                     </li>
+                    <li><strong>Satisfaction Evaluation:</strong> Uses questionnaires with Likert scale responses (e.g., 1-Poor to 5-Enriching). Weighted Averages (W.A.) calculated via SPSS determine overall satisfaction levels (Slides 75-83).</li>
+                 </ul>
+             </div>
+
+        </section>
+
+        <!-- Essay Questions Section -->
+        <section id="essay" class="main-content">
+            <h2>Essay Questions</h2>
+            <p>Click on a question to reveal the answer based on the presentation material.</p>
+            <div class="glossary-accordion"> <!-- Reusing glossary accordion style -->
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">1. Describe the proposed Agile framework for E-Government projects presented in the slides. What are its main components and their flow?</button>
+                    <div class="accordion-panel">
+                        <p>The presentation proposes a framework designed to apply Agile methodologies effectively to E-Government projects by integrating the strengths of several components (Objective on Slide 29, Framework Diagram on Slide 30, 32, 36, 40, 43).</p>
+                        <p><strong>Main Components and Flow:</strong></p>
+                        <ol>
+                            <li><strong>Vision:</strong> The starting point, defining the overall goal or direction of the E-Government project.</li>
+                            <li><strong>SPM Phase (Agile Software Product Management):</strong> This phase takes the vision and performs:
+                                <ul>
+                                    <li><strong>Requirement Refining:</strong> Breaks down high-level needs using stages like Vision -> Theme -> Concept -> Requirements Definition (Slide 34).</li>
+                                    <li><strong>Effort Estimation:</strong> Estimates the work required for the refined requirements.</li>
+                                </ul>
+                                This phase produces prioritized requirements, likely feeding into the backlog.
+                            </li>
+                            <li><strong>Product Management Sprint Backlog (PMSB):</strong> This backlog holds the refined and estimated requirements/tasks derived from the SPM phase.</li>
+                            <li><strong>4-DAT (4-Dimensional Analytical Tool):</strong> Acts as a decision point. Based on the characteristics of tasks selected from the PMSB (analyzing Scope, Agility, etc.), 4-DAT determines whether XP or Scrum is the more suitable methodology for developing that specific task or module.</li>
+                            <li><strong>Development Phase:</strong> The actual implementation work occurs here, using the methodology selected by 4-DAT:
+                                <ul>
+                                    <li><strong>XP:</strong> If selected, development follows XP practices (pairing, TDD, refactoring, etc.).</li>
+                                    <li><strong>Scrum:</strong> If selected, development follows Scrum practices (sprints, daily meetings, etc.).</li>
+                                </ul>
+                            </li>
+                            <li><strong>Integration & System Testing:</strong> After development sprints/iterations, the completed work is integrated and tested as a whole system.</li>
+                            <li><strong>Update Backlog:</strong> Feedback from testing or new insights might lead to updates or additions to the PMSB, creating a continuous feedback loop.</li>
+                        </ol>
+                        <p><strong>Overall Goal:</strong> The framework aims to leverage SPM for better requirement management, use 4-DAT for flexible methodology selection, and apply XP/Scrum for efficient development, ultimately improving the process for complex E-Government projects (Slide 84, 85).</p>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">2. Compare and contrast the Extreme Programming (XP) and Scrum methodologies as presented in the slides, focusing on their suitability, strengths, and limitations.</button>
+                    <div class="accordion-panel">
+                        <p>The presentation provides insights into both XP and Scrum, highlighting their characteristics and how they compare (Slides 19-28):</p>
+                        <p><strong>Extreme Programming (XP):</strong></p>
+                        <ul>
+                            <li><strong>Suitability:</strong> Best for new or incomplete projects where requirements are expected to change frequently. Designed for small (2-12 members), collocated project teams (Slide 22).</li>
+                            <li><strong>Focus:</strong> Emphasizes the <em>actual development process</em> and technical practices (Slide 22, 24).</li>
+                            <li><strong>Strengths:</strong> Delivers simplest solutions in short cycles; frequent refactoring improves design; frequent reviews enhance quality (Slide 24).</li>
+                            <li><strong>Limitations:</strong> Lacks scalability for large teams/products; requires the team to be physically collocated (Slide 25).</li>
+                            <li><strong>Key Practices Examples:</strong> Pair programming, Test-first, Refactoring, Continuous Integration, Small Releases (Slide 46).</li>
+                        </ul>
+                        <p><strong>Scrum:</strong></p>
+                        <ul>
+                            <li><strong>Suitability:</strong> Good for projects where environmental and technical variables (requirements, tech, resources) are likely to change. Suitable for small teams (<10) but can be adapted for larger projects and works for <em>distributed teams</em> (Slide 26).</li>
+                            <li><strong>Focus:</strong> Emphasizes <em>project management techniques</em> and adapting to change (Slide 28).</li>
+                            <li><strong>Strengths:</strong> Allows large teams to work like small teams by dividing work and synchronizing; effective at managing change and fixing problems continuously (Slide 28).</li>
+                            <li><strong>Limitations:</strong> Does <em>not</em> focus heavily on specific development/engineering practices (Slide 28).</li>
+                            <li><strong>Key Practices Examples:</strong> Sprints, Daily Meetings, Product Backlog, Scrum Master, Time Boxing (Slide 47).</li>
+                        </ul>
+                        <p><strong>Comparison Summary:</strong></p>
+                        <ul>
+                            <li>XP is more prescriptive about <em>how</em> to build software (engineering practices), while Scrum focuses more on <em>how to manage</em> the project (process framework).</li>
+                            <li>XP traditionally requires collocation, while Scrum is more adaptable to distributed teams.</li>
+                            <li>Both score well in user satisfaction and productivity when potentially combined (Slide 20).</li>
+                            <li>Both exhibit high degrees of agility, with Scrum potentially showing slightly higher practice agility in the 4-DAT comparison shown (Slide 21).</li>
+                        </ul>
+                        <p>The proposed framework leverages this difference by using 4-DAT to select XP for tasks benefiting from its technical rigor and Scrum for tasks needing its management flexibility.</p>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">3. Explain the role and process of Agile Software Product Management (SPM) within the proposed framework.</button>
+                    <div class="accordion-panel">
+                        <p>Agile Software Product Management (SPM) is presented as a key component integrated at the beginning of the proposed framework for E-Government projects (Slides 30, 33-35, 48).</p>
+                        <p><strong>Role of Agile SPM:</strong></p>
+                        <ul>
+                            <li><strong>Flexible Requirement Definition:</strong> It enables customers or stakeholders to define requirements flexibly, moving away from rigid upfront specifications (Slide 33).</li>
+                            <li><strong>High-Level Management:</strong> It provides a mechanism to handle large projects by managing requirements and scope at a higher level before diving into development iterations (Slide 33).</li>
+                            <li><strong>Facilitating Integration:</strong> It helps define roles, regulations, and standards that facilitate the links and interfaces between different project modules, which is crucial for complex E-Government systems (Slide 33).</li>
+                            <li><strong>Requirement Refinement:</strong> It structures the process of breaking down high-level goals into actionable development tasks.</li>
+                        </ul>
+                        <p><strong>SPM Requirement Refinery Process (Slide 34):</strong></p>
+                        <p>The framework adopts an SPM technique called Requirement Refinery, which includes four stages to progressively detail requirements over time:</p>
+                        <ol>
+                            <li><strong>Vision:</strong> The highest-level goal or direction for the product/project.</li>
+                            <li><strong>Theme:</strong> Broad categories or areas of functionality that support the vision (e.g., User Management, Reporting). Appears further out in the planning horizon (e.g., 6+ months).</li>
+                            <li><strong>Concept:</strong> More specific features or epics within a theme (e.g., Search Module, User Registration). Planned in a medium-term horizon (e.g., 3-6 months).</li>
+                            <li><strong>Requirements Definition:</strong> Detailed, specific requirements or user stories ready for implementation, often planned for the near term (e.g., next 1 month or sprint). This stage translates concepts into specific, described requirements, potentially leading to data models and technical specifications (Slide 35).</li>
+                        </ol>
+                        <p>Essentially, Agile SPM acts as the planning and requirement shaping engine in the framework, ensuring that the work fed into the development phase (XP/Scrum) via the Product Management Sprint Backlog (PMSB) is well-understood, prioritized, and manageable.</p>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">4. Describe the 4-Dimensional Analytical Tool (4-DAT). What are its dimensions and how is it used in the proposed framework?</button>
+                    <div class="accordion-panel">
+                        <p>The 4-Dimensional Analytical Tool (4-DAT) is presented as a mechanism within the proposed framework to aid in selecting the most appropriate Agile methodology (specifically between XP and Scrum in this context) for developing particular parts of the system (Slides 30, 37-39, 49).</p>
+                        <p><strong>Dimensions of 4-DAT (Slide 37):</strong></p>
+                        <p>It analyzes project or module characteristics across four dimensions:</p>
+                        <ol>
+                            <li><strong>Scope Dimension:</strong> Checks the methodology's support for various project context factors, including: Project size, Team size, Development style, Code style, Technology environment, Physical environment, and Business culture (Slide 38).</li>
+                            <li><strong>Agile Values Dimension:</strong> A quantitative measure checking the *existence* of agility within the methodology at both process and practice levels (Slide 39).</li>
+                            <li><strong>Agility Dimension:</strong> Examines the methodology's support for *characterizing* agile values across different practice levels (Slide 39).</li>
+                            <li><strong>Software Process Dimension:</strong> Examines the specific practices within the methodology that support the components characterizing the software process in Agile (Slide 39).</li>
+                        </ol>
+                        <p><strong>Usage in the Framework:</strong></p>
+                        <ul>
+                            <li><strong>Decision Point:</strong> 4-DAT sits between the Product Management Sprint Backlog (PMSB) and the Development Phase (XP/Scrum) (Slide 30).</li>
+                            <li><strong>Methodology Selection:</strong> For a given task or module taken from the PMSB, 4-DAT is used to evaluate how well XP and Scrum fit the characteristics of that specific task based on the four dimensions.</li>
+                            <li><strong>Example Application (Slides 60-63):</strong> The presentation shows an example where 4-DAT (focusing on the Scope dimension criteria like Task size, Team structure, Tech needs) is used to score XP and Scrum for building a "Search GUI module" and "Search coding and testing".
+                                <ul>
+                                   <li>For the GUI: XP scored higher (0.75 vs 0.25), suggesting it was more appropriate.</li>
+                                   <li>For Coding/Testing: Scrum scored higher (0.63 vs 0.37), suggesting it was chosen for that part.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Flexibility:</strong> By using 4-DAT, the framework gains flexibility, allowing different parts of the same project to be developed using the methodology best suited to that part's specific context and needs (Slide 85).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">5. What are the major challenges identified for E-Government projects in the presentation?</button>
+                    <div class="accordion-panel">
+                        <p>Slide 7 explicitly discusses challenges faced by E-Government initiatives. The main challenges highlighted are:</p>
+                        <ul>
+                            <li><strong>Digital Divide:</strong> This is presented as a primary challenge, defined as "large differences in the level of access to the internet and therefore ability to benefit from e-government". This implies that unequal access to technology prevents equitable use of online government services.</li>
+                            <li><strong>Financial Barriers:</strong> The cost associated with developing, implementing, and maintaining E-Government systems, as well as the cost for citizens to access the necessary technology (computers, internet connection), can be significant barriers.</li>
+                            <li><strong>Legal Barriers (implied by 'Leg'):</strong> Issues related to legislation, regulations, privacy laws, data security standards, and digital signatures can pose hurdles for implementing E-Government services that handle sensitive information or transactions.</li>
+                            <li><strong>Technological Knowledge/Skills Gaps (implied by 'Techn Age'):</strong> Both government staff and citizens may lack the necessary technical skills or literacy to effectively develop, manage, or use E-Government systems. This relates to training needs and usability design.</li>
+                        </ul>
+                        <p>Additionally, while not explicitly listed on slide 7, the general context of government projects often involves:</p>
+                        <ul>
+                            <li><strong>Integration with Legacy Systems:</strong> Governments often have older systems that need to be integrated with new E-Government platforms.</li>
+                            <li><strong>Bureaucracy and Resistance to Change:</strong> Established processes and organizational structures can make adopting new technologies and workflows difficult.</li>
+                            <li><strong>Changing Political Priorities and Policies:</strong> Government projects can be affected by shifts in policy or leadership.</li>
+                        </ul>
+                         <p>The presentation suggests that Agile methods, particularly within the proposed framework, can help address some of these challenges, especially those related to changing requirements and managing complex projects.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">6. Explain the concept of the "Effectivity Score" used to evaluate the framework's performance. How is it calculated, and what does it measure?</button>
+                    <div class="accordion-panel">
+                        <p>The Effectivity Score is introduced as a quantitative metric to measure the efficiency of the implemented framework by evaluating the performance of individual sprints (Slides 65, 67, 69, 86).</p>
+                        <p><strong>Calculation (Formula from Slide 69):</strong></p>
+                        <p><code>Effectivity score = { 1 - (Unfinished Hours / Estimated Hours) } * 100</code></p>
+                        <p>Where:</p>
+                        <ul>
+                            <li><strong>Estimated Hours:</strong> The planned hours for the tasks within a sprint, determined during the requirements refinery/planning stage (likely from SPM).</li>
+                            <li><strong>Unfinished Hours:</strong> This represents the difference between the *actual* hours spent and the *estimated* hours. It captures the deviation or the amount of planned work (in hours) that was effectively "unfinished" or "overrun" relative to the estimate at the end of the sprint. If actual hours exceed estimated hours, this value is positive; if actual is less than estimated, it implies work finished early relative to the estimate. *(Note: The name "Unfinished" might be slightly confusing; it essentially measures the estimation accuracy or time variance.)* A practical interpretation from the example table (Slide 68) suggests it's `Actual Hours - Estimated Hours` if positive, or potentially capped at 0 if work finishes early, although the formula as written calculates efficiency based on deviation.* Let's refine: Slide 68 shows 'Unfinished' as a separate column, likely representing estimated work NOT completed or carried over. However, the calculation implicitly uses the variance. Let's assume the formula measures how much of the *estimated* time was *effectively used* without overrun. If Unfinished = 12 and Estimated = 200, score = (1 - 12/200)*100 = (1 - 0.06)*100 = 94%. This seems to measure completion *relative* to estimate.* A simpler interpretation aligned with the name: It measures the percentage of *estimated work* that was successfully completed within the sprint timeframe, assuming 'Unfinished Hours' represents the estimated hours for tasks *not* completed.* Let's stick to the formula's direct implication: it measures efficiency based on how much the actual time differed from the estimated time.* Re-evaluating based on the Average calculation (Slide 71) E_i * H_i suggests E_i is the score for sprint i. The formula measures how close the team came to meeting the estimated hours. A score of 100 means Actual = Estimated (or less, assuming Unfinished cannot be negative). A score < 100 means Actual > Estimated.* Final Interpretation based on Formula: It measures the sprint's time efficiency relative to its plan. A higher score indicates better adherence to the estimated time, potentially reflecting good estimation or high productivity. A score of 100 means the work was completed within or exactly at the estimated time. A score below 100 indicates the work took longer than estimated. </p>
+                        <p><strong>What it Measures:</strong></p>
+                        <ul>
+                            <li><strong>Time Efficiency / Estimation Accuracy:</strong> Primarily, it reflects how well the team's actual work duration matched the planned estimates for a given sprint.</li>
+                            <li><strong>Sprint Performance Proxy:</strong> It serves as an indicator of the sprint's success in terms of delivering the planned scope within the expected time budget.</li>
+                            <li><strong>Progress Evaluation:</strong> The presentation suggests it can be a "fair measure for evaluating the progress of a project development" (Slide 86). By tracking this score over time, teams can potentially identify trends in estimation accuracy or productivity.</li>
+                        </ul>
+                        <p>In the BSIC case study, the average Effectivity Score across 15 sprints was calculated as <strong>86.49%</strong> (Slides 70, 86).</p>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">7. How was stakeholder and user satisfaction evaluated in the BSIC case study? What were the key findings?</button>
+                    <div class="accordion-panel">
+                        <p>Stakeholder and user satisfaction were evaluated as part of the framework's performance assessment in the Business Sector Information Center (BSIC) case study, using qualitative methods (Slides 65, 74-78, 83, 87-88).</p>
+                        <p><strong>Evaluation Method:</strong></p>
+                        <ul>
+                            <li><strong>Questionnaires:</strong> Specific questionnaires were designed for different groups:
+                                <ul>
+                                    <li><strong>Stakeholders Satisfaction Questionnaire:</strong> Assessed aspects like GUI usability, completion of operations, ease of understanding, problem-solving, meeting requirements, delivery time/budget, ROI, and welcoming changes (Slide 75).</li>
+                                    <li><strong>Users Satisfaction Questionnaire:</strong> Focused on the end-user experience with the developed portal, covering friendliness, ease of use, completion of operations, regular updates, error-free running, technical support communication, problem resolution, meeting needs, search efficiency, navigation, and team's responsiveness to changes (Slide 77).</li>
+                                </ul>
+                            </li>
+                            <li><strong>Analysis:</strong> The responses were gathered and analyzed using the <strong>SPSS</strong> (Statistical Package for the Social Sciences) software (Slide 87).</li>
+                            <li><strong>Interpretation:</strong> The results were interpreted using a <strong>Likert scale</strong> (1-5), where the calculated Weighted Average (W.A.) score for each question or category was mapped to a satisfaction level (e.g., Poor, Accepted, Agreeable, Satisfactory, Enriching) based on predefined ranges (Slide 82).</li>
+                        </ul>
+                        <p><strong>Key Findings (Slides 76, 78, 83, 88):</strong></p>
+                        <ul>
+                            <li><strong>Stakeholders Satisfaction:</strong> The average Weighted Average (W.A.) score was <strong>3.76</strong>. According to the Likert scale interpretation (3.40-4.19 = Satisfactory), stakeholder satisfaction was rated as <strong>Satisfactory</strong>. They particularly rated ROI and Problem Solving highly (W.A. 4.67 and 4.33 respectively), while supporting team satisfaction was lower (W.A. 2.33).</li>
+                            <li><strong>Users Satisfaction:</strong> The average W.A. score was <strong>4.22</strong>. According to the Likert scale (4.20-5.00 = Enriching), user satisfaction was rated as <strong>Enriching</strong>. Users rated meeting their needs and the team welcoming changes very highly (W.A. 4.57), along with ease of navigation and friendliness (W.A. 4.40 and 4.43). Search efficiency was rated slightly lower but still well within Satisfactory (W.A. 3.77).</li>
+                        </ul>
+                        <p>Overall, the evaluation indicated positive reception from both stakeholders and especially end-users regarding the outcome of the project developed using the proposed Agile framework.</p>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">8. The presentation compared Teamwork Satisfaction between the proposed Agile framework and a Traditional method. What was evaluated, and what were the results?</button>
+                    <div class="accordion-panel">
+                        <p>A specific questionnaire was administered to the development team members who had experience with both the proposed Agile framework (used in the BSIC project) and traditional development methods. This aimed to compare their satisfaction levels with the teamwork aspects under both approaches (Slides 74, 79-81, 83, 88).</p>
+                        <p><strong>What Was Evaluated (Teamwork Satisfaction Questionnaire - Slide 79):</strong></p>
+                        <p>The questionnaire covered several aspects of the team's experience, including:</p>
+                        <ul>
+                            <li>Ability to learn new methodologies.</li>
+                            <li>Degree of collaboration within the work team.</li>
+                            <li>Adequacy of time scheduled for tasks.</li>
+                            <li>Collaboration with the customer.</li>
+                            <li>Ability to prioritize satisfying the customer.</li>
+                            <li>Level of team self-organization (rules, regulations).</li>
+                            <li>Conflict resolution effectiveness.</li>
+                            <li>Punctuality in delivering according to schedule.</li>
+                            <li>How much the methodology assisted work development.</li>
+                            <li>Potential for applying the methodology to future projects.</li>
+                        </ul>
+                        <p><strong>Results (SPSS Output on Slide 80, Summary on Slides 81, 83, 88):</strong></p>
+                        <ul>
+                            <li><strong>Data Analysis:</strong> Responses were analyzed using SPSS to calculate the Weighted Average (W.A.) satisfaction score for each question under both the Traditional Method and the Agile Framework conditions.</li>
+                            <li><strong>Overall Comparison:</strong>
+                                <ul>
+                                    <li>The average W.A. for the <strong>Agile Framework</strong> was <strong>4.25</strong>. Based on the Likert scale (4.20-5.00 = Enriching), team satisfaction with the Agile framework was rated as <strong>Enriching</strong>.</li>
+                                    <li>The average W.A. for the <strong>Traditional Method</strong> was <strong>2.39</strong>. Based on the Likert scale (1.80-2.59 = Accepted), team satisfaction with the traditional method was rated as merely <strong>Accepted</strong>.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Specific Differences (Slide 81 Chart):</strong> The bar chart visually confirms that the Agile Framework consistently scored much higher across almost all aspects compared to the Traditional Method. For example, collaboration (within team and with customer), adequacy of time, self-organization, conflict resolution, punctuality, assistance to development, and future applicability were all perceived much more positively under the Agile framework.</li>
+                        </ul>
+                        <p><strong>Conclusion:</strong> The evaluation strongly indicated that the development team members found the proposed Agile framework significantly more satisfying to work with compared to traditional methods, particularly regarding collaboration, flexibility, self-organization, and overall effectiveness.</p>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">9. Based on the presentation, what are the key characteristics of Agile development methodologies?</button>
+                    <div class="accordion-panel">
+                        <p>Slide 12 explicitly lists several key characteristics that define Agile development approaches:</p>
+                        <ul>
+                            <li><strong>Modularity:</strong> Development is structured around manageable modules or components, likely applied at the process level (breaking work down).</li>
+                            <li><strong>Iterative:</strong> Work proceeds in short cycles (iterations or sprints). Each cycle produces a potentially usable increment of the software, allowing for repetition and refinement.</li>
+                            <li><strong>Short Cycles:</strong> These iterations enable fast verification of work and quick correction of issues or misunderstandings.</li>
+                            <li><strong>Time-bound:</strong> Iterations have a fixed duration, typically ranging from one to six weeks, providing a regular cadence and predictability.</li>
+                            <li><strong>Adaptive:</strong> Agile methods are designed to accommodate change and respond to emergent risks or new requirements discovered during development.</li>
+                            <li><strong>People-oriented:</strong> Emphasis is placed on individuals, collaboration, skills, and communication rather than strictly on processes and tools.</li>
+                            <li><strong>Collaborative:</strong> Promotes close cooperation among team members and between the team and stakeholders (like the customer).</li>
+                            <li><strong>Communicative:</strong> Relies on frequent and clear communication as a primary mechanism for coordination and information sharing.</li>
+                        </ul>
+                        <p>These characteristics collectively contribute to Agile's ability to deliver value incrementally, respond to change effectively, and maintain a focus on customer satisfaction and working software (as implied by advantages on Slides 13 & 14).</p>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">10. Explain the fundamental trade-off between Agile and Traditional development methods regarding flexibility, as depicted in the 'Agile vs. Traditional Method' diagram.</button>
+                    <div class="accordion-panel">
+                        <p>Slide 15 presents a diagram illustrating a core difference in how Agile and Traditional methodologies handle project constraints, specifically Functionality, Time, and Resources.</p>
+                        <p>The diagram shows the following trade-off:</p>
+                        <ul>
+                            <li><strong>Traditional Methodologies:</strong>
+                                <ul>
+                                    <li><strong>Fixed Element:</strong> <em>Functionality</em> (Scope). The goal is typically to deliver a predefined set of features agreed upon at the beginning.</li>
+                                    <li><strong>Flexible Elements:</strong> <em>Time</em> and <em>Resources</em>. If challenges arise or the scope proves larger than expected, the schedule (Time) and/or budget/team size (Resources) are often adjusted to ensure the fixed functionality is delivered.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Agile Methodologies:</strong>
+                                <ul>
+                                    <li><strong>Fixed Elements:</strong> <em>Time</em> (iterations/sprints have fixed length) and <em>Resources</em> (team size is usually stable during an iteration).</li>
+                                    <li><strong>Flexible Element:</strong> <em>Functionality</em> (Scope). Within a fixed timebox (sprint) and with a fixed team, the amount of functionality that can be delivered is variable. Priority is given to delivering the most valuable features first, and the scope for later iterations can be adjusted based on feedback and progress.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <p><strong>In essence:</strong> Traditional methods aim to deliver a fixed scope, potentially allowing time and cost to vary. Agile methods aim to deliver value within fixed time and cost increments (sprints), allowing the scope to be flexible and adaptable over the course of the project. This flexibility in scope is a key reason why Agile is considered well-suited for projects with uncertain or changing requirements, like many E-Government initiatives.</p>
+                    </div>
+                </div>
+
+
+            </div> <!-- End glossary-accordion -->
         </section>
 
         <!-- Quiz Sections -->
@@ -491,48 +773,48 @@
     </div> <!-- End Container -->
 
     <script>
-        // --- START OF QUIZ DATA (SE206 UNIT 4 - Estimation) ---
+        // --- START OF QUIZ DATA (SE206 UNIT 5 - Based on E-Gov Presentation) ---
         const fillInTheBlank = [
-            { question: "COCOMO stands for _______ Cost Model.", options: ["Constructive", "Complex", "Component", "Calculated"], answer: "Constructive" },
-            { question: "In Agile estimation, _______ Points are relative units measuring effort, complexity, and uncertainty.", options: ["Function", "Complexity", "Story", "Task"], answer: "Story" },
-            { question: "The COCOMO model predicts project effort and _______ based on size and cost drivers.", options: ["Cost", "Risk", "Duration", "Quality"], answer: "Duration" },
-            { question: "Factors like Required Reliability and Programmer Capability in COCOMO are known as _______ drivers.", options: ["Effort", "Scale", "Cost", "Risk"], answer: "Cost" },
-            { question: "A common technique for consensus-based Story Point estimation in Agile teams is Planning _______.", options: ["Poker", "Poker", "Meeting", "Game"], answer: "Poker" }, // Duplicate Poker intentional for demo
-            { question: "_______ Logic deals with approximate reasoning using degrees of truth rather than simple true/false.", options: ["Boolean", "Predicate", "Fuzzy", "Formal"], answer: "Fuzzy" },
-            { question: "The metric measuring the percentage error of an estimate is MRE, which stands for Magnitude of _______ Error.", options: ["Relative", "Residual", "Random", "Regression"], answer: "Relative" },
-            { question: "The _______ sequence (e.g., 1, 2, 3, 5, 8) is often used for Story Point scales.", options: ["Arithmetic", "Geometric", "Fibonacci", "Prime"], answer: "Fibonacci" },
-            { question: "COCOMO II introduced _______ Factors like Team Cohesion to account for economies of scale.", options: ["Cost", "Effort", "Scaling", "Risk"], answer: "Scaling" },
-            { question: "The process of converting a fuzzy output into a crisp numerical value is called _______.", options: ["Fuzzification", "Inference", "Aggregation", "Defuzzification"], answer: "Defuzzification" }
+            { question: "Using ICT, particularly the internet, to achieve better government is defined as _______-Government.", options: ["Agile", "E", "Digital", "Open"], answer: "E" },
+            { question: "A major challenge for E-Government related to unequal access to technology is the _______ Divide.", options: ["Digital", "Economic", "Information", "Social"], answer: "Digital" },
+            { question: "The proposed framework uses _______ to help select between XP and Scrum for development tasks.", options: ["SPM", "PMSB", "4-DAT", "BSIC"], answer: "4-DAT" },
+            { question: "In Scrum, development occurs in fixed-length iterations called _______.", options: ["Phases", "Cycles", "Sprints", "Meetings"], answer: "Sprints" },
+            { question: "XP emphasizes improving code structure without changing external behavior, a practice known as _______.", options: ["Pairing", "Testing", "Refactoring", "Integrating"], answer: "Refactoring" },
+            { question: "The metric used in the presentation to evaluate sprint time efficiency was the _______ Score.", options: ["Agility", "Satisfaction", "Performance", "Effectivity"], answer: "Effectivity" },
+            { question: "Agile methods typically fix Time and Resources, allowing _______ to be flexible.", options: ["Quality", "Team Size", "Functionality", "Process"], answer: "Functionality" },
+            { question: "The _______ phase in the proposed framework includes Requirement Refining and Effort Estimation.", options: ["Development", "SPM", "Integration", "Vision"], answer: "SPM" },
+            { question: "User satisfaction in the BSIC case study was evaluated using questionnaires analyzed via _______.", options: ["Excel", "SPSS", "Manual Tally", "GQM"], answer: "SPSS" },
+            { question: "XP is generally considered more suitable for _______ teams, according to the presentation.", options: ["Large", "Distributed", "Collocated", "Virtual"], answer: "Collocated" }
         ];
 
         const trueOrFalse = [
-            { question: "Story Points represent the exact number of hours a task will take.", answer: false }, // They are relative effort units
-            { question: "COCOMO is primarily used for estimating the number of bugs in a software project.", answer: false }, // Used for effort and duration
-            { question: "Fuzzy logic is used in the proposed framework to handle the precise nature of COCOMO cost drivers.", answer: false }, // Used to handle the *imprecision*
-            { question: "Planning Poker involves developers bidding actual costs for user stories.", answer: false }, // Uses relative points, consensus-based
-            { question: "A higher PRED(0.25) value indicates a more accurate estimation model.", answer: true },
-            { question: "COCOMO II uses the same cost drivers and scaling factors as COCOMO I.", answer: false }, // COCOMO II updated/added factors
-            { question: "Agile methods completely eliminate the need for any effort estimation.", answer: false }, // Estimation is still needed for planning
-            { question: "Velocity in Agile refers to the speed at which code is written.", answer: false }, // Refers to amount of work (Story Points) completed per iteration
-            { question: "Large-scale Agile projects face no additional challenges compared to small ones.", answer: false }, // Face many challenges like coordination, architecture
-            { question: "The Basic COCOMO model requires detailed input about 15 different cost drivers.", answer: false } // Intermediate COCOMO uses the 15 drivers; Basic is simpler
+            { question: "E-Government primarily focuses on using traditional paper-based systems.", answer: false }, // Focuses on ICT/Internet
+            { question: "The Digital Divide is considered an advantage for E-Government implementation.", answer: false }, // It's a challenge
+            { question: "Agile methodologies prioritize comprehensive documentation over working software.", answer: false }, // Agile Manifesto value: Working software over comprehensive documentation
+            { question: "The proposed framework uses Agile SPM for requirement refinement.", answer: true }, // Slide 33, 34
+            { question: "4-DAT is a specific Agile development methodology like XP.", answer: false }, // It's an analytical tool for selection
+            { question: "Scrum focuses more on project management aspects than specific engineering practices.", answer: true }, // Slide 28
+            { question: "The Effectivity Score formula is (Estimated Hours / Actual Hours) * 100.", answer: false }, // Formula is (1 - (Unfinished/Estimated)) * 100
+            { question: "In the BSIC case study, user satisfaction with the Agile framework was rated as 'Accepted'.", answer: false }, // Rated as 'Enriching' (W.A. 4.22)
+            { question: "XP requires an 'On-Site Customer' who visits once per month.", answer: false }, // Requires frequent/full-time availability
+            { question: "The 'Agile vs. Traditional' diagram shows Agile fixing scope and varying time/resources.", answer: false } // Agile fixes Time/Resources, varies Scope/Functionality
         ];
 
         const multipleChoice = [
-            { question: "Which estimation technique uses relative sizing often based on the Fibonacci sequence?", options: ["Function Point Analysis", "COCOMO", "Story Points", "Lines of Code Counting"], answer: "Story Points" },
-            { question: "In the COCOMO model, what does EAF (Effort Adjustment Factor) depend on?", options: ["Project Size (KLOC)", "Project Type (Organic/Semi-Detached/Embedded)", "Cost Drivers", "Scaling Factors"], answer: "Cost Drivers" },
-            { question: "What problem does the use of Fuzzy Logic aim to address in the proposed estimation framework?", options: ["Slow calculation speed", "Imprecision in input factors", "Lack of cost drivers", "Incompatibility with Story Points"], answer: "Imprecision in input factors" },
-            { question: "What metric represents the percentage of projects estimated within a certain accuracy level (e.g., 25%)?", options: ["MRE", "COCOMO EAF", "Story Point Velocity", "PRED(L)"], answer: "PRED(L)" },
-            { question: "Which of the following is a COCOMO II Scaling Factor?", options: ["Required Reliability (RELY)", "Programmer Capability (PCAP)", "Team Cohesion (TEAM)", "Database Size (DATA)"], answer: "Team Cohesion (TEAM)" },
-            { question: "Planning Poker is primarily used for:", options: ["Determining project duration", "Assigning tasks to developers", "Consensus-based estimation of Story Points", "Calculating project budget"], answer: "Consensus-based estimation of Story Points" },
-            { question: "What is 'Velocity' used for in Agile project planning?", options: ["Measuring individual programmer speed", "Calculating exact task duration in hours", "Forecasting how much work the team can do per iteration", "Determining the number of bugs fixed"], answer: "Forecasting how much work the team can do per iteration" },
-            { question: "Which COCOMO model is the simplest, primarily using size and project type?", options: ["Basic COCOMO", "Intermediate COCOMO", "Detailed COCOMO", "COCOMO II Post-Architecture"], answer: "Basic COCOMO" },
-            { question: "The process step `Effort = A * (Size)^B` belongs to which estimation model?", options: ["Story Point Calculation", "Fuzzy Logic Inference", "Basic COCOMO", "PERT Estimation"], answer: "Basic COCOMO" },
-            { question: "Which is a common challenge specifically mentioned for Large-Scale Agile projects?", options: ["Lack of customer feedback", "Difficulty in coordination between teams", "Inability to use iterations", "Absence of planning"], answer: "Difficulty in coordination between teams" }
+            { question: "Which layer in the E-Government Architecture typically contains the web portal?", options: ["Access Layer", "Infrastructure Layer", "E-business Layer", "E-government Layer"], answer: "E-government Layer" }, // Slide 9
+            { question: "Which of these is listed as an Agile Characteristic?", options: ["Sequential", "Rigid", "Iterative", "Documentation-heavy"], answer: "Iterative" }, // Slide 12
+            { question: "According to the comparison chart (Slide 21), which methodology showed a higher degree of 'Practices' agility?", options: ["XP", "Scrum", "FDD", "DSDM"], answer: "Scrum" }, // Based on visual height of the 'Practices' bar
+            { question: "What is the primary purpose of the 4-DAT tool in the proposed framework?", options: ["To estimate project cost", "To write user stories", "To select the appropriate Agile methodology (XP/Scrum)", "To perform integration testing"], answer: "To select the appropriate Agile methodology (XP/Scrum)" }, // Slide 30, 37
+            { question: "Which Agile methodology is noted as being suitable for distributed teams?", options: ["XP", "Scrum", "Crystal Clear", "FDD"], answer: "Scrum" }, // Slide 26
+            { question: "The Requirement Refinery process in Agile SPM includes which stages?", options: ["Planning, Coding, Testing, Deployment", "Vision, Theme, Concept, Definition", "Elicitation, Analysis, Validation, Management", "Backlog, Sprint, Review, Retrospective"], answer: "Vision, Theme, Concept, Definition" }, // Slide 34
+            { question: "What does the 'Effectivity Score' primarily measure?", options: ["Customer Satisfaction", "Code Quality", "Sprint Time Efficiency / Estimation Accuracy", "Number of Features Delivered"], answer: "Sprint Time Efficiency / Estimation Accuracy" }, // Slide 69
+            { question: "In the BSIC evaluation, how was the teamwork satisfaction using the Agile Framework rated?", options: ["Poor", "Accepted", "Satisfactory", "Enriching"], answer: "Enriching" }, // Slide 80, 83
+            { question: "Which is NOT a dimension considered by the 4-DAT tool?", options: ["Scope", "Agility", "Cost Estimation", "Software Process"], answer: "Cost Estimation" }, // Slide 37 lists Scope, Agility, Agile Values, Software Process
+            { question: "What key trade-off does Agile make compared to Traditional methods, according to Slide 15?", options: ["Flexibility in Time/Resources for Fixed Functionality", "Flexibility in Functionality for Fixed Time/Resources", "Flexibility in Quality for Fixed Cost", "Flexibility in Team Size for Fixed Schedule"], answer: "Flexibility in Functionality for Fixed Time/Resources" }
         ];
         // --- END OF QUIZ DATA ---
 
-        // --- START OF SCRIPT LOGIC (PASTE FROM PREVIOUS EXAMPLE) ---
+        // --- START OF SCRIPT LOGIC (Handles Tabs, Accordion, Quizzes) ---
         document.addEventListener('DOMContentLoaded', () => {
             // Select main tabs and content sections
             const mainTabButtons = document.querySelectorAll('.main-tabs .tab-button');
@@ -543,7 +825,7 @@
             const tfContainer = document.getElementById('tf-questions');
             const mcContainer = document.getElementById('mc-questions');
 
-             // Select accordion elements
+             // Select accordion elements (this will now include Glossary AND Essay questions)
             const accordionHeaders = document.querySelectorAll('.accordion-header');
 
 
@@ -567,56 +849,45 @@
                 });
             });
 
-            // --- Accordion Logic (for Glossary) ---
+            // --- Accordion Logic (for Glossary AND Essay Questions) ---
              accordionHeaders.forEach(header => {
                 header.addEventListener('click', function() {
-                    // Toggle active class on the header for styling (+) (-) sign
                     this.classList.toggle('active');
-
-                    // Get the panel sibling
                     const panel = this.nextElementSibling;
-
-                    // Toggle the max-height for smooth transition
                     if (panel.style.maxHeight) {
-                        // If panel is open, close it
                         panel.style.maxHeight = null;
-                        panel.style.padding = "0 20px"; // Remove padding when closing
+                        panel.style.padding = "0 20px";
                     } else {
-                         // If panel is closed, open it
-                        panel.style.maxHeight = panel.scrollHeight + 40 + "px"; // Add some buffer
-                        panel.style.padding = "15px 20px"; // Add padding back when opening
+                        panel.style.maxHeight = panel.scrollHeight + 40 + "px"; // Add buffer for padding
+                        panel.style.padding = "15px 20px";
                     }
-
-                    // --- Optional: Close other accordions ---
+                    // Optional: Close others - uncomment if needed
+                    /*
                     accordionHeaders.forEach(otherHeader => {
-                        if (otherHeader !== this && otherHeader.classList.contains('active')) {
+                        if (otherHeader !== this && otherHeader.parentNode.parentNode === this.parentNode.parentNode && otherHeader.classList.contains('active')) {
                             otherHeader.classList.remove('active');
                             otherHeader.nextElementSibling.style.maxHeight = null;
                             otherHeader.nextElementSibling.style.padding = "0 20px";
                         }
                     });
-                    // --- End Optional Close Others ---
+                    */
                 });
             });
 
 
-            // --- Function to handle option selection within a question ---
+            // --- Function to handle option selection within a quiz question ---
             function handleOptionSelection(button, questionDiv) {
-                // Deselect siblings within the same question
                 const siblings = questionDiv.querySelectorAll('.option-button.selected');
                 siblings.forEach(sib => sib.classList.remove('selected'));
-                // Select clicked button
                 button.classList.add('selected');
-                 // Clear previous feedback when a new option is selected
                 const existingFeedback = questionDiv.querySelector('.feedback');
                 if (existingFeedback) {
                     existingFeedback.remove();
                 }
             }
 
-            // --- Function to create and append feedback ---
+            // --- Function to create and append feedback for quiz questions ---
             function showFeedback(questionDiv, isCorrect, correctAnswer) {
-                 // Remove existing feedback first
                 const existingFeedback = questionDiv.querySelector('.feedback');
                 if (existingFeedback) {
                     existingFeedback.remove();
@@ -629,139 +900,37 @@
                     feedback.textContent = 'Correct!';
                 } else {
                     feedback.classList.add('incorrect');
-                     // For T/F, explicitly show the boolean value
                      let displayAnswer = correctAnswer;
                      if (typeof correctAnswer === 'boolean') {
                          displayAnswer = correctAnswer ? 'True' : 'False';
                      }
                     feedback.textContent = `Incorrect. Correct answer: ${displayAnswer}`;
                 }
-                // Append feedback after the check button
                 const checkButton = questionDiv.querySelector('.check-answer');
                  if (checkButton) {
-                    // Insert after the check button if it exists
                     checkButton.parentNode.insertBefore(feedback, checkButton.nextSibling);
                 } else {
-                     // Otherwise, append to the end of the question div
                      questionDiv.appendChild(feedback);
                 }
             }
 
             // --- Load Fill in the Blank Questions ---
             function loadFillInTheBlankQuestions() {
-                fillContainer.innerHTML = ''; // Clear previous content
-                fillInTheBlank.forEach((q, index) => { // Added index for unique IDs if needed
+                fillContainer.innerHTML = '';
+                fillInTheBlank.forEach((q, index) => {
                     const questionDiv = document.createElement('div');
                     questionDiv.className = 'question';
                     questionDiv.id = `fill-q-${index}`;
 
                     const questionText = document.createElement('p');
-                    // Find the blank spot indicated by _______ and replace it for display
                     questionText.innerHTML = q.question.replace('_______', '<span style="color: #007bff; font-weight:bold;">_______</span>');
                     questionDiv.appendChild(questionText);
 
                     const optionsDiv = document.createElement('div');
                     optionsDiv.className = 'options';
-
-                    // Shuffle options for variety (optional)
                     const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
 
-
-                    shuffledOptions.forEach(option => { // Use shuffled options
-                        const optionButton = document.createElement('button');
-                        optionButton.className = 'option-button';
-                        optionButton.textContent = option;
-                        optionButton.addEventListener('click', () => handleOptionSelection(optionButton, questionDiv));
-                        optionsDiv.appendChild(optionButton);
-                    });
-                    questionDiv.appendChild(optionsDiv);
-
-                    const checkButton = document.createElement('button');
-                    checkButton.className = 'check-answer';
-                    checkButton.textContent = 'Check Answer';
-                    checkButton.addEventListener('click', () => {
-                        const selected = questionDiv.querySelector('.option-button.selected');
-                        if (selected) {
-                            showFeedback(questionDiv, selected.textContent === q.answer, q.answer);
-                        } else {
-                             // Optionally show feedback that an answer must be selected
-                             showFeedback(questionDiv, false, q.answer); // Or provide specific feedback
-                        }
-                    });
-                    questionDiv.appendChild(checkButton);
-
-                    fillContainer.appendChild(questionDiv);
-                });
-            }
-
-
-            // --- Load True/False Questions ---
-            function loadTrueFalseQuestions() {
-                tfContainer.innerHTML = ''; // Clear previous content
-                trueOrFalse.forEach((q, index) => { // Added index
-                    const questionDiv = document.createElement('div');
-                    questionDiv.className = 'question';
-                    questionDiv.id = `tf-q-${index}`;
-
-                    const questionText = document.createElement('p');
-                    questionText.textContent = q.question;
-                    questionDiv.appendChild(questionText);
-
-                     const optionsDiv = document.createElement('div'); // Keep consistent structure
-                    optionsDiv.className = 'options';
-
-                    const trueButton = document.createElement('button');
-                    trueButton.className = 'option-button';
-                    trueButton.textContent = 'True';
-                    trueButton.addEventListener('click', () => handleOptionSelection(trueButton, questionDiv));
-                    optionsDiv.appendChild(trueButton);
-
-                    const falseButton = document.createElement('button');
-                    falseButton.className = 'option-button';
-                    falseButton.textContent = 'False';
-                    falseButton.addEventListener('click', () => handleOptionSelection(falseButton, questionDiv));
-                    optionsDiv.appendChild(falseButton);
-
-                    questionDiv.appendChild(optionsDiv);
-
-                    const checkButton = document.createElement('button');
-                    checkButton.className = 'check-answer';
-                    checkButton.textContent = 'Check Answer';
-                    checkButton.addEventListener('click', () => {
-                        const selected = questionDiv.querySelector('.option-button.selected');
-                        if (selected) {
-                            // Check boolean answer correctly
-                            const isCorrect = (selected.textContent === 'True' && q.answer === true) || (selected.textContent === 'False' && q.answer === false);
-                            showFeedback(questionDiv, isCorrect, q.answer); // Pass boolean directly
-                        } else {
-                            showFeedback(questionDiv, false, q.answer); // Pass boolean directly
-                        }
-                    });
-                    questionDiv.appendChild(checkButton);
-
-                    tfContainer.appendChild(questionDiv);
-                });
-            }
-
-            // --- Load Multiple Choice Questions ---
-            function loadMultipleChoiceQuestions() {
-                mcContainer.innerHTML = ''; // Clear previous content
-                multipleChoice.forEach((q, index) => { // Added index
-                    const questionDiv = document.createElement('div');
-                    questionDiv.className = 'question';
-                    questionDiv.id = `mc-q-${index}`;
-
-                    const questionText = document.createElement('p');
-                    questionText.textContent = q.question;
-                    questionDiv.appendChild(questionText);
-
-                    const optionsDiv = document.createElement('div');
-                    optionsDiv.className = 'options';
-
-                    // Shuffle options for variety (optional)
-                    const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
-
-                    shuffledOptions.forEach(option => { // Use shuffled options
+                    shuffledOptions.forEach(option => {
                         const optionButton = document.createElement('button');
                         optionButton.className = 'option-button';
                         optionButton.textContent = option;
@@ -782,16 +951,125 @@
                         }
                     });
                     questionDiv.appendChild(checkButton);
+                    fillContainer.appendChild(questionDiv);
+                });
+            }
 
+
+            // --- Load True/False Questions ---
+            function loadTrueFalseQuestions() {
+                tfContainer.innerHTML = '';
+                trueOrFalse.forEach((q, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question';
+                    questionDiv.id = `tf-q-${index}`;
+
+                    const questionText = document.createElement('p');
+                    questionText.textContent = q.question;
+                    questionDiv.appendChild(questionText);
+
+                     const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'options';
+
+                    const trueButton = document.createElement('button');
+                    trueButton.className = 'option-button';
+                    trueButton.textContent = 'True';
+                    trueButton.addEventListener('click', () => handleOptionSelection(trueButton, questionDiv));
+                    optionsDiv.appendChild(trueButton);
+
+                    const falseButton = document.createElement('button');
+                    falseButton.className = 'option-button';
+                    falseButton.textContent = 'False';
+                    falseButton.addEventListener('click', () => handleOptionSelection(falseButton, questionDiv));
+                    optionsDiv.appendChild(falseButton);
+                    questionDiv.appendChild(optionsDiv);
+
+                    const checkButton = document.createElement('button');
+                    checkButton.className = 'check-answer';
+                    checkButton.textContent = 'Check Answer';
+                    checkButton.addEventListener('click', () => {
+                        const selected = questionDiv.querySelector('.option-button.selected');
+                        if (selected) {
+                            const isCorrect = (selected.textContent === 'True' && q.answer === true) || (selected.textContent === 'False' && q.answer === false);
+                            showFeedback(questionDiv, isCorrect, q.answer);
+                        } else {
+                            showFeedback(questionDiv, false, q.answer);
+                        }
+                    });
+                    questionDiv.appendChild(checkButton);
+                    tfContainer.appendChild(questionDiv);
+                });
+            }
+
+            // --- Load Multiple Choice Questions ---
+            function loadMultipleChoiceQuestions() {
+                mcContainer.innerHTML = '';
+                multipleChoice.forEach((q, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question';
+                    questionDiv.id = `mc-q-${index}`;
+
+                    const questionText = document.createElement('p');
+                    questionText.textContent = q.question;
+                    questionDiv.appendChild(questionText);
+
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'options';
+                    const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+                    shuffledOptions.forEach(option => {
+                        const optionButton = document.createElement('button');
+                        optionButton.className = 'option-button';
+                        optionButton.textContent = option;
+                        optionButton.addEventListener('click', () => handleOptionSelection(optionButton, questionDiv));
+                        optionsDiv.appendChild(optionButton);
+                    });
+                    questionDiv.appendChild(optionsDiv);
+
+                    const checkButton = document.createElement('button');
+                    checkButton.className = 'check-answer';
+                    checkButton.textContent = 'Check Answer';
+                    checkButton.addEventListener('click', () => {
+                        const selected = questionDiv.querySelector('.option-button.selected');
+                        if (selected) {
+                            showFeedback(questionDiv, selected.textContent === q.answer, q.answer);
+                        } else {
+                             showFeedback(questionDiv, false, q.answer);
+                        }
+                    });
+                    questionDiv.appendChild(checkButton);
                     mcContainer.appendChild(questionDiv);
                 });
             }
 
             // --- Initial Load ---
-            // Load all quiz questions initially so they are ready when tabs are clicked
             loadFillInTheBlankQuestions();
             loadTrueFalseQuestions();
             loadMultipleChoiceQuestions();
+
+            // Set the default active tab (Glossary) correctly on load
+             const initialActiveButton = document.querySelector('.main-tabs .tab-button.active');
+             const initialActiveTabId = initialActiveButton ? initialActiveButton.getAttribute('data-tab') : 'glossary'; // Default to glossary if none marked active
+             const initialActiveContent = document.getElementById(initialActiveTabId);
+
+             // Ensure all content is hidden first
+             mainTabContents.forEach(content => content.classList.remove('active'));
+              // Ensure all buttons are inactive first
+             mainTabButtons.forEach(btn => btn.classList.remove('active'));
+
+             // Activate the default button and content
+             const defaultButton = document.querySelector(`.main-tabs .tab-button[data-tab="${initialActiveTabId}"]`);
+             if (defaultButton && initialActiveContent) {
+                 defaultButton.classList.add('active');
+                 initialActiveContent.classList.add('active');
+             } else { // Fallback if default cannot be found
+                 const firstButton = document.querySelector('.main-tabs .tab-button');
+                 const firstContent = document.querySelector('.main-content');
+                 if(firstButton && firstContent){
+                     firstButton.classList.add('active');
+                     firstContent.classList.add('active');
+                 }
+             }
 
 
         }); // End DOMContentLoaded
