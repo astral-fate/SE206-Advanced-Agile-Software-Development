@@ -1,0 +1,1056 @@
+--- START OF FILE se206_unit2.html ---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SE206 - Unit 2: Extreme Programming (XP)</title>
+    <style>
+        /* Paste the CSS from the SE205 unit1.html example here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, h3 {
+            color: #0056b3; /* Cairo University Blue */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            margin-top: 20px; /* Reduced top margin for sections */
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            margin-top: 25px;
+            margin-bottom: 15px;
+            color: #007bff; /* Lighter Blue */
+        }
+         ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+         li {
+             margin-bottom: 8px;
+         }
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            background-color: #e9ecef;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.95em;
+        }
+        strong {
+             color: #dc3545; /* Red emphasis */
+        }
+
+        /* Main Tabs Styles */
+        .main-tabs {
+            display: flex;
+            justify-content: space-around; /* Or flex-start, center */
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            margin-bottom: 25px;
+            border-bottom: 2px solid #0056b3;
+        }
+
+        .main-tabs .tab-button {
+            padding: 12px 20px; /* Adjusted padding slightly */
+            border: none;
+            background: none;
+            color: #0056b3;
+            font-size: 0.95em; /* Slightly smaller font */
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px 5px 0 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin-bottom: -2px; /* Overlap border */
+            border-bottom: 2px solid transparent;
+            text-align: center;
+        }
+
+        .main-tabs .tab-button.active {
+            background: #0056b3;
+            color: white;
+            border-bottom: 2px solid #0056b3;
+        }
+        .main-tabs .tab-button:hover:not(.active) {
+            background-color: #e9ecef;
+            border-bottom: 2px solid #adb5bd;
+        }
+
+        /* Content Sections */
+        .main-content {
+            display: none; /* Hide all main content sections by default */
+            animation: fadeIn 0.5s;
+        }
+
+        .main-content.active {
+            display: block; /* Show only the active one */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+
+        /* --- Accordion Styles (for Glossary and Essay) --- */
+        .glossary-accordion, .essay-accordion { /* Added .essay-accordion */
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            overflow: hidden; /* Contain borders */
+        }
+
+        .accordion-item {
+            border-bottom: 1px solid #dee2e6; /* Separator */
+        }
+        .accordion-item:last-child {
+            border-bottom: none;
+        }
+
+        .accordion-header {
+            background-color: #f8f9fa;
+            color: #dc3545; /* Highlight Red for terms/questions */
+            cursor: pointer;
+            padding: 15px 20px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            position: relative; /* For the indicator */
+        }
+
+        .accordion-header:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Indicator (+/-) */
+        .accordion-header::after {
+            content: '\002B'; /* + sign */
+            color: #0056b3;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .accordion-header.active::after {
+            content: "\2212"; /* - sign */
+            transform: rotate(180deg); /* Optional: animate the sign itself */
+        }
+        /* Optional: Slightly different style for active header */
+        .accordion-header.active {
+             background-color: #e7f1ff;
+        }
+
+
+        .accordion-panel {
+            padding: 0 20px; /* Start with 0 padding top/bottom */
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out; /* Smooth transition */
+        }
+        .accordion-panel p, .accordion-panel ul { /* Apply margin to lists too */
+            margin: 15px 0; /* Add margin back when panel is open */
+            color: #333; /* Reset color for definition */
+        }
+
+        /* --- End Accordion Styles --- */
+
+        /* Concepts Section Styles */
+        #concepts .concept-block {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+        }
+         #concepts .concept-block h3 {
+            margin-top: 0;
+            color: #007bff;
+            border-bottom: 1px dotted #ccc;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+
+        /* Quiz Styles (apply within #fill, #tf, #mc) */
+        .question {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            background-color: #ffffff; /* White background for questions */
+            position: relative; /* For feedback positioning */
+        }
+
+        .question p {
+            margin: 0 0 15px;
+            font-weight: bold;
+            font-size: 1.05em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-button {
+            padding: 10px 15px;
+            border: 1px solid #ced4da;
+            background: #f8f9fa; /* Light background for options */
+            color: #495057;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: left;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            width: 100%;
+        }
+        .option-button:hover {
+             background-color: #e9ecef;
+             border-color: #adb5bd;
+        }
+
+        .option-button.selected {
+            background: #007bff;
+            color: white;
+            border-color: #0056b3;
+        }
+
+        .check-answer {
+            margin-top: 15px;
+            padding: 10px 20px;
+            border: none;
+            background: #28a745; /* Success Green */
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+        }
+        .check-answer:hover {
+             background-color: #218838;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SE206 - Unit 2: Extreme Programming (XP)</h1>
+
+        <!-- Main Tab Buttons -->
+        <div class="main-tabs">
+            <button class="tab-button active" data-tab="glossary">Glossary</button>
+            <button class="tab-button" data-tab="concepts">Key Concepts</button>
+             <button class="tab-button" data-tab="essay">Essay Questions</button> <!-- New Tab Button -->
+            <button class="tab-button" data-tab="fill">Fill in the Blank</button>
+            <button class="tab-button" data-tab="tf">True/False</button>
+            <button class="tab-button" data-tab="mc">Multiple Choice</button>
+        </div>
+
+        <!-- Glossary Section (Accordion) -->
+        <section id="glossary" class="main-content active">
+            <h2>Glossary of Terms</h2>
+            <div class="glossary-accordion">
+                <!-- Add terms based on SE206 Unit 2 (XP) -->
+                 <div class="accordion-item">
+                    <button class="accordion-header">Acceptance Test</button>
+                    <div class="accordion-panel">
+                        <p>In XP, tests specified by the customer to check that a user story has been correctly implemented. All acceptance tests must pass for a story to be considered 'done'.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Coach (XP Role)</button>
+                    <div class="accordion-panel">
+                        <p>An XP role responsible for teaching the team about XP practices, monitoring the process, and intervening if necessary. Often an experienced programmer.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Continuous Integration (CI)</button>
+                    <div class="accordion-panel">
+                        <p>An XP practice where developers integrate their code into a shared repository frequently, typically multiple times a day. Each integration is verified by an automated build (including tests) to detect integration errors quickly.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">CRC Cards</button>
+                    <div class="accordion-panel">
+                        <p>(Class-Responsibility-Collaboration) Cards. A brainstorming tool used in object-oriented design to help discover and document classes, their responsibilities, and their collaborations with other classes.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Customer (XP Role)</button>
+                    <div class="accordion-panel">
+                        <p>An XP role, ideally an actual end-user or representative, who writes user stories and acceptance tests, prioritizes stories, and provides feedback. They are an integral part of the team.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Daily Meeting / Stand-up</button>
+                    <div class="accordion-panel">
+                        <p>A short (often 15-minute) daily meeting where team members briefly report what they did yesterday, what they plan to do today, and any obstacles they face. Standing up helps keep the meeting brief.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Extreme Programming (XP)</button>
+                    <div class="accordion-panel">
+                        <p>An Agile software development framework focused on improving software quality and responsiveness to changing requirements through specific engineering practices and values.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Pair Programming</button>
+                    <div class="accordion-panel">
+                        <p>An XP practice where two programmers work together at one workstation. One (the driver) writes code while the other (the observer or navigator) reviews each line as it is typed, suggests improvements, and thinks strategically.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Programmer (XP Role)</button>
+                    <div class="accordion-panel">
+                        <p>An XP role responsible for writing tests, designing, coding, and refactoring the software. Programmers estimate tasks and stories.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Refactoring</button>
+                    <div class="accordion-panel">
+                        <p>The process of restructuring existing computer code—changing the factoring—without changing its external behavior. XP encourages frequent refactoring to keep the design simple and clean.</p>
+                    </div>
+                </div>
+                 <div class="accordion-item">
+                    <button class="accordion-header">Slack (XP Practice)</button>
+                    <div class="accordion-panel">
+                        <p>Intentionally planning slightly less work for an iteration than the team's estimated capacity. This allows the team to finish early or absorb unexpected delays/tasks without jeopardizing the iteration goal.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Stories / User Stories</button>
+                    <div class="accordion-panel">
+                        <p>Short, simple descriptions of a feature told from the perspective of the person who desires the new capability, usually a user or customer. Used in XP and other Agile methods to define requirements.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Test-First Programming / TDD</button>
+                    <div class="accordion-panel">
+                        <p>(Test-Driven Development) An XP practice where developers write an automated test case *before* writing the production code needed to pass that test. This drives design and ensures testability.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Tester (XP Role)</button>
+                    <div class="accordion-panel">
+                        <p>An XP role responsible for helping the customer write acceptance tests and for running tests regularly. May also be a programmer.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Tracker (XP Role)</button>
+                    <div class="accordion-panel">
+                        <p>An XP role responsible for monitoring the team's progress (e.g., tracking user story completion, acceptance tests) and communicating status, often using visible wall graphs.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">XP Values</button>
+                    <div class="accordion-panel">
+                        <p>The core principles guiding XP practices: Communication, Simplicity, Feedback, Courage, and Respect.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Weekly Cycle</button>
+                    <div class="accordion-panel">
+                        <p>An XP planning practice where, at the start of each week, the team meets to review progress, the customer selects stories for the week, and the team breaks stories into tasks.</p>
+                    </div>
+                </div>
+
+
+            </div> <!-- End glossary-accordion -->
+        </section>
+
+        <!-- Key Concepts Section -->
+        <section id="concepts" class="main-content">
+            <h2>Key Concepts from Unit 2</h2>
+
+            <div class="concept-block">
+                <h3>Extreme Programming (XP) Overview</h3>
+                <p>XP is an Agile methodology best suited for <strong>new or incomplete projects</strong> with changing requirements, typically used by <strong>small teams</strong> (2-12 members). It strongly focuses on the actual development process and engineering practices.</p>
+            </div>
+
+             <div class="concept-block">
+                <h3>XP Lifecycle Phases</h3>
+                <p>XP projects typically follow these phases:</p>
+                <ul>
+                    <li><strong>Exploration:</strong> Understanding requirements (stories), technology, and initial architecture.</li>
+                    <li><strong>Planning:</strong> Prioritizing stories, estimating effort, planning releases (Release Planning).</li>
+                    <li><strong>Iterations to Release:</strong> Developing in short cycles (iterations), including continuous review, integration, and testing.</li>
+                    <li><strong>Productionizing:</strong> Preparing the system for deployment (final testing, documentation, performance tuning).</li>
+                    <li><strong>Maintenance:</strong> Handling bug fixes and small enhancements post-release.</li>
+                    <li><strong>Death:</strong> The end of the project (when customer needs are met, no more stories, or budget/time runs out).</li>
+                </ul>
+             </div>
+
+             <div class="concept-block">
+                <h3>XP Values</h3>
+                 <p>These values underpin all XP practices:</p>
+                 <ul>
+                     <li><strong>Communication:</strong> Fostering positive and effective communication within the team and with the customer (e.g., Pair Programming, On-site Customer, Daily Meetings).</li>
+                     <li><strong>Simplicity:</strong> Doing the simplest thing that could possibly work. Avoiding unnecessary complexity ("You Ain't Gonna Need It" - YAGNI).</li>
+                     <li><strong>Feedback:</strong> Seeking rapid feedback from the system (tests), the customer, and the team.</li>
+                     <li><strong>Courage:</strong> Making hard decisions, such as refactoring complex code, discarding failing approaches, or speaking up about problems.</li>
+                     <li><strong>Respect:</strong> Team members respect each other, the customer, and the work.</li>
+                 </ul>
+             </div>
+
+             <div class="concept-block">
+                <h3>XP Roles</h3>
+                 <p>XP defines several key roles:</p>
+                 <ul>
+                     <li><strong>Programmer:</strong> Writes tests, code, refactors, estimates.</li>
+                     <li><strong>Customer:</strong> Writes stories & acceptance tests, prioritizes, provides feedback. (Crucial role, ideally on-site).</li>
+                     <li><strong>Tester:</strong> Helps Customer write tests, runs tests, tracks defects.</li>
+                     <li><strong>Tracker:</strong> Monitors progress (story/test completion), keeps metrics visible.</li>
+                     <li><strong>Coach:</strong> Mentors team on XP, facilitates, ensures process is followed.</li>
+                     <li><strong>Manager:</strong> Owns the team/problems, obtains resources, interfaces externally. (Less directive than traditional manager).</li>
+                 </ul>
+            </div>
+
+
+             <div class="concept-block">
+                <h3>Key XP Practices</h3>
+                <p>XP is defined by its core practices:</p>
+                <ul>
+                    <li><strong>Sit Together (Whole Team):</strong> Entire team works in one open space to improve communication.</li>
+                    <li><strong>Informative Workspace:</strong> Use visible charts, graphs, story cards on walls to show progress.</li>
+                    <li><strong>Pair Programming:</strong> Two programmers, one computer. Improves quality and knowledge sharing.</li>
+                    <li><strong>Stories (User Stories):</strong> Customer defines functionality in short, user-focused statements.</li>
+                    <li><strong>Weekly Cycle:</strong> Plan the week's work based on customer priorities and developer estimates.</li>
+                    <li><strong>Slack:</strong> Plan slightly less work than capacity to handle unexpected issues.</li>
+                    <li><strong>Test-First Programming (TDD):</strong> Write automated tests *before* the code.</li>
+                    <li><strong>Continuous Integration (CI):</strong> Integrate and build code frequently (many times a day).</li>
+                    <li><strong>Daily Meetings (Stand-up):</strong> Quick daily sync-up on progress and impediments.</li>
+                    <li>(Other practices include: Planning Game, Small Releases, Metaphor, Simple Design, Refactoring, Collective Code Ownership, Coding Standard, 40-Hour Week, On-Site Customer)</li>
+                 </ul>
+            </div>
+
+            <div class="concept-block">
+                <h3>XP Documents</h3>
+                 <p>While valuing working software over comprehensive documentation, XP uses lightweight documents:</p>
+                 <ul>
+                     <li><strong>User Story Cards:</strong> Physical cards describing desired functionality.</li>
+                     <li><strong>Task List:</strong> Breakdown of stories into technical tasks for an iteration.</li>
+                     <li><strong>CRC Cards:</strong> Used during design brainstorming.</li>
+                     <li><strong>Acceptance Test Cases:</strong> Defined by the customer to verify stories.</li>
+                     <li><strong>Visible Wall Graphs:</strong> Track progress (e.g., Burndown charts - though more common in Scrum, Trackers use visual aids).</li>
+                 </ul>
+             </div>
+
+        </section>
+
+         <!-- Essay Questions Section (Accordion) -->
+        <section id="essay" class="main-content">
+            <h2>Essay Questions</h2>
+            <div class="essay-accordion">
+                 <div class="accordion-item">
+                    <button class="accordion-header">Q1: Explain the core philosophy and typical use cases for Extreme Programming (XP).</button>
+                    <div class="accordion-panel">
+                        <p>Extreme Programming (XP) is an Agile software development framework that focuses on improving software quality and responsiveness to changing customer requirements. Its core philosophy centers on embracing change rather than resisting it, using frequent small releases, heavy customer involvement, and strong engineering practices.</p>
+                        <p>XP is best suited for projects characterized by:</p>
+                        <ul>
+                            <li><strong>New or Incomplete Projects:</strong> Where requirements are not fully defined at the start and are expected to evolve.</li>
+                            <li><strong>Changing Requirements:</strong> Projects where customer needs are likely to shift frequently.</li>
+                            <li><strong>Small to Medium-Sized Teams:</strong> Typically 2-12 members who can work closely together.</li>
+                            <li><strong>High Risk:</strong> Projects that have significant technical or business risks that need frequent validation.</li>
+                            <li><strong>Customer Availability:</strong> Requires an active, on-site (or readily available) customer representative.</li>
+                        </ul>
+                        <p>It emphasizes adapting to change through rapid feedback cycles and continuous improvement, making it less suitable for large, highly regulated projects with fixed, well-understood requirements from the outset.</p>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">Q2: Describe the five core values of XP and how they influence its practices.</button>
+                    <div class="accordion-panel">
+                        <p>The five core values of Extreme Programming are Communication, Simplicity, Feedback, Courage, and Respect. These values provide the foundation and motivation for all XP practices:</p>
+                        <ul>
+                            <li><strong>Communication:</strong> XP recognizes that most project failures stem from poor communication. Practices like Pair Programming, Sit Together (Whole Team), Daily Meetings (Stand-ups), and On-Site Customer are designed to maximize informal and direct communication within the team and with stakeholders.</li>
+                            <li><strong>Simplicity:</strong> This value means doing the simplest thing that could possibly work at every step. It's embodied in practices like Simple Design and the principle "You Ain't Gonna Need It" (YAGNI), which discourages adding unnecessary complexity or features prematurely. Simplicity keeps the system manageable and adaptable.</li>
+                            <li><strong>Feedback:</strong> Rapid and frequent feedback is crucial for staying on track and detecting problems early. XP emphasizes feedback from multiple sources: the system itself (via automated tests and Continuous Integration), the customer (via acceptance tests and frequent interactions), and the team (via pair programming and daily meetings).</li>
+                            <li><strong>Courage:</strong> This value is about making hard decisions and taking necessary actions, such as refactoring complex or messy code, discarding code that isn't working (even if effort was invested), being honest about progress and challenges, and speaking up when something is wrong. Courage enables the team to maintain code quality and address issues directly.</li>
+                            <li><strong>Respect:</strong> Mutual respect among team members, the customer, and the work itself is essential for a healthy and productive environment. This includes respecting different opinions, skills, and working styles, and trusting that everyone is doing their best. Practices like Collective Code Ownership and Pair Programming foster mutual respect and shared responsibility.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">Q3: Detail the practice of Pair Programming. Explain its benefits and challenges.</button>
+                    <div class="accordion-panel">
+                        <p>Pair Programming is an XP practice where two programmers work together at a single computer workstation. One programmer is the 'driver', who writes the code, while the other is the 'observer' or 'navigator', who continuously reviews the code as it's being typed, checks for errors, thinks about the overall design and strategy, and considers future implications.</p>
+                        <p>They swap roles frequently, sometimes every few minutes or hours.</p>
+                        <p><strong>Benefits:</strong></p>
+                        <ul>
+                            <li><strong>Improved Code Quality:</strong> Two sets of eyes catch more errors (syntax, logic, design flaws) immediately. Code is often better structured and clearer due to continuous review.</li>
+                            <li><strong>Knowledge Sharing:</strong> Knowledge is constantly transferred between team members, reducing reliance on single individuals and improving team bus factor. New team members ramp up faster.</li>
+                            <li><strong>Better Communication:</strong> Forces constant communication about the code, design, and requirements.</li>
+                            <li><strong>Increased Discipline:</strong> Encourages sticking to coding standards, writing tests, and refactoring.</li>
+                            <li><strong>Reduced Interruptions:</strong> A pair is less likely to be interrupted than a single programmer.</li>
+                            <li><strong>Improved Morale:</strong> Can be more engaging and less isolating than solo work.</li>
+                        </ul>
+                        <p><strong>Challenges:</strong></p>
+                        <ul>
+                            <li><strong>Cost:</strong> Requires two people working on the same task, which can appear inefficient on the surface (though proponents argue the improved quality and knowledge sharing offset this).</li>
+                            <li><strong>Finding Good Partners:</strong> Requires compatible personalities and working styles. Not everyone enjoys or is effective at pairing.</li>
+                            <li><strong>Scheduling:</strong> Coordinating schedules for pairs can be complex.</li>
+                            <li><strong>Fatigue:</strong> Can be mentally taxing, requiring breaks.</li>
+                            <li><strong>Initial Learning Curve:</strong> Takes practice for pairs to become truly effective.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">Q4: Explain Test-First Programming (TDD) as practiced in XP. What is the typical cycle?</button>
+                    <div class="accordion-panel">
+                        <p>Test-First Programming, also known as Test-Driven Development (TDD), is a core XP practice where developers write an automated test case *before* writing the production code that will fulfill a specific requirement (often derived from a User Story or task). The test is written knowing it will initially fail.</p>
+                        <p>The typical cycle for TDD is often described as "Red-Green-Refactor":</p>
+                        <ol>
+                            <li><strong>Red:</strong> Write a small automated test for a piece of functionality. Run all tests and verify that this new test fails (because the required code doesn't exist yet). This ensures the test is valid and truly tests the intended behavior.</li>
+                            <li><strong>Green:</strong> Write the minimum amount of production code necessary to make the new test pass. Focus only on passing the test, not on perfect design or efficiency. Run all tests again to confirm that all tests, including the new one, now pass.</li>
+                            <li><strong>Refactor:</strong> Once all tests are passing, clean up the code you just wrote. Improve its structure, readability, remove duplication, and optimize it, all while *continuously running the tests* to ensure that refactoring does not break any existing functionality. The tests act as a safety net.</li>
+                        </ol>
+                        <p>This cycle drives development in small, verifiable steps. TDD results in a comprehensive suite of regression tests, leads to better code design (as code is written to be testable), and provides constant feedback on the progress and correctness of the implementation.</p>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">Q5: What is Continuous Integration (CI) in XP? Why is it important, and how often should it occur?</button>
+                    <div class="accordion-panel">
+                        <p>Continuous Integration (CI) is an XP practice where developers integrate their code into a shared repository frequently, typically multiple times a day. This is done at least daily, and often after completing a small task or passing a few TDD cycles.</p>
+                        <p>Each integration triggers an automated build process. This build includes compiling the code, running automated unit tests (written via TDD), and potentially running other automated tests (like integration tests). If the build or any tests fail, the team is immediately alerted, and the issue should be fixed as a high priority before further development continues.</p>
+                        <p><strong>Importance of CI:</strong></p>
+                        <ul>
+                            <li><strong>Detects Integration Errors Early:</strong> The longer developers work in isolation, the harder it is to merge their code and resolve conflicts or compatibility issues. Frequent integration finds these problems when they are small and easy to fix.</li>
+                            <li><strong>Reduces Risk:</strong> Reduces the risk of a "big-bang" integration failure late in the project.</li>
+                            <li><strong>Provides Rapid Feedback:</strong> The automated build and test process gives quick feedback on the health of the codebase.</li>
+                            <li><strong>Ensures Working Software:</strong> A passing build means the current version of the software is (at least at the tested level) working and runnable.</li>
+                            <li><strong>Facilitates Deployment:</strong> A continuously integrated and tested codebase is always in a potentially releasable state (assuming builds are green).</li>
+                        </ul>
+                        <p>The frequency is key: CI is most effective when integrations happen many times a day, not just once a day or less often.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">Q6: Describe the role of the Customer in an XP project. Why is "On-Site Customer" emphasized?</button>
+                    <div class="accordion-panel">
+                        <p>The Customer is one of the most crucial roles in an XP project and is considered an integral part of the team. Their primary responsibilities include:</p>
+                        <ul>
+                            <li><strong>Writing User Stories:</strong> Expressing requirements as short, user-focused descriptions of desired features.</li>
+                            <li><strong>Prioritizing User Stories:</strong> Determining which stories are most valuable and should be implemented next.</li>
+                            <li><strong>Defining Acceptance Tests:</strong> Specifying the tests that will be used to verify that a user story has been implemented correctly and meets their needs.</li>
+                            <li><strong>Providing Feedback:</strong> Reviewing completed work, answering questions, and providing clarification on requirements throughout the project.</li>
+                            <li><strong>Participating in Planning:</strong> Collaborating with the development team during Release Planning and Iteration Planning (Weekly Cycles).</li>
+                        </ul>
+                        <p>The practice of having an <strong>On-Site Customer</strong> is highly emphasized (though variations exist with remote collaboration tools). The benefits of an on-site customer include:</p>
+                        <ul>
+                            <li><strong>Immediate Availability:</strong> Developers can get instant clarification on requirements, ask questions about edge cases, and resolve ambiguities without delay.</li>
+                            <li><strong>Shared Understanding:</strong> Being physically present fosters a deeper understanding of the business needs and context for the development team.</li>
+                            <li><strong>Rapid Feedback Loop:</strong> Work can be demonstrated and feedback obtained quickly, reducing misinterpretations and rework.</li>
+                            <li><strong>Stronger Relationship:</strong> Builds trust and collaboration between the customer and the development team.</li>
+                        </ul>
+                        <p>Without a dedicated, readily available customer representative, the team risks building the wrong features, spending time guessing requirements, and delaying feedback loops, undermining the core principles of XP.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">Q7: What is Refactoring? Why is it a crucial practice in XP, and when should it be done?</button>
+                    <div class="accordion-panel">
+                        <p>Refactoring is the process of restructuring existing computer code – changing the factoring or internal structure – without changing its external behavior. It involves making small, step-by-step changes to the code's design to improve its clarity, simplicity, maintainability, and efficiency, while ensuring that all existing functionality remains intact.</p>
+                        <p>Refactoring is a crucial practice in XP for several reasons:</p>
+                        <ul>
+                            <li><strong>Maintaining Simplicity:</strong> As new features are added, code can become complex or messy. Refactoring helps keep the design simple and manageable, aligning with the XP value of Simplicity.</li>
+                            <li><strong>Enabling Change:</strong> A clean, well-factored codebase is much easier to understand and modify when requirements change. Refactoring makes the code more flexible and easier to extend.</li>
+                            <li><strong>Improving Quality:</strong> It reduces technical debt, makes code easier to read and test, and can reveal hidden bugs or design flaws.</li>
+                            <li><strong>Supporting Other Practices:</strong> It works hand-in-hand with Simple Design and Test-First Programming (TDD). TDD provides the safety net (tests) to ensure refactoring doesn't break anything.</li>
+                        </ul>
+                        <p>In XP, refactoring is not a separate phase done at the end of the project. It is done <strong>continuously and frequently</strong> throughout the development process. Developers refactor whenever they see code that can be improved, whether it's during coding, adding a new feature, fixing a bug, or during Pair Programming sessions. It's an integral part of the daily work of a programmer.</p>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">Q8: How are requirements handled in XP? Explain the concept of User Stories and Acceptance Tests.</button>
+                    <div class="accordion-panel">
+                        <p>In XP, requirements are primarily handled using <strong>User Stories</strong>. A User Story is a short, simple description of a feature told from the perspective of the person who desires the new capability, usually a user or customer. They typically follow a format like: "As a [type of user], I want [some goal] so that [some reason/benefit]".</p>
+                        <p>User Stories are intentionally brief and high-level. They represent a promise for a conversation between the customer and the development team. The details are discussed and clarified just-in-time, before implementation.</p>
+                        <p>Accompanying each User Story are <strong>Acceptance Tests</strong>. These are tests, typically defined by the customer (possibly with help from a Tester or Programmer), that specify how the team will verify that the User Story has been correctly implemented and the feature works as expected from the user's perspective. Acceptance tests are concrete examples of the desired behavior. All acceptance tests for a story must pass for that story to be considered 'done'.</p>
+                        <p>This approach contrasts with traditional methods that rely on detailed, upfront requirements documents. XP favors this lightweight, conversational approach because requirements are expected to change, and detailed documents can quickly become outdated. User Stories and Acceptance Tests provide just enough detail for planning and implementation, allowing flexibility while ensuring the team builds what the customer truly needs.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">Q9: Describe the 'Sit Together' and 'Informative Workspace' practices. What communication issues do they address?</button>
+                    <div class="accordion-panel">
+                        <p>These two practices are closely related and focus on enhancing communication within the team and increasing transparency:</p>
+                        <ul>
+                            <li><strong>Sit Together (Whole Team):</strong> This practice suggests that the entire development team, including programmers, testers, and the on-site customer, should work together in one open physical space. This co-location encourages constant, informal communication. Team members can easily overhear relevant conversations, ask quick questions, and collaborate spontaneously without needing formal meetings or waiting for responses to emails.</li>
+                            <li><strong>Informative Workspace:</strong> This involves making key project information highly visible and accessible to the team and stakeholders. This is often done using physical artifacts in the workspace, such as whiteboards, bulletin boards, or dedicated walls. Examples include displaying User Story cards, task boards showing work in progress, burndown charts or other progress graphs, test status indicators, and team agreements (like coding standards).</li>
+                        </ul>
+                        <p>These practices address several communication issues:</p>
+                        <ul>
+                            <li><strong>Reducing Communication Latency:</strong> Questions can be answered instantly, and problems discussed face-to-face, avoiding delays.</li>
+                            <li><strong>Increasing Information Radiators:</strong> The informative workspace makes project status, progress, and issues visible to everyone at a glance, reducing the need to ask for updates.</li>
+                            <li><strong>Fostering Team Cohesion:</strong> Working together physically and sharing a common space builds a stronger sense of team and facilitates collaboration.</li>
+                            <li><strong>Improving Transparency:</strong> The informative workspace makes the project's state transparent to the team and anyone visiting the workspace (like management or other stakeholders).</li>
+                            <li><strong>Minimizing Misunderstandings:</strong> Informal, direct conversation is often richer and less prone to misinterpretation than written communication alone.</li>
+                        </ul>
+                        <p>Together, they create an environment where communication is effortless and information flows freely, which is critical for an adaptive, fast-paced methodology like XP.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">Q10: Explain the concept of 'Slack' in XP planning. Why is it included?</button>
+                    <div class="accordion-panel">
+                        <p>Slack, in the context of XP planning (specifically the Weekly Cycle or iteration planning), refers to intentionally planning slightly less work for an iteration than the team's estimated maximum capacity. Instead of packing the iteration full of high-priority features based on 100% of the team's perceived velocity, a small buffer or 'slack' is included.</p>
+                        <p>This slack is filled with lower-priority tasks that can be dropped if the team encounters unexpected issues or delays during the iteration. These slack tasks might include:</p>
+                        <ul>
+                            <li>Refactoring existing code (beyond what's integrated with feature development).</li>
+                            <li>Exploration of new technologies or techniques.</li>
+                            <li>Addressing minor bugs or usability improvements.</li>
+                            <li>Improving development tools or infrastructure.</li>
+                        </ul>
+                        <p>Slack is included in the plan because XP acknowledges that real-world projects are unpredictable. Unexpected issues invariably arise – complex technical problems take longer than estimated, critical bugs are discovered, team members get sick, external dependencies are delayed, or the customer might need to clarify a requirement significantly. </p>
+                        <p>Including slack provides buffer capacity to absorb these inevitable disruptions without jeopardizing the commitment to complete the high-priority stories planned for the iteration. It helps the team achieve a more sustainable pace (40-hour week) and consistently meet their iteration goals, leading to more predictable delivery over time. It provides 'breathing room' for maintaining the health of the system and the team.</p>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">Q11: Briefly describe the main roles within an XP team (Programmer, Tester, Tracker, Coach, Manager, Customer).</button>
+                    <div class="accordion-panel">
+                        <p>XP defines specific roles to ensure all necessary activities are covered. The main roles include:</p>
+                        <ul>
+                            <li><strong>Programmer:</strong> The core development role. Responsible for writing automated tests (unit tests and contributing to acceptance tests), designing, coding, and refactoring the software. Programmers also participate in estimating tasks and stories.</li>
+                            <li><strong>Customer:</strong> Represents the business needs and end-users. Writes User Stories and Acceptance Tests, prioritizes the stories, and provides ongoing feedback and clarification on requirements. Ideally, this role is fulfilled by an On-Site Customer.</li>
+                            <li><strong>Tester:</strong> Works closely with the Customer to help define and write Acceptance Tests. Runs various tests (manual or automated) regularly to ensure the software meets the acceptance criteria and identify defects. May also be a Programmer.</li>
+                            <li><strong>Tracker:</strong> Monitors the team's progress during an iteration and release. Tracks the completion of user stories and tasks, monitors acceptance test results, and uses visible metrics (like wall graphs) to communicate status and identify potential issues or bottlenecks. This role is often rotated among team members.</li>
+                            <li><strong>Coach:</strong> Mentors the team on XP practices and values. Helps the team apply the process effectively, facilitates discussions, identifies areas for improvement, and intervenes if the team is deviating from XP principles in a way that harms productivity or quality. Often an experienced XP practitioner or senior programmer.</li>
+                            <li><strong>Manager:</strong> While XP teams are self-organizing, a Manager role is still needed. This person typically owns the overall project goal/problems, obtains necessary resources for the team (e.g., hardware, training, resolving organizational impediments), and manages external interfaces or dependencies outside the core XP team. The XP Manager is less of a directive command-and-control figure and more of a facilitator and impediment remover.</li>
+                        </ul>
+                        <p>It's important to note that individuals might hold multiple roles, especially in smaller teams, or roles might be rotated to share knowledge and responsibility.</p>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">Q12: What does XP mean by 'Simple Design'? How does it relate to Refactoring and YAGNI?</button>
+                    <div class="accordion-panel">
+                        <p>'Simple Design' in XP means always striving for the simplest possible code and architecture that currently meets the requirements. It is about avoiding unnecessary complexity or features that *might* be needed in the future but aren't required *now*. The principle "You Ain't Gonna Need It" (YAGNI) is a key guideline for achieving Simple Design – don't implement functionality or design elements that aren't explicitly required by a current user story.</p>
+                        <p>Simple Design is achieved through several related practices:</p>
+                        <ul>
+                            <li><strong>YAGNI:</strong> Developers resist the temptation to build overly complex or generic solutions "just in case" they are needed later. They build only what is needed for the current stories.</li>
+                            <li><strong>Test-First Programming (TDD):</strong> Writing tests first helps drive a simple design because it's easier to write tests for simple, focused code units.</li>
+                            <li><strong>Refactoring:</strong> This is where Simple Design is maintained over time. As requirements evolve and the codebase grows, complexity can creep in. Continuous refactoring simplifies the code, removes duplication, and improves the structure, keeping the design clean even as features are added.</li>
+                        </ul>
+                        <p>The relationship is symbiotic: YAGNI encourages starting with the simplest design. TDD supports building that simple design incrementally and testably. Refactoring is the tool used to *keep* the design simple and clean as the system evolves, preventing it from becoming a tangled mess despite the focus on just-in-time development. XP's confidence in refactoring allows the team to start with a minimal design, knowing they can improve it later when more is known.</p>
+                    </div>
+                </div>
+
+                 <div class="accordion-item">
+                    <button class="accordion-header">Q13: How does XP encourage a sustainable pace? Mention relevant practices.</button>
+                    <div class="accordion-panel">
+                        <p>XP emphasizes a sustainable pace to ensure that the team can work effectively over the long term without burning out. The goal is to maintain high productivity and quality consistently, rather than having periods of intense overtime followed by exhaustion and low output. Key practices that support a sustainable pace include:</p>
+                        <ul>
+                            <li><strong>40-Hour Week:</strong> XP explicitly advocates for a standard 40-hour work week. While occasional overtime might be necessary in rare, critical situations, it is seen as a symptom of poor planning or process issues, not a standard operating procedure. Consistent long hours lead to fatigue, errors, and reduced long-term productivity.</li>
+                            <li><strong>Simple Design & Refactoring:</strong> Keeping the codebase simple reduces cognitive load and the effort required to understand and modify the system. Frequent refactoring prevents technical debt from accumulating to a point where it significantly slows down development or causes frustration. A clean codebase is easier to work with at a steady pace.</li>
+                            <li><strong>Slack:</strong> As mentioned previously, planning slack into iterations provides buffer capacity to handle unexpected work or delays without resorting to overtime, helping the team consistently meet iteration goals at a regular pace.</li>
+                            <li><strong>Continuous Integration & Test-First Programming (TDD):</strong> These practices build quality in from the start. By catching and fixing defects early and maintaining a comprehensive test suite, the team avoids the high-stress, time-consuming crunch of fixing a massive number of bugs just before a release. This reduces unpredictable periods of high pressure.</li>
+                            <li><strong>Short Iterations & Frequent Releases:</strong> Working in short cycles (typically 1-2 weeks) with frequent releases provides a sense of regular accomplishment and allows the team to adjust their pace based on real-world feedback and measured velocity, rather than being locked into a rigid, potentially unsustainable long-term plan.</li>
+                        </ul>
+                        <p>By combining disciplined technical practices with realistic planning and a focus on employee well-being (like the 40-hour week), XP aims to create a development environment where high quality and productivity are maintained consistently, preventing burnout and fostering a sustainable work-life balance.</p>
+                    </div>
+                </div>
+
+
+            </div> <!-- End essay-accordion -->
+        </section>
+
+
+        <!-- Quiz Sections -->
+        <div id="fill" class="main-content">
+            <h2>Fill in the Blank Questions</h2>
+            <div id="fill-questions"></div>
+        </div>
+
+        <div id="tf" class="main-content">
+            <h2>True/False Questions</h2>
+            <div id="tf-questions"></div>
+        </div>
+
+        <div id="mc" class="main-content">
+            <h2>Multiple Choice Questions</h2>
+            <div id="mc-questions"></div>
+        </div>
+
+    </div> <!-- End Container -->
+
+    <script>
+        // --- START OF QUIZ DATA (SE206 UNIT 2 - XP) ---
+        const fillInTheBlank = [
+            { question: "The XP practice where two programmers work together at one computer is called _______ Programming.", options: ["Solo", "Team", "Pair", "Buddy"], answer: "Pair" },
+            { question: "In XP, requirements are often expressed as short descriptions from the user's perspective, known as User _______.", options: ["Cases", "Requirements", "Stories", "Scenarios"], answer: "Stories" },
+            { question: "The XP value that encourages doing the simplest thing that works is called _______.", options: ["Communication", "Feedback", "Courage", "Simplicity"], answer: "Simplicity" },
+            { question: "Writing automated tests *before* writing the code is the core idea of _______-First Programming.", options: ["Code", "Design", "Test", "Release"], answer: "Test" },
+            { question: "Integrating code frequently into a shared repository, often multiple times a day, is known as _______ Integration.", options: ["Daily", "Weekly", "Continuous", "Manual"], answer: "Continuous" },
+            { question: "The XP role responsible for writing stories and acceptance tests, and prioritizing work is the _______.", options: ["Programmer", "Coach", "Customer", "Tracker"], answer: "Customer" },
+            { question: "_______ is the process of restructuring existing code without changing its external behavior, encouraged in XP.", options: ["Debugging", "Compiling", "Refactoring", "Testing"], answer: "Refactoring" },
+            { question: "The XP practice of planning some lower-priority tasks that can be dropped if the team falls behind is called _______.", options: ["Overtime", "Padding", "Slack", "Buffer"], answer: "Slack" },
+            { question: "The five core values of XP are Communication, Simplicity, Feedback, Courage, and _______.", options: ["Respect", "Quality", "Speed", "Planning"], answer: "Respect" },
+             { question: "_______ Cards (Class-Responsibility-Collaboration) are a brainstorming tool used in XP for object-oriented design.", options: ["User", "Task", "Story", "CRC"], answer: "CRC" }
+        ];
+
+        const trueOrFalse = [
+            { question: "XP is best suited for large, well-defined projects with stable requirements.", answer: false }, // Best for changing reqs, smaller teams
+            { question: "In Pair Programming, both programmers write code simultaneously on separate keyboards.", answer: false }, // One driver, one navigator/observer
+            { question: "XP values comprehensive documentation over working software.", answer: false }, // Values working software more
+            { question: "Continuous Integration involves integrating code only once per week.", answer: false }, // Many times per day
+            { question: "Test-First Programming means writing tests after the code is fully functional.", answer: false }, // Tests are written before
+            { question: "The Customer role in XP is optional and often replaced by the Project Manager.", answer: false }, // Customer role is crucial and distinct
+            { question: "Refactoring aims to change the external behavior of the code to add new features.", answer: false }, // Aims to improve internal structure without changing behavior
+            { question: "XP encourages developers to work consistent 40-hour weeks to maintain a sustainable pace.", answer: true },
+            { question: "The XP Coach is typically a manager responsible for assigning tasks.", answer: false }, // Typically a programmer, mentors on XP process
+            { question: "User Stories in XP provide highly detailed technical specifications.", answer: false } // They are short, user-focused descriptions
+        ];
+
+        const multipleChoice = [
+            { question: "Which of these is NOT one of the five core values of XP?", options: ["Simplicity", "Communication", "Planning", "Courage"], answer: "Planning" }, // Planning is a practice/phase, not a core value like Respect
+            { question: "What XP practice involves writing automated test cases before the production code?", options: ["Continuous Integration", "Refactoring", "Test-First Programming", "Pair Programming"], answer: "Test-First Programming" },
+            { question: "Who is primarily responsible for writing User Stories in XP?", options: ["Programmer", "Tester", "Customer", "Coach"], answer: "Customer" },
+            { question: "What is the main purpose of Refactoring in XP?", options: ["To add new features quickly", "To fix bugs found in testing", "To improve the internal design of code", "To generate documentation"], answer: "To improve the internal design of code" },
+            { question: "The XP practice of integrating code frequently throughout the day is called:", options: ["Daily Build", "Continuous Integration", "Weekly Cycle", "Release Integration"], answer: "Continuous Integration" },
+            { question: "Which XP role monitors progress and keeps metrics visible, often using wall graphs?", options: ["Manager", "Coach", "Tracker", "Customer"], answer: "Tracker" },
+            { question: "What does the 'Sit Together' practice in XP primarily aim to improve?", options: ["Code Quality", "Testing Speed", "Communication", "Customer Satisfaction"], answer: "Communication" },
+            { question: "Which XP document type is a brainstorming tool for OO design?", options: ["User Story Card", "Task Card", "CRC Card", "Acceptance Test"], answer: "CRC Card" },
+            { question: "The 'Weekly Cycle' in XP is primarily focused on:", options: ["Daily status updates", "Planning the work for the upcoming week", "Integrating all code developed", "Releasing software to the customer"], answer: "Planning the work for the upcoming week" },
+            { question: "Which XP value supports making hard decisions like refactoring or challenging requirements?", options: ["Simplicity", "Feedback", "Communication", "Courage"], answer: "Courage" }
+        ];
+        // --- END OF QUIZ DATA ---
+
+        // --- START OF SCRIPT LOGIC ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Select main tabs and content sections
+            const mainTabButtons = document.querySelectorAll('.main-tabs .tab-button');
+            const mainTabContents = document.querySelectorAll('.main-content');
+
+            // Select quiz content containers
+            const fillContainer = document.getElementById('fill-questions');
+            const tfContainer = document.getElementById('tf-questions');
+            const mcContainer = document.getElementById('mc-questions');
+
+             // Select accordion elements - This now selects headers in both Glossary and Essay sections
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+
+            // --- Main Tab Switching Logic ---
+            mainTabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab'); // Get the ID of the target content
+
+                    // Deactivate all main buttons and content
+                    mainTabButtons.forEach(btn => btn.classList.remove('active'));
+                    mainTabContents.forEach(content => content.classList.remove('active'));
+
+                    // Activate the clicked button
+                    button.classList.add('active');
+
+                    // Activate the corresponding content section
+                    const targetContent = document.getElementById(tabId);
+                    if (targetContent) {
+                        targetContent.classList.add('active');
+                    }
+                });
+            });
+
+            // --- Accordion Logic (for Glossary and Essay Questions) ---
+             accordionHeaders.forEach(header => {
+                header.addEventListener('click', function() {
+                    // Toggle active class on the header for styling (+) (-) sign
+                    this.classList.toggle('active');
+
+                    // Get the panel sibling
+                    const panel = this.nextElementSibling;
+
+                    // Toggle the max-height for smooth transition
+                    if (panel.style.maxHeight) {
+                        // If panel is open, close it
+                        panel.style.maxHeight = null;
+                        panel.style.padding = "0 20px"; // Remove padding top/bottom when closing
+                    } else {
+                         // If panel is closed, open it
+                         // Use scrollHeight + a buffer for content that might push past scrollHeight slightly
+                        panel.style.maxHeight = panel.scrollHeight + 30 + "px"; // Added 30px buffer
+                        panel.style.padding = "15px 20px"; // Add padding back when opening
+
+                        // Listen for transition end to potentially adjust maxHeight for perfect fit
+                        const onTransitionEnd = () => {
+                            if (!panel.style.maxHeight) return; // Only adjust if still trying to be open
+                             // Check if scrollHeight is greater than current maxHeight
+                            if (panel.scrollHeight + 30 > parseFloat(panel.style.maxHeight)) {
+                                panel.style.maxHeight = panel.scrollHeight + 30 + "px";
+                            }
+                            panel.removeEventListener('transitionend', onTransitionEnd);
+                        };
+                         panel.addEventListener('transitionend', onTransitionEnd);
+                    }
+
+                    // --- Optional: Close other accordions ---
+                    // Find the parent container (either glossary-accordion or essay-accordion)
+                    const parentAccordion = this.closest('.glossary-accordion, .essay-accordion');
+                    if (parentAccordion) {
+                        const siblingsHeaders = parentAccordion.querySelectorAll('.accordion-header');
+                         siblingsHeaders.forEach(otherHeader => {
+                            // If it's a different header in the *same* accordion and it's active
+                            if (otherHeader !== this && otherHeader.classList.contains('active')) {
+                                otherHeader.classList.remove('active');
+                                const otherPanel = otherHeader.nextElementSibling;
+                                otherPanel.style.maxHeight = null;
+                                otherPanel.style.padding = "0 20px"; // Remove padding top/bottom
+                            }
+                        });
+                    }
+                    // --- End Optional Close Others ---
+                });
+            });
+
+
+            // --- Function to handle option selection within a question ---
+            function handleOptionSelection(button, questionDiv) {
+                // Deselect siblings within the same question
+                const siblings = questionDiv.querySelectorAll('.option-button.selected');
+                siblings.forEach(sib => sib.classList.remove('selected'));
+                // Select clicked button
+                button.classList.add('selected');
+                 // Clear previous feedback when a new option is selected
+                const existingFeedback = questionDiv.querySelector('.feedback');
+                if (existingFeedback) {
+                    existingFeedback.remove();
+                }
+            }
+
+            // --- Function to create and append feedback ---
+            function showFeedback(questionDiv, isCorrect, correctAnswer) {
+                 // Remove existing feedback first
+                const existingFeedback = questionDiv.querySelector('.feedback');
+                if (existingFeedback) {
+                    existingFeedback.remove();
+                }
+
+                const feedback = document.createElement('div');
+                feedback.className = 'feedback';
+                if (isCorrect) {
+                    feedback.classList.add('correct');
+                    feedback.textContent = 'Correct!';
+                } else {
+                    feedback.classList.add('incorrect');
+                     // For T/F, explicitly show the boolean value
+                     let displayAnswer = correctAnswer;
+                     if (typeof correctAnswer === 'boolean') {
+                         displayAnswer = correctAnswer ? 'True' : 'False';
+                     }
+                    feedback.textContent = `Incorrect. Correct answer: ${displayAnswer}`;
+                }
+                // Append feedback after the check button
+                const checkButton = questionDiv.querySelector('.check-answer');
+                 if (checkButton) {
+                    // Insert after the check button if it exists
+                    checkButton.parentNode.insertBefore(feedback, checkButton.nextSibling);
+                } else {
+                     // Otherwise, append to the end of the question div
+                     questionDiv.appendChild(feedback);
+                }
+            }
+
+            // --- Load Fill in the Blank Questions ---
+            function loadFillInTheBlankQuestions() {
+                fillContainer.innerHTML = ''; // Clear previous content
+                fillInTheBlank.forEach((q, index) => { // Added index for unique IDs if needed
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question';
+                    questionDiv.id = `fill-q-${index}`;
+
+                    const questionText = document.createElement('p');
+                    // Find the blank spot indicated by _______ and replace it for display
+                    questionText.innerHTML = q.question.replace('_______', '<span style="color: #007bff; font-weight:bold;">_______</span>');
+                    questionDiv.appendChild(questionText);
+
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'options';
+
+                    // Shuffle options for variety (optional)
+                    const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+
+                    shuffledOptions.forEach(option => { // Use shuffled options
+                        const optionButton = document.createElement('button');
+                        optionButton.className = 'option-button';
+                        optionButton.textContent = option;
+                        optionButton.addEventListener('click', () => handleOptionSelection(optionButton, questionDiv));
+                        optionsDiv.appendChild(optionButton);
+                    });
+                    questionDiv.appendChild(optionsDiv);
+
+                    const checkButton = document.createElement('button');
+                    checkButton.className = 'check-answer';
+                    checkButton.textContent = 'Check Answer';
+                    checkButton.addEventListener('click', () => {
+                        const selected = questionDiv.querySelector('.option-button.selected');
+                        if (selected) {
+                            showFeedback(questionDiv, selected.textContent === q.answer, q.answer);
+                        } else {
+                             // Optionally show feedback that an answer must be selected
+                             showFeedback(questionDiv, false, q.answer); // Or provide specific feedback
+                        }
+                    });
+                    questionDiv.appendChild(checkButton);
+
+                    fillContainer.appendChild(questionDiv);
+                });
+            }
+
+
+            // --- Load True/False Questions ---
+            function loadTrueFalseQuestions() {
+                tfContainer.innerHTML = ''; // Clear previous content
+                trueOrFalse.forEach((q, index) => { // Added index
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question';
+                    questionDiv.id = `tf-q-${index}`;
+
+                    const questionText = document.createElement('p');
+                    questionText.textContent = q.question;
+                    questionDiv.appendChild(questionText);
+
+                     const optionsDiv = document.createElement('div'); // Keep consistent structure
+                    optionsDiv.className = 'options';
+
+                    const trueButton = document.createElement('button');
+                    trueButton.className = 'option-button';
+                    trueButton.textContent = 'True';
+                    trueButton.addEventListener('click', () => handleOptionSelection(trueButton, questionDiv));
+                    optionsDiv.appendChild(trueButton);
+
+                    const falseButton = document.createElement('button');
+                    falseButton.className = 'option-button';
+                    falseButton.textContent = 'False';
+                    falseButton.addEventListener('click', () => handleOptionSelection(falseButton, questionDiv));
+                    optionsDiv.appendChild(falseButton);
+
+                    questionDiv.appendChild(optionsDiv);
+
+                    const checkButton = document.createElement('button');
+                    checkButton.className = 'check-answer';
+                    checkButton.textContent = 'Check Answer';
+                    checkButton.addEventListener('click', () => {
+                        const selected = questionDiv.querySelector('.option-button.selected');
+                        if (selected) {
+                            // Check boolean answer correctly
+                            const isCorrect = (selected.textContent === 'True' && q.answer === true) || (selected.textContent === 'False' && q.answer === false);
+                            showFeedback(questionDiv, isCorrect, q.answer); // Pass boolean directly
+                        } else {
+                            showFeedback(questionDiv, false, q.answer); // Pass boolean directly
+                        }
+                    });
+                    questionDiv.appendChild(checkButton);
+
+                    tfContainer.appendChild(questionDiv);
+                });
+            }
+
+            // --- Load Multiple Choice Questions ---
+            function loadMultipleChoiceQuestions() {
+                mcContainer.innerHTML = ''; // Clear previous content
+                multipleChoice.forEach((q, index) => { // Added index
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question';
+                    questionDiv.id = `mc-q-${index}`;
+
+                    const questionText = document.createElement('p');
+                    questionText.textContent = q.question;
+                    questionDiv.appendChild(questionText);
+
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'options';
+
+                    // Shuffle options for variety (optional)
+                    const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+
+                    shuffledOptions.forEach(option => { // Use shuffled options
+                        const optionButton = document.createElement('button');
+                        optionButton.className = 'option-button';
+                        optionButton.textContent = option;
+                        optionButton.addEventListener('click', () => handleOptionSelection(optionButton, questionDiv));
+                        optionsDiv.appendChild(optionButton);
+                    });
+                    questionDiv.appendChild(optionsDiv);
+
+                    const checkButton = document.createElement('button');
+                    checkButton.className = 'check-answer';
+                    checkButton.textContent = 'Check Answer';
+                    checkButton.addEventListener('click', () => {
+                        const selected = questionDiv.querySelector('.option-button.selected');
+                        if (selected) {
+                            showFeedback(questionDiv, selected.textContent === q.answer, q.answer);
+                        } else {
+                             showFeedback(questionDiv, false, q.answer);
+                        }
+                    });
+                    questionDiv.appendChild(checkButton);
+
+                    mcContainer.appendChild(questionDiv);
+                });
+            }
+
+            // --- Initial Load ---
+            // Load all quiz questions initially so they are ready when tabs are clicked
+            loadFillInTheBlankQuestions();
+            loadTrueFalseQuestions();
+            loadMultipleChoiceQuestions();
+
+
+        }); // End DOMContentLoaded
+        // --- END OF SCRIPT LOGIC ---
+    </script>
+</body>
+</html>
