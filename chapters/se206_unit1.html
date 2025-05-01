@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -49,6 +49,10 @@
         }
          ul {
             list-style-type: disc;
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+        ol { /* Added style for ordered lists */
             padding-left: 20px;
             margin-top: 10px;
         }
@@ -116,12 +120,13 @@
         }
 
 
-        /* --- Accordion Styles (for Glossary) --- */
-        .glossary-accordion {
-            border: 1px solid #dee2e6;
+        /* --- Accordion Styles (for Glossary and Essay) --- */
+        .accordion-container { /* Wrapper for glossary and essay questions */
+             border: 1px solid #dee2e6;
             border-radius: 5px;
             overflow: hidden; /* Contain borders */
         }
+
 
         .accordion-item {
             border-bottom: 1px solid #dee2e6; /* Separator */
@@ -145,6 +150,12 @@
             position: relative; /* For the indicator */
         }
 
+        /* Specific styling for essay questions header */
+        #essay .accordion-header {
+             color: #0056b3; /* Blue for essay questions */
+        }
+
+
         .accordion-header:hover {
             background-color: #e9ecef;
         }
@@ -158,6 +169,10 @@
             margin-left: 5px;
             transition: transform 0.2s ease-in-out;
         }
+        #essay .accordion-header::after { /* Ensure blue color for essay indicator */
+             color: #0056b3;
+        }
+
 
         .accordion-header.active::after {
             content: "\2212"; /* - sign */
@@ -176,10 +191,21 @@
             overflow: hidden;
             transition: max-height 0.3s ease-out, padding 0.3s ease-out; /* Smooth transition */
         }
-        .accordion-panel p, .accordion-panel ul { /* Apply margin to lists too */
+        /* Padding when panel is open */
+        .accordion-panel.open { /* Add a class for when it's open */
+             padding: 15px 20px;
+        }
+
+        .accordion-panel p,
+        .accordion-panel ul,
+        .accordion-panel ol { /* Apply margin to lists and paragraphs */
             margin: 15px 0; /* Add margin back when panel is open */
             color: #333; /* Reset color for definition */
         }
+         .accordion-panel strong { /* Ensure strong is red inside panel */
+             color: #dc3545;
+         }
+
 
         /* --- End Accordion Styles --- */
 
@@ -286,6 +312,7 @@
         <div class="main-tabs">
             <button class="tab-button active" data-tab="glossary">Glossary</button>
             <button class="tab-button" data-tab="concepts">Key Concepts</button>
+             <button class="tab-button" data-tab="essay">Essay Questions</button> <!-- Added Essay Tab -->
             <button class="tab-button" data-tab="fill">Fill in the Blank</button>
             <button class="tab-button" data-tab="tf">True/False</button>
             <button class="tab-button" data-tab="mc">Multiple Choice</button>
@@ -294,7 +321,7 @@
         <!-- Glossary Section (Accordion) -->
         <section id="glossary" class="main-content active">
             <h2>Glossary of Terms</h2>
-            <div class="glossary-accordion">
+            <div class="accordion-container"> <!-- Used accordion-container -->
                 <!-- Add terms based on SE206 Unit 1 -->
                  <div class="accordion-item">
                     <button class="accordion-header">Agile Development</button>
@@ -369,7 +396,7 @@
                     </div>
                 </div>
 
-            </div> <!-- End glossary-accordion -->
+            </div> <!-- End accordion-container -->
         </section>
 
         <!-- Key Concepts Section -->
@@ -409,6 +436,7 @@
                      <li><strong>Traditional (e.g., Waterfall):</strong> Features/Functionality are usually <strong>Fixed</strong> upfront. Time and Resources are flexible (often leading to delays/overruns).</li>
                      <li><strong>Agile:</strong> Time (iterations) and Resources (team size) are often <strong>Fixed</strong>. Functionality is flexible and evolves based on priority and feedback.</li>
                  </ul>
+                 <p>This means Agile focuses on delivering the *most valuable* features within a fixed timeframe and budget, while Traditional methods aim to deliver a *fixed set* of features, often at the expense of time and budget predictability.</p>
              </div>
 
             <div class="concept-block">
@@ -420,23 +448,23 @@
                      <li><strong>Customer collaboration</strong> over contract negotiation</li>
                      <li><strong>Responding to change</strong> over following a plan</li>
                  </ul>
-                 <p>While there is value in the items on the right, Agile values the items on the left more.</p>
+                 <p>While there is value in the items on the right, Agile values the items on the left more. This is a declaration of priorities, emphasizing people, functionality, partnership, and flexibility.</p>
             </div>
 
              <div class="concept-block">
                 <h3>Agile Principles (Selected)</h3>
                 <p>The Agile Manifesto is supported by 12 principles. Some key ones include:</p>
                 <ul>
-                    <li>Highest priority is to satisfy the customer through <strong>early and continuous delivery</strong> of valuable software.</li>
-                    <li><strong>Welcome changing requirements</strong>, even late in development.</li>
-                    <li>Deliver <strong>working software frequently</strong> (weeks or months).</li>
-                    <li>Business people and developers must <strong>work together daily</strong>.</li>
-                    <li>Build projects around <strong>motivated individuals</strong>. Trust them to get the job done.</li>
-                    <li><strong>Face-to-face conversation</strong> is the most efficient and effective method of conveying information.</li>
-                    <li><strong>Working software</strong> is the primary measure of progress.</li>
-                    <li>Agile processes promote <strong>sustainable development</strong>. Sponsors, developers, and users should maintain a constant pace indefinitely.</li>
-                    <li><strong>Simplicity</strong>—the art of maximizing the amount of work not done—is essential.</li>
-                    <li>The best architectures, requirements, and designs emerge from <strong>self-organizing teams</strong>.</li>
+                    <li>Highest priority is to satisfy the customer through <strong>early and continuous delivery</strong> of valuable software. (Deliver value often)</li>
+                    <li><strong>Welcome changing requirements</strong>, even late in development. Agile processes harness change for the customer's competitive advantage. (Embrace change)</li>
+                    <li>Deliver <strong>working software frequently</strong>, from a couple of weeks to a couple of months, with a preference to the shorter timescale. (Frequent delivery)</li>
+                    <li>Business people and developers must <strong>work together daily</strong> throughout the project. (Close collaboration)</li>
+                    <li>Build projects around <strong>motivated individuals</strong>. Give them the environment and support they need, and trust them to get the job done. (Trust individuals)</li>
+                    <li>The most efficient and effective method of conveying information to and within a development team is <strong>face-to-face conversation</strong>. (Efficient communication)</li>
+                    <li><strong>Working software</strong> is the primary measure of progress. (Measure by results)</li>
+                    <li>Agile processes promote <strong>sustainable development</strong>. The sponsors, developers, and users should be able to maintain a constant pace indefinitely. (Sustainable pace)</li>
+                    <li><strong>Simplicity</strong>—the art of maximizing the amount of work not done—is essential. (Keep it simple)</li>
+                    <li>The best architectures, requirements, and designs emerge from <strong>self-organizing teams</strong>. (Empower teams)</li>
                  </ul>
             </div>
 
@@ -444,43 +472,53 @@
                 <h3>Agile Characteristics</h3>
                 <p>Key characteristics of Agile development processes:</p>
                 <ul>
-                    <li><strong>Modularity:</strong> Process is broken down into manageable parts.</li>
-                    <li><strong>Iterative:</strong> Short cycles enable fast verification and correction.</li>
-                    <li><strong>Time-bound:</strong> Iterations typically last one to six weeks.</li>
-                    <li><strong>Adaptive:</strong> Able to handle emergent risks and changing requirements.</li>
-                    <li><strong>People-oriented:</strong> Focuses on individuals, motivation, and collaboration.</li>
-                    <li><strong>Collaborative:</strong> Emphasizes communication and teamwork.</li>
+                    <li><strong>Modularity:</strong> The overall process is broken down into smaller, manageable parts (iterations/sprints).</li>
+                    <li><strong>Iterative:</strong> Development cycles repeat, allowing for refinement and learning with each cycle.</li>
+                    <li><strong>Time-bound:</strong> Iterations have a fixed duration (typically 1-6 weeks), providing rhythm and predictability.</li>
+                    <li><strong>Adaptive:</strong> The process can easily adjust to changing requirements, new information, or emergent risks.</li>
+                    <li><strong>People-oriented:</strong> Emphasis is placed on individuals, their skills, motivation, and interactions.</li>
+                    <li><strong>Collaborative:</strong> Requires strong communication and teamwork among developers, business people, and customers.</li>
                  </ul>
             </div>
 
             <div class="concept-block">
                 <h3>Advantages of Agile</h3>
+                 <p>Adopting Agile offers several benefits:</p>
                  <ul>
-                     <li><strong>Early Realization:</strong> Incremental nature allows benefits to be realized early.</li>
-                     <li><strong>Visibility & Early Issue Identification:</strong> Small incremental releases are visible, helping identify issues early.</li>
-                     <li><strong>Adaptability:</strong> Easier to respond to changes in requirements or the market.</li>
-                     <li><strong>Customer Satisfaction:</strong> Focus on frequent delivery and collaboration leads to higher satisfaction.</li>
-                     <li><strong>Producing the Right Product:</strong> Continuous feedback helps ensure the product meets user needs.</li>
+                     <li><strong>Early Realization of Value:</strong> Due to the incremental nature, functional parts of the software are delivered early, allowing customers to gain value sooner. Example: A working login system might be delivered in the first few sprints, even if other features are missing.</li>
+                     <li><strong>Visibility & Early Issue Identification:</strong> Frequent, small releases make the product visible early and continuously, helping identify defects, misunderstandings, or usability issues much sooner than in traditional models. Example: If the search functionality built in sprint 3 isn't performing as expected, it's caught and fixed within that sprint or the next, not months later during a dedicated testing phase.</li>
+                     <li><strong>Adaptability to Change:</strong> Agile thrives on change. It's built to welcome and incorporate changing requirements throughout the project lifecycle, which is crucial in rapidly evolving markets. Example: If a competitor launches a new feature, an Agile team can quickly pivot to incorporate a similar feature in the next sprint, while a Waterfall team might be stuck on the original, now less competitive, plan.</li>
+                     <li><strong>Increased Customer Satisfaction:</strong> Through continuous collaboration and frequent delivery of working software, customers are more engaged, see progress regularly, and receive a product that better meets their current needs. Example: A customer seeing a new working feature every two weeks feels more involved and satisfied than waiting a year for the entire product.</li>
+                     <li><strong>Building the Right Product:</strong> The iterative process with continuous feedback loops ensures that the development stays aligned with customer needs and market demands, reducing the risk of building a product nobody wants. Example: By showing working software every sprint, the team and customer can verify that the features being built are truly valuable and adjust priorities if needed.</li>
                  </ul>
             </div>
 
             <div class="concept-block">
                 <h3>Overview of Agile Methodologies</h3>
-                <p>Agile is an umbrella term. Specific methodologies include:</p>
+                <p>Agile is an umbrella term. Specific methodologies provide frameworks and practices to implement Agile principles. Examples include:</p>
                 <ul>
-                    <li>Extreme Programming (XP)</li>
-                    <li>Scrum</li>
-                    <li>Dynamic Systems Development Method (DSDM)</li>
-                    <li>Feature Driven Development (FDD)</li>
-                    <li>Crystal Method</li>
-                    <li>Adaptive Software Development (ASD)</li>
-                    <li>Unified Process (UP) / Agile UP</li>
-                    <li>Lean Software Development (LSD)</li>
+                    <li>Extreme Programming (XP): Known for its engineering practices (pair programming, TDD, continuous integration).</li>
+                    <li>Scrum: A lightweight framework focused on team collaboration, accountability, and iterative progress (Sprints).</li>
+                    <li>Dynamic Systems Development Method (DSDM): Focuses on continuous user involvement.</li>
+                    <li>Feature Driven Development (FDD): Organizes development around "features" that are valuable to the client.</li>
+                    <li>Crystal Method: A family of methodologies focusing on communication and human factors.</li>
+                    <li>Adaptive Software Development (ASD): Focuses on continuous adaptation to the unpredictable nature of software development.</li>
+                    <li>Unified Process (UP) / Agile UP: An iterative and incremental development process framework.</li>
+                    <li>Lean Software Development (LSD): Based on principles from lean manufacturing, focusing on eliminating waste and delivering value quickly.</li>
                 </ul>
-                <p>These methods promote development, teamwork, collaboration, and adaptability.</p>
+                <p>These methods share the core Agile values of promoting development, teamwork, collaboration, and adaptability.</p>
              </div>
 
         </section>
+
+        <!-- Essay Questions Section (Accordion) -->
+        <section id="essay" class="main-content">
+             <h2>Essay Questions</h2>
+            <div id="essay-questions-container" class="accordion-container">
+                <!-- Essay questions will be loaded here by JavaScript -->
+            </div>
+        </section>
+
 
         <!-- Quiz Sections -->
         <div id="fill" class="main-content">
@@ -538,21 +576,236 @@
             { question: "Frequent delivery of working software in Agile typically occurs on a timescale of:", options: ["Couple of years", "Couple of quarters", "Couple of weeks to a couple of months", "Only at project completion"], answer: "Couple of weeks to a couple of months" },
             { question: "XP, Scrum, and DSDM are all examples of:", options: ["Traditional Methodologies", "Agile Methodologies", "Waterfall Phases", "Project Management Tools"], answer: "Agile Methodologies" }
         ];
-        // --- END OF QUIZ DATA ---
 
-        // --- START OF SCRIPT LOGIC (PASTE FROM PREVIOUS EXAMPLE) ---
+        // --- START OF ESSAY QUESTION DATA (SE206 UNIT 1) ---
+         const essayQuestions = [
+            {
+                question: "Compare and contrast the Traditional Waterfall Model with Agile methodologies, focusing on how they handle project constraints (Scope, Time, Resources).",
+                answer: `
+                    <p>The key difference between the Traditional Waterfall Model and Agile methodologies lies in their approach to managing project constraints: Scope (Functionality/Features), Time (Schedule), and Resources (Budget/Team Size).</p>
+                    <ul>
+                        <li><strong>Traditional (Waterfall):</strong> In the Waterfall model, the <strong>Scope/Functionality</strong> is typically <strong>Fixed</strong> upfront, requiring detailed requirements and design documentation before development begins. This fixed scope is non-negotiable and resistant to change once a phase is completed. Consequently, <strong>Time</strong> and <strong>Resources</strong> become the flexible variables. If issues arise, requirements change, or estimates are off, the schedule and budget often expand to accommodate the original fixed scope.</li>
+                        <li><strong>Agile:</strong> Agile methodologies, conversely, often treat <strong>Time</strong> (via fixed-length iterations/sprints) and <strong>Resources</strong> (via stable, cross-functional teams) as relatively <strong>Fixed</strong> constraints. The <strong>Scope/Functionality</strong> then becomes the flexible variable. The team works to deliver the most valuable features possible within the fixed time and budget. Requirements evolve based on feedback and learning, and priorities can be adjusted between iterations.</li>
+                    </ul>
+                    <p><strong>Analogy:</strong> Think of building a house. Waterfall is like creating a complete, rigid blueprint (fixed scope) and then taking as long as it takes and spending what is needed (flexible time/resources) to build exactly that house. Agile is like deciding you have a fixed timeframe (e.g., 6 months) and a set budget/team (fixed time/resources), and within that, you build the most important parts of the house first (e.g., foundation, walls, roof) and then decide which additional features (kitchen fixtures, specific finishes - flexible scope) can be added within the remaining time/budget, constantly getting feedback from the owner.</p>
+                    <p>In summary, Waterfall aims to deliver a predetermined product regardless of time/cost overruns, while Agile aims to deliver the most valuable product possible within predetermined time and cost constraints, embracing flexibility in scope.</p>
+                `
+            },
+             {
+                question: "Explain the four core values of the Agile Manifesto and discuss their significance in shifting from traditional approaches.",
+                answer: `
+                    <p>The Agile Manifesto is a foundational document for Agile development, stating four core values. While acknowledging value in traditional software development practices, it prioritizes specific aspects:</p>
+                    <ol>
+                        <li><strong>Individuals and interactions over processes and tools:</strong> This emphasizes the importance of human interaction, collaboration, and communication within the team and with stakeholders. While processes and tools are necessary, skilled individuals working together effectively are seen as the primary driver of success, especially in adapting to complexity and change. This contrasts with heavy, rigid processes that can stifle creativity and communication.</li>
+                        <li><strong>Working software over comprehensive documentation:</strong> Agile prioritizes delivering functional, testable software increments frequently. While documentation is still important (e.g., user stories, technical designs needed by the team), its focus shifts from exhaustive upfront specifications to documentation that supports understanding and use of the working software. The main measure of progress is a running application, not just completed documents. This counters the traditional focus on extensive paperwork before any code is delivered.</li>
+                        <li><strong>Customer collaboration over contract negotiation:</strong> Agile stresses continuous engagement and partnership with the customer throughout the development process. Instead of relying solely on detailed, potentially rigid contracts defined upfront, Agile teams work closely with customers to gather feedback, clarify requirements, and ensure the product being built meets their evolving needs. This builds trust and ensures the product is relevant.</li>
+                        <li><strong>Responding to change over following a plan:</strong> Agile recognizes that requirements in software development, especially for complex or innovative projects, are likely to change. Instead of adhering strictly to a fixed, long-term plan (like in Waterfall), Agile processes are designed to welcome and incorporate changes, even late in development. The ability to adapt quickly provides a competitive advantage.</li>
+                    </ol>
+                    <p>These values represent a significant shift from traditional, plan-driven methodologies by placing a higher premium on people, functionality, partnership, and adaptability, recognizing the inherent uncertainty and complexity in software development.</p>
+                `
+            },
+             {
+                question: "Describe the concepts of 'Iterative' and 'Incremental' development and how they are applied in Agile methodologies.",
+                answer: `
+                    <p>Iterative and Incremental are two key concepts that characterize Agile development processes:</p>
+                    <ul>
+                        <li><strong>Iterative Development:</strong> This involves cycling through the core development activities (like requirements gathering, design, coding, testing) repeatedly in short, fixed-length periods called iterations (or Sprints in Scrum), typically 1-4 weeks long. Each iteration produces a potentially shippable increment of the product. The product is refined and improved with each cycle based on feedback and testing. It's like refining a sketch multiple times, adding detail and correction with each pass.</li>
+                        <li><strong>Incremental Development:</strong> This involves building and delivering the software in functional pieces or increments. Instead of building the entire system at once, functionality is added piece by piece in subsequent iterations. Each increment is a working subset of the final product, adding more features to what was built before. It's like building one room of a house completely, then the next, and so on, rather than building the foundation for the whole house, then all the walls, then all the roofs, etc., sequentially.</li>
+                    </ul>
+                    <p><strong>Combined in Agile:</strong> Agile methodologies combine both approaches. In each <strong>iteration</strong> (iterative), the team builds a new <strong>increment</strong> of working software (incremental). For example, in Sprint 1, they might deliver a working login feature (increment 1). In Sprint 2, they iterate through development activities again and add a user profile feature (increment 2), integrated with the login. Increment 2 is built upon and incorporates increment 1. This iterative and incremental approach allows for early delivery of value, continuous feedback, and the ability to adapt to changing requirements effectively.</p>
+                `
+            },
+             {
+                question: "Select and explain three key principles from the Agile Manifesto (beyond the core values) and illustrate their practical application in a development team.",
+                answer: `
+                    <p>Here are three key Agile principles and their practical application:</p>
+                    <ol>
+                        <li><strong>Principle: Our highest priority is to satisfy the customer through early and continuous delivery of valuable software.</strong>
+                            <p><strong>Explanation:</strong> This principle emphasizes that the ultimate goal is customer satisfaction, achieved by frequently releasing functional software that provides actual business value. It shifts focus away from just completing tasks or phases towards delivering tangible results that the customer can use and benefit from.</p>
+                            <p><strong>Application:</strong> An Agile team will prioritize user stories based on business value identified by the Product Owner. They will work in short sprints (e.g., 2 weeks) aiming to deliver a potentially shippable increment at the end of each sprint. A demonstration (Sprint Review) is held where the customer can see the working software and provide feedback, ensuring value is being delivered continuously.</p>
+                        </li>
+                        <li><strong>Principle: The most efficient and effective method of conveying information to and within a development team is face-to-face conversation.</strong>
+                            <p><strong>Explanation:</strong> This highlights the superiority of direct, synchronous communication over written documentation, emails, or formal meetings when teams are co-located. Face-to-face interaction allows for immediate clarification, non-verbal cues, and faster problem-solving, fostering better understanding and collaboration.</p>
+                            <p><strong>Application:</strong> An Agile team might have a dedicated team room ("sit together" practice) to facilitate spontaneous discussions. They conduct a daily stand-up meeting (brief, standing meeting) to quickly synchronize and identify impediments. Complex design issues or requirements are often discussed directly at a whiteboard rather than relying solely on written specifications or lengthy formal meetings.</p>
+                        </li>
+                         <li><strong>Principle: Working software is the primary measure of progress.</strong>
+                            <p><strong>Explanation:</strong> This principle states that the best way to gauge the status of a project is by evaluating the functional, tested software that has been built, not by relying on reports, Gantt charts, or documentation completion. If the software isn't working, progress is limited regardless of how much planning or documentation exists.</p>
+                            <p><strong>Application:</strong> At the end of each sprint, the team presents the "potentially shippable increment" of working software. This demo is the main indicator of progress. Metrics like lines of code or completion of design documents are less important than showing features that actually run and meet acceptance criteria. For example, having a completed "Login Feature" that users can actually use is considered progress, while having a detailed design document and 500 lines of code that don't run is not.</p>
+                        </li>
+                    </ol>
+                `
+            },
+            {
+                question: "List and briefly explain at least five key characteristics that define Agile development processes.",
+                answer: `
+                    <p>Agile development processes are characterized by several key traits that differentiate them from traditional methods:</p>
+                    <ol>
+                        <li><strong>Modularity:</strong> Agile breaks down the overall project into smaller, manageable modules or chunks of work, often represented by user stories or features. These modules are then prioritized and implemented incrementally. This allows teams to focus on delivering value in smaller pieces rather than tackling the entire system at once.</li>
+                        <li><strong>Iterative:</strong> Development occurs in repeating cycles or iterations (like Sprints). Each iteration involves the full development loop (planning, design, build, test, review). This allows for continuous refinement and improvement based on feedback and learning from previous cycles.</li>
+                        <li><strong>Time-bound:</strong> Iterations have a fixed, short duration (typically 1 to 6 weeks). This creates a regular rhythm for the team, limits risk within each cycle, and provides predictable delivery cadences for working software.</li>
+                        <li><strong>Adaptive:</strong> Agile processes are inherently flexible and designed to accommodate change. Because planning happens incrementally and feedback is continuous, teams can easily adapt to changing requirements, emergent risks, or new information without derailing the entire project.</li>
+                        <li><strong>People-oriented:</strong> Agile places significant emphasis on the individuals doing the work and their interactions. It promotes motivated teams, trusts them to self-organize, and values direct communication and collaboration over rigid processes or hierarchical command structures.</li>
+                        <li><strong>Collaborative:</strong> Strong collaboration is essential in Agile. This includes collaboration within the development team, as well as close collaboration between the team, the customer (Product Owner), and other stakeholders. Regular communication and feedback loops are key to ensuring the product meets needs.</li>
+                    </ol>
+                    <p>(Note: You were asked for five, six are provided for completeness based on the slides.)</p>
+                `
+            },
+            {
+                question: "Discuss two significant advantages of adopting Agile development compared to traditional methodologies, providing examples.",
+                answer: `
+                    <p>Adopting Agile development brings several advantages over traditional, sequential methods. Here are two significant ones:</p>
+                    <ol>
+                        <li><strong>Early Realization of Value and Visibility:</strong>
+                            <p><strong>Explanation:</strong> Due to its incremental and iterative nature, Agile delivers working software frequently (every iteration/sprint). This means functional parts of the product are available to the customer much earlier than in traditional models where delivery might only happen at the very end. This provides early value and makes the project's progress highly visible.</p>
+                            <p><strong>Example:</strong> In a traditional project to build an e-commerce site, the customer might wait a year to see a fully functional website. In an Agile project, the customer might see a working product browsing feature after 4 weeks, a working shopping cart after another 4 weeks, and a working checkout process after another 4 weeks. They get value (ability to browse and add to cart) early, and both the team and customer have clear visibility into what is built and working at every stage.</p>
+                        </li>
+                        <li><strong>Increased Adaptability and Reduced Risk:</strong>
+                            <p><strong>Explanation:</strong> Agile processes are designed to welcome and manage change. Short feedback loops and incremental planning allow teams to quickly incorporate new requirements, respond to market shifts, or address unforeseen issues. This reduces the risk of building the wrong product or being unable to adjust to dynamic environments.</p>
+                            <p><strong>Example:</strong> Imagine midway through building a mobile app, user testing reveals a core feature is confusing and needs a significant redesign, or a new regulatory requirement emerges. In a traditional Waterfall model, this could cause significant delays, rework, and budget overruns because the design phase was "completed" months ago. In an Agile process, the team receives this feedback in a Sprint Review or discovers the requirement change. They can quickly adjust the backlog, re-prioritize, and incorporate the necessary changes in upcoming sprints with much less disruption.</p>
+                        </li>
+                    </ol>
+                `
+            },
+            {
+                question: "Briefly describe the Waterfall Model's typical phases and explain its primary limitation when dealing with real-world software projects.",
+                answer: `
+                    <p>The Waterfall Model is a sequential, linear approach to software development. It follows distinct phases that must be completed before the next phase begins. The typical phases are:</p>
+                    <ol>
+                        <li><strong>Requirement Gathering/Analysis:</strong> Defining exactly what the software should do.</li>
+                        <li><strong>System Design:</strong> Planning the software's architecture and structure.</li>
+                        <li><strong>Implementation (Coding):</strong> Writing the actual code based on the design.</li>
+                        <li><strong>Testing:</strong> Verifying that the code meets the requirements and is free of defects.</li>
+                        <li><strong>Deployment:</strong> Releasing the software to users.</li>
+                        <li><strong>Maintenance:</strong> Supporting and updating the software after release.</li>
+                    </ol>
+                    <p>The primary limitation of the Waterfall Model is its <strong>lack of flexibility and resistance to change</strong>. Because each phase must be completed and signed off before moving to the next, it is very difficult and costly to go back and make changes to requirements or design once development is underway (like water flowing only downwards). Real-world software projects often encounter changing requirements, new information, or unforeseen technical challenges during development. The Waterfall model is poorly equipped to handle this dynamic environment, often leading to delays, budget overruns, and potentially delivering a product that no longer fully meets the customer's needs by the time it is finished.</p>
+                `
+            },
+             {
+                question: "Explain the purpose and typical structure of a Daily Meeting (or Daily Stand-up) in an Agile framework like Scrum.",
+                answer: `
+                    <p>The Daily Meeting (or Daily Stand-up in Scrum) is a key practice in Agile frameworks aimed at promoting communication, synchronization, and accountability within the development team.</p>
+                    <p><strong>Purpose:</strong> The main goals of the Daily Meeting are:</p>
+                    <ul>
+                        <li>To synchronize the team's activities and plan for the next 24 hours.</li>
+                        <li>To identify any impediments or blockers that are preventing team members from making progress.</li>
+                        <li>To ensure everyone is aligned on the Sprint Goal (in Scrum) and how they are progressing towards it.</li>
+                        <li>It is *not* a status meeting for a manager, but a planning and synchronization meeting for the team.</li>
+                    </ul>
+                    <p><strong>Structure:</strong> The meeting is typically:</p>
+                    <ul>
+                        <li><strong>Short:</strong> It's time-boxed, usually to a maximum of 15 minutes.</li>
+                        <li><strong>Standing:</strong> Often participants stand up (hence "Stand-up") to help keep the meeting brief and focused.</li>
+                        <li><strong>Team-led:</strong> The team members update each other, often by answering three simple questions:
+                            <ol>
+                                <li>What did I do yesterday that helped the team meet the Sprint Goal?</li>
+                                <li>What will I do today to help the team meet the Sprint Goal?</li>
+                                <li>Are there any impediments blocking me or the team?</li>
+                            </ol>
+                        </li>
+                    </ul>
+                    <p>Discussions about impediments or detailed problem-solving are deferred to separate follow-up meetings involving only the relevant people, ensuring the Daily Meeting remains brief and benefits the whole team.</p>
+                `
+            },
+             {
+                question: "Describe the primary responsibilities of the Product Owner role in a Scrum team.",
+                answer: `
+                    <p>The Product Owner is a crucial role in Scrum, acting as the voice of the customer and key stakeholder. Their primary responsibilities revolve around defining and maximizing the value of the product resulting from the work of the Development Team.</p>
+                    <p>Key responsibilities include:</p>
+                    <ul>
+                        <li><strong>Managing the Product Backlog:</strong> This is the single source of truth for all work to be done on the product. The Product Owner is responsible for creating, clearly expressing, and maintaining items (like User Stories) in the Product Backlog.</li>
+                        <li><strong>Prioritizing Product Backlog Items:</strong> The Product Owner orders items in the Product Backlog based on their value, dependencies, and urgency, ensuring the Development Team works on the most important things first to maximize value delivered.</li>
+                        <li><strong>Ensuring Product Backlog Transparency:</strong> Making the Product Backlog visible, transparent, and understandable to the entire Scrum Team and stakeholders.</li>
+                        <li><strong>Being Available to the Team:</strong> Answering questions, clarifying requirements, and providing guidance to the Development Team on Product Backlog items throughout the Sprint.</li>
+                        <li><strong>Accepting or Rejecting Work:</strong> At the end of the Sprint, the Product Owner inspects the Increment and determines whether it meets the Definition of Done and the acceptance criteria for the Sprint's work. They have the final say on whether work is considered complete and accepted.</li>
+                        <li><strong>Stakeholder Communication:</strong> Communicating with stakeholders, gathering their input, and ensuring their needs are represented in the Product Backlog.</li>
+                    </ul>
+                    <p>The Product Owner must have a deep understanding of the business needs, the market, and the customer to make informed decisions about what should be built and in what order.</p>
+                `
+            },
+             {
+                question: "What is the role of the Scrum Master in a Scrum team? How do they support the team and the Product Owner?",
+                answer: `
+                    <p>The Scrum Master is a servant-leader for the Scrum Team. They are responsible for promoting and supporting Scrum as defined in the Scrum Guide. Their role is less about managing people directly and more about facilitating, coaching, and removing impediments.</p>
+                    <p>Key aspects of the Scrum Master role:</p>
+                    <ul>
+                        <li><strong>Serving the Development Team:</strong>
+                            <ul>
+                                <li>Coaching the team in self-organization and cross-functionality.</li>
+                                <li>Helping the team create high-value products.</li>
+                                <li>Removing impediments to the team's progress (e.g., resolving blockers, acquiring resources).</li>
+                                <li>Facilitating Scrum events as requested or needed.</li>
+                                <li>Coaching the team in organizational environments where Scrum is not yet fully adopted and understood.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Serving the Product Owner:</strong>
+                            <ul>
+                                <li>Helping find techniques for effective Product Backlog management.</li>
+                                <li>Helping the Scrum Team understand the need for clear and concise Product Backlog items.</li>
+                                <li>Helping understand product planning in an empirical environment.</li>
+                                <li>Ensuring the Product Owner understands how to arrange the Product Backlog to maximize value.</li>
+                                <li>Facilitating Scrum events as requested or needed.</li>
+                            </ul>
+                        </li>
+                         <li><strong>Serving the Organization:</strong>
+                            <ul>
+                                <li>Leading and coaching the organization in its Scrum adoption.</li>
+                                <li>Planning Scrum implementations within the organization.</li>
+                                <li>Helping employees and stakeholders understand and enact Scrum and empirical product development.</li>
+                                <li>Working with other Scrum Masters to increase the effectiveness of the application of Scrum in the organization.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p>In essence, the Scrum Master is a change agent and a facilitator, helping everyone understand and practice Scrum effectively to optimize the team's performance and delivery.</p>
+                `
+            },
+             {
+                question: "Explain the Agile principle 'Working software is the primary measure of progress' and why it's important.",
+                answer: `
+                    <p>The principle "Working software is the primary measure of progress" asserts that the most reliable and meaningful way to assess the progress of a software development project is by evaluating the actual, functional software that has been built and tested, rather than relying on indirect metrics like documentation completion, phase sign-offs, or hours worked.</p>
+                    <p><strong>Why it's Important:</strong></p>
+                    <ul>
+                        <li><strong>Tangible Proof:</strong> Working software provides concrete evidence that features are implemented correctly and integrated successfully. Unlike documents or plans, which *describe* what should be built, working software *is* what has been built.</li>
+                        <li><strong>Early Validation:</strong> Delivering working increments frequently allows stakeholders and users to interact with the software, provide feedback based on real experience, and validate that the team is building the right product. This significantly reduces the risk of discovering fundamental misunderstandings late in the project.</li>
+                        <li><strong>Basis for Feedback:</strong> Functional software provides a tangible basis for discussions and feedback during Sprint Reviews. It's much easier for users to comment on features they can click on and use than to interpret complex technical diagrams or lengthy specification documents.</li>
+                        <li><strong>Focus on Value:</strong> This principle reinforces the Agile focus on delivering value. Documentation is valuable insofar as it supports the creation of working software, but the software itself is where the ultimate value resides for the customer.</li>
+                        <li><strong>Realistic Status:</strong> Relying on working software for progress assessment provides a more realistic and transparent view of the project's true state. A project might appear "on track" based on documentation phases, but if the code isn't integrating or working correctly, the project is actually behind schedule.</li>
+                    </ul>
+                    <p>In contrast to traditional models where progress is often measured by completing phases or producing documentation, Agile prioritizes seeing and using the actual product as the true indicator of how far along the project is.</p>
+                `
+            },
+             {
+                question: "Describe two significant engineering practices associated with Extreme Programming (XP): Test-Driven Development (TDD) and Continuous Integration.",
+                answer: `
+                    <p>Extreme Programming (XP) is an Agile framework known for its emphasis on specific engineering practices to improve code quality and team effectiveness. Two core practices are Test-Driven Development (TDD) and Continuous Integration:</p>
+                    <ol>
+                        <li><strong>Test-Driven Development (TDD):</strong>
+                            <p><strong>Description:</strong> TDD is a development practice where developers write automated tests for a small piece of functionality *before* writing the code that will implement that functionality. The process follows a cycle: Write a failing test, write minimal code to make the test pass, and then refactor the code while ensuring the test (and all previous tests) continue to pass.</p>
+                            <p><strong>Significance/Benefits:</strong> TDD helps ensure that code is tested from the start, leading to higher quality and fewer defects. It forces developers to think about the requirements and design from a testable perspective. It also creates a comprehensive suite of automated tests that can be used for rapid regression testing later, providing confidence when making changes.</p>
+                        </li>
+                        <li><strong>Continuous Integration (CI):</strong>
+                            <p><strong>Description:</strong> Continuous Integration is the practice of frequently integrating code changes from multiple developers into a shared repository (like Git) and automatically building and testing the project. XP recommends integrating several times a day (e.g., every few hours) rather than waiting for days or weeks.</p>
+                            <p><strong>Significance/Benefits:</strong> CI helps detect integration conflicts and bugs early and frequently, making them easier and cheaper to fix than if they were discovered after large chunks of code were developed in isolation. It ensures the codebase is always in a potentially deployable state, supports the rapid feedback cycles of Agile, and reduces the risks associated with large, infrequent merges.</p>
+                        </li>
+                    </ol>
+                    <p>These practices, among others in XP, provide a technical foundation that supports the adaptability and quality goals of Agile development.</p>
+                `
+            }
+        ];
+        // --- END OF ESSAY QUESTION DATA ---
+
+
+        // --- START OF SCRIPT LOGIC ---
         document.addEventListener('DOMContentLoaded', () => {
             // Select main tabs and content sections
             const mainTabButtons = document.querySelectorAll('.main-tabs .tab-button');
             const mainTabContents = document.querySelectorAll('.main-content');
 
-            // Select quiz content containers
+            // Select content containers for dynamic loading
+            const essayContainer = document.getElementById('essay-questions-container'); // Added essay container
             const fillContainer = document.getElementById('fill-questions');
             const tfContainer = document.getElementById('tf-questions');
             const mcContainer = document.getElementById('mc-questions');
-
-             // Select accordion elements
-            const accordionHeaders = document.querySelectorAll('.accordion-header');
 
 
             // --- Main Tab Switching Logic ---
@@ -575,35 +828,56 @@
                 });
             });
 
-            // --- Accordion Logic (for Glossary) ---
-             accordionHeaders.forEach(header => {
-                header.addEventListener('click', function() {
-                    // Toggle active class on the header for styling (+) (-) sign
-                    this.classList.toggle('active');
+            // --- Accordion Logic (for Glossary AND Essay Questions) ---
+            // Select all accordion headers in the document
+             const allAccordionHeaders = document.querySelectorAll('.accordion-container .accordion-header'); // Select headers ONLY within accordion-containers
 
+             allAccordionHeaders.forEach(header => {
+                header.addEventListener('click', function() {
                     // Get the panel sibling
                     const panel = this.nextElementSibling;
 
-                    // Toggle the max-height for smooth transition
-                    if (panel.style.maxHeight) {
-                        // If panel is open, close it
-                        panel.style.maxHeight = null;
-                        panel.style.padding = "0 20px"; // Remove padding when closing
+                     // Check if this header is already active
+                    const isActive = this.classList.contains('active');
+
+                    // --- Close other accordions in the SAME container ---
+                    const parentContainer = this.closest('.accordion-container');
+                     if (parentContainer) { // Ensure a container was found
+                        const siblingItems = parentContainer.querySelectorAll('.accordion-item');
+                         siblingItems.forEach(item => {
+                             const otherHeader = item.querySelector('.accordion-header');
+                             const otherPanel = item.querySelector('.accordion-panel');
+                             if (otherHeader !== this && otherHeader.classList.contains('active')) {
+                                otherHeader.classList.remove('active');
+                                otherPanel.style.maxHeight = null;
+                                otherPanel.classList.remove('open'); // Remove open class
+                                // padding transition is handled by max-height transition IF padding is set when max-height is set
+                             }
+                         });
+                     }
+                    // --- End Close Others ---
+
+
+                    // Toggle active class on the clicked header
+                    if (isActive) {
+                         this.classList.remove('active');
                     } else {
-                         // If panel is closed, open it
-                        panel.style.maxHeight = panel.scrollHeight + 40 + "px"; // Add some buffer
-                        panel.style.padding = "15px 20px"; // Add padding back when opening
+                         this.classList.add('active');
                     }
 
-                    // --- Optional: Close other accordions ---
-                    accordionHeaders.forEach(otherHeader => {
-                        if (otherHeader !== this && otherHeader.classList.contains('active')) {
-                            otherHeader.classList.remove('active');
-                            otherHeader.nextElementSibling.style.maxHeight = null;
-                            otherHeader.nextElementSibling.style.padding = "0 20px";
-                        }
-                    });
-                    // --- End Optional Close Others ---
+
+                    // Toggle the max-height and open class for smooth transition
+                    if (panel.style.maxHeight && isActive) { // If panel is open AND header was active (i.e., clicking to close)
+                        panel.style.maxHeight = null;
+                        panel.classList.remove('open'); // Remove open class to trigger padding transition
+                    } else if (!isActive) { // If header was not active (i.e., clicking to open)
+                        // If panel is closed, open it
+                        // Set a max-height larger than content AND add 'open' class simultaneously
+                         panel.style.maxHeight = panel.scrollHeight + 40 + "px"; // Use scrollHeight + buffer
+                         panel.classList.add('open'); // Add open class to trigger padding transition
+                    }
+                    // Note: Recalculating scrollHeight on open click ensures it works even if content changes
+                     // or window is resized (though resize handling isn't explicitly added here)
                 });
             });
 
@@ -655,6 +929,34 @@
                 }
             }
 
+            // --- Load Essay Questions ---
+             function loadEssayQuestions() {
+                essayContainer.innerHTML = ''; // Clear previous content
+                 essayQuestions.forEach((q, index) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'accordion-item';
+
+                    const headerButton = document.createElement('button');
+                    headerButton.className = 'accordion-header';
+                    headerButton.textContent = `${index + 1}. ${q.question}`; // Number the questions
+
+                    const panelDiv = document.createElement('div');
+                    panelDiv.className = 'accordion-panel';
+                    panelDiv.innerHTML = q.answer; // Use innerHTML for rich content (p, ul, ol)
+
+                    itemDiv.appendChild(headerButton);
+                    itemDiv.appendChild(panelDiv);
+                    essayContainer.appendChild(itemDiv);
+
+                    // Add the event listener using the existing accordion logic
+                    // The allAccordionHeaders selector is re-run implicitly by the DOM state,
+                    // or we could add the listener directly here:
+                    // headerButton.addEventListener('click', function() { ... accordion logic ... });
+                    // However, adding it once via the selector on DOMContentLoaded after elements are loaded is more efficient.
+                 });
+             }
+
+
             // --- Load Fill in the Blank Questions ---
             function loadFillInTheBlankQuestions() {
                 fillContainer.innerHTML = ''; // Clear previous content
@@ -665,7 +967,7 @@
 
                     const questionText = document.createElement('p');
                     // Find the blank spot indicated by _______ and replace it for display
-                    questionText.innerHTML = q.question.replace('_______', '<span style="color: #007bff; font-weight:bold;">_______</span>');
+                    questionText.innerHTML = `${index + 1}. ` + q.question.replace('_______', '<span style="color: #007bff; font-weight:bold;">_______</span>'); // Number the questions
                     questionDiv.appendChild(questionText);
 
                     const optionsDiv = document.createElement('div');
@@ -712,7 +1014,7 @@
                     questionDiv.id = `tf-q-${index}`;
 
                     const questionText = document.createElement('p');
-                    questionText.textContent = q.question;
+                    questionText.textContent = `${index + 1}. ` + q.question; // Number the questions
                     questionDiv.appendChild(questionText);
 
                      const optionsDiv = document.createElement('div'); // Keep consistent structure
@@ -760,7 +1062,7 @@
                     questionDiv.id = `mc-q-${index}`;
 
                     const questionText = document.createElement('p');
-                    questionText.textContent = q.question;
+                    questionText.textContent = `${index + 1}. ` + q.question; // Number the questions
                     questionDiv.appendChild(questionText);
 
                     const optionsDiv = document.createElement('div');
@@ -796,10 +1098,54 @@
             }
 
             // --- Initial Load ---
-            // Load all quiz questions initially so they are ready when tabs are clicked
+            // Load all dynamic content sections initially so they are ready when tabs are clicked
+             loadEssayQuestions(); // Load essay questions
             loadFillInTheBlankQuestions();
             loadTrueFalseQuestions();
             loadMultipleChoiceQuestions();
+
+             // Re-run the accordion logic setup after dynamic content is loaded
+             // Or modify the existing listener setup to use event delegation if performance was critical
+             // For this scale, re-selecting is fine.
+             // Need to re-select AFTER the essay questions are added to the DOM
+             const newlyAddedAccordionHeaders = document.querySelectorAll('.accordion-container .accordion-header');
+
+             newlyAddedAccordionHeaders.forEach(header => {
+                 // Add event listener if it wasn't added before (or just re-add, browser handles duplicates)
+                 // A cleaner way is to add the listener *inside* loadEssayQuestions
+                 // Let's move the listener setup into the load function for clarity.
+                 // --- Corrected Accordion Logic Setup ---
+                 header.addEventListener('click', function() {
+                    const panel = this.nextElementSibling;
+                    const isActive = this.classList.contains('active');
+                    const parentContainer = this.closest('.accordion-container');
+
+                    // Close other accordions in the SAME container
+                    if (parentContainer) {
+                        parentContainer.querySelectorAll('.accordion-item').forEach(item => {
+                             const otherHeader = item.querySelector('.accordion-header');
+                             const otherPanel = item.querySelector('.accordion-panel');
+                             if (otherHeader !== this && otherHeader.classList.contains('active')) {
+                                otherHeader.classList.remove('active');
+                                otherPanel.style.maxHeight = null;
+                                otherPanel.classList.remove('open');
+                            }
+                        });
+                    }
+
+                    // Toggle current accordion
+                    if (isActive) {
+                        this.classList.remove('active');
+                        panel.style.maxHeight = null;
+                         panel.classList.remove('open');
+                    } else {
+                        this.classList.add('active');
+                        panel.style.maxHeight = panel.scrollHeight + 40 + "px"; // Use scrollHeight + buffer
+                         panel.classList.add('open');
+                    }
+                 });
+                 // --- End Corrected Accordion Logic Setup ---
+             });
 
 
         }); // End DOMContentLoaded
