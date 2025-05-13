@@ -17,13 +17,38 @@
             color: #333;
         }
 
-        .quiz-container {
+        .tab-navigation {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            background-color: #f0f0f0;
+            margin: 0 5px;
+            border-radius: 5px 5px 0 0;
+            font-size: 1em;
+        }
+
+        .tab-button.active {
+            background-color: #fff;
+            border-bottom-color: #fff;
+            font-weight: bold;
+        }
+
+        .quiz-container, .essay-container {
             max-width: 800px;
             margin: 20px auto;
             background: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .essay-container {
+            display: none; /* Hidden by default */
         }
 
         .question-block {
@@ -53,7 +78,6 @@
             font-weight: bold; /* Inherit boldness */
             color: #555; /* Inherit color */
         }
-
 
         .options button {
             display: block;
@@ -122,936 +146,84 @@
             font-weight: bold;
         }
 
+        .essay-question-item {
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #fff; /* Ensure items have a background */
+        }
+
+        .essay-question-title {
+            background-color: #f9f9f9;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .essay-question-title:hover {
+            background-color: #e9e9e9;
+        }
+
+        .essay-answer-content {
+            padding: 15px;
+            display: none; /* Hidden by default, shown on click */
+            border-top: 1px solid #eee;
+            line-height: 1.5; /* Improve readability of answer text */
+        }
+        .essay-answer-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .essay-answer-content th, .essay-answer-content td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .essay-answer-content th {
+            background-color: #f2f2f2;
+        }
+        .essay-answer-content pre {
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: monospace;
+        }
+        .essay-answer-content ul, .essay-answer-content ol {
+            margin-left: 20px;
+            padding-left: 20px;
+        }
+
     </style>
 </head>
 <body>
 
     <h1>Agile Methodology Quiz</h1>
 
+    <div class="tab-navigation">
+        <button class="tab-button active" id="standardQuizTab">Standard Quiz</button>
+        <button class="tab-button" id="essayQuizTab">Essay Questions</button>
+    </div>
+
     <div class="quiz-container" id="quiz-container">
         <!-- Questions will be loaded here by JavaScript -->
     </div>
 
+    <div class="essay-container" id="essay-container">
+        <h2>Essay Questions</h2>
+        <p>Click on a question to reveal its answer.</p>
+        <!-- Essay questions and textareas can be added here -->
+    </div>
+
+    <script src="quizData.js"></script>
     <script>
-        const quizData = [
-            // --- Multiple Choice Questions ---
-            { // Q1
-                question: "Agile software engineering refers,",
-                options: [
-                    "A philosophy and a set of development guidelines",
-                    "An active and continuous communication between developers and customers",
-                    "Encourages customer satisfaction",
-                    "All of the mentioned above"
-                ],
-                answer: "All of the mentioned above"
-            },
-            { // Q2
-                question: "Agility can be applied to any software process using design a process in such a way that,",
-                options: [
-                    "Allows the project team to adapt tasks",
-                    "Conduct planning to get the fluidity of an agile development approach",
-                    "An incremental delivery strategy that gets working software to the customer",
-                    "All of the mentioned above"
-                ],
-                answer: "All of the mentioned above"
-            },
-            { // Q3
-                question: "Dynamic systems development method of agile software development which provides a framework for.....",
-                options: [
-                    "Building and maintaining systems",
-                    "Meets time constraints",
-                    "Uses of incremental prototyping in a controlled project environment",
-                    "All of the mentioned above"
-                ],
-                answer: "All of the mentioned above"
-            },
-            { // Q4
-                question: "In Agile methodology ,the activity that distributes estimated effort across the planned project duration by allocating the effort to specific software developing tasks is",
-                options: [
-                    "Project scheduling",
-                    "Detailed schedule",
-                    "Macroscopic schedule",
-                    "None of the mentioned"
-                ],
-                answer: "Project scheduling"
-            },
-            { // Q5
-                question: "Which of the following is an important factor that can affect the accuracy and efficacy of estimates?",
-                options: [
-                    "Project size",
-                    "Planning process",
-                    "Project complexity",
-                    "Degree of structural uncertainty"
-                ],
-                answer: "Project size"
-            },
-            { // Q6
-                question: "Which of the following is not achieved by an automated estimation tools?",
-                options: [
-                    "Predicting staffing levels",
-                    "Predicting software cost",
-                    "Predicting software schedules",
-                    "Predicting clients demands"
-                ],
-                answer: "Predicting clients demands"
-            },
-            { // Q7
-                question: "In the popular prioritization technique called “MoSCoW”, the “M” stands for ...",
-                options: [
-                    "Must Have",
-                    "Major",
-                    "May Have",
-                    "Mandatory"
-                ],
-                answer: "Must Have"
-            },
-            { // Q8 (Skipped 8, 9 in original - this is Q10)
-                question: "The agile methodologies are described as “adaptive” because",
-                options: [
-                    "The rate of development progress on an Agile project is constantly tracked to allow adaptation",
-                    "Agile teams have the empowerment to frequently respond to change and to learn on a project by changing the plan.",
-                    "Project Managers are not needed in Agile methods because teams are self-organizing",
-                    "A and B." // Note: Assuming this refers to the A and B options *within this question*.
-                ],
-                answer: "Agile teams have the empowerment to frequently respond to change and to learn on a project by changing the plan."
-            },
-            { // Q9 (Original Q11)
-                question: "The                       is typically performed during the first week of a project, the goal of which is to identify the scope of your system and a likely architecture for addressing it.",
-                options: [
-                    "Envisioning phase",
-                    "Modeling phase",
-                    "Expert Domain",
-                    "Class owner."
-                ],
-                answer: "Envisioning phase"
-            },
-            { // Q10 (Original Q12)
-                question: "A job role is responsible for the overall design of the system in the Feature Drive Development (FDD) method.",
-                options: [
-                    "Development Manager",
-                    "Chief Architect",
-                    "Expert Domain",
-                    "Class owner."
-                ],
-                answer: "Chief Architect"
-            },
-            { // Q11 (Original Q13)
-                question: "All phases in the DSDM methodology are considered iterative process without the following …",
-                options: [
-                    "Business study",
-                    "Modeling phase",
-                    "Feasibility study",
-                    "A and B." // Note: Assuming this refers to the A and B options *within this question*.
-                ],
-                answer: "A and B." // Note: This answer seems ambiguous based on typical DSDM. Recheck source if possible. Interpreting as the intended answer from the file.
-            },
-            { // Q12 (Original Q14)
-                question: "The ………………. cannot change the effort estimate on a product backlog item",
-                options: [
-                    "Product owner",
-                    "Chief Architect",
-                    "Chief programmers",
-                    "A and B." // Note: Assuming this refers to the A and B options *within this question*.
-                ],
-                answer: "Product owner"
-            },
-            { // Q13 (Original Q15)
-                question: "In a DSDM method, a collaborative and cooperative approach shared by …………...",
-                options: [
-                    "Team members",
-                    "Stakeholders",
-                    "All developers",
-                    "All of them."
-                ],
-                answer: "Stakeholders"
-            },
-            { // Q14 (Original Q16)
-                question: "In a FDD method, the                    is responsible for leading small teams in the analysis, design and development of new features.",
-                options: [
-                    "Chief programmer",
-                    "Stakeholders", // Note: Option C was Stakeholders, B was Chief Architect in source. Ordering fixed.
-                    "Chief Architect",
-                    "All of them."
-                ],
-                answer: "Chief programmer"
-            },
-            { // Q15 (Original Q17)
-                question: "In the DSDM method, the functional model iteration phase produces many outputs without …….",
-                options: [
-                    "Prioritized functions",
-                    "Non-functional requirements",
-                    "Functional prototyping review documents",
-                    "Outline plan for development."
-                ],
-                answer: "Outline plan for development."
-            },
-            { // Q16 (Original Q18)
-                question: "According to agile manifesto, the developers should be:",
-                options: [
-                    "Able to contact the customer to clarify aspects of the work",
-                    "In twice-daily contact with the customer",
-                    "Completely uninterrupted by the customer",
-                    "Able to work without needing to disturb the customer"
-                ],
-                answer: "Able to contact the customer to clarify aspects of the work"
-            },
-            { // Q17 (Original Q19)
-                question: "In the Feature Drive Development (FDD) method, who are they responsible for writing a model Notes?",
-                options: [
-                    "Development manager and chief Architect",
-                    "Domain experts, chief programmers , and chief Architect",
-                    "Chief programmers and chief Architect",
-                    "Domain experts and developer manager"
-                ],
-                answer: "Chief programmers and chief Architect"
-            },
-            { // Q18 (Original Q20)
-                question: "Which of the following is delivered at the end of the Sprint?",
-                options: [
-                    "A document containing test cases for the current sprint",
-                    "An architectural design of the solution",
-                    "An increment of done software",
-                    "Wireframes designs for User Interface"
-                ],
-                answer: "An increment of done software"
-            },
-            { // Q19 (Original Q21)
-                question: "Product Backlog should be ordered on the basis of?",
-                options: [
-                    "Value of the items being delivered",
-                    "The complexity of the items being delivered",
-                    "Size of the items being delivered",
-                    "The risk associated with the items",
-                    "Based on the Scrum Team choice" // Added option e
-                ],
-                answer: "Value of the items being delivered"
-            },
-            { // Q20 (Original Q22)
-                question: "Who is responsible to measure the Project’s performance?",
-                options: [
-                    "The Scrum Master",
-                    "The Delivery Manager",
-                    "The Product Owner",
-                    "The Development Team",
-                    "The Scrum Team" // Added option e
-                ],
-                answer: "The Product Owner"
-            },
-            { // Q21 (Original Q23)
-                question: "In Scrum Method, what does a BurnDown Chart display?",
-                options: [
-                    "Project Progress",
-                    "Amount of remaining work with respect to time",
-                    "The velocity of the team",
-                    "The capacity of the team members",
-                    "How many more items can be picked up in a Sprint" // Added option e
-                ],
-                answer: "Amount of remaining work with respect to time"
-            },
-            { // Q22 (Original Q24)
-                question: "Select the option that suits the Manifesto for Agile Software Development",
-                options: [
-                    "Individuals and interactions",
-                    "Working software",
-                    "Customer collaboration",
-                    "All of the mentioned"
-                ],
-                answer: "All of the mentioned"
-            },
-            { // Q23 (Original Q25)
-                question: "Agile Software Development is based on",
-                options: [
-                    "Incremental Development",
-                    "Iterative Development",
-                    "Linear Development",
-                    "Both Incremental and Iterative Development"
-                ],
-                answer: "Both Incremental and Iterative Development"
-            },
-            { // Q24 (Original Q26)
-                question: "How many phases are there in Scrum ?",
-                options: [
-                    "Two",
-                    "Three",
-                    "Four",
-                    "Scrum is an agile method which means it does not have phases"
-                ],
-                answer: "Three" // Note: Common interpretation (Sprint Planning, Sprint, Sprint Review/Retrospective) although 'phases' can be debated. Going with the source's likely intent.
-            },
-            { // Q25 (Original Q27)
-                question: "Which of the following does not apply to agility to a software process?",
-                options: [
-                    "Uses incremental product delivery strategy",
-                    "Only essential work products are produced",
-                    "Eliminate the use of project planning and testing",
-                    "All of the mentioned"
-                ],
-                answer: "Eliminate the use of project planning and testing"
-            },
-            { // Q26 (Original Q28)
-                question: "In Agile methodologies, software maintenance includes:",
-                options: [
-                    "Error corrections",
-                    "Enhancements of capabilities",
-                    "Deletion of obsolete capabilities",
-                    "All of the mentioned"
-                ],
-                answer: "All of the mentioned"
-            },
-            { // Q27 (Original Q29)
-                question: "Which four framework activities are found in the Extreme Programming(XP) ?",
-                options: [
-                    "analysis, design, coding, testing",
-                    "planning, analysis, design, coding",
-                    "planning, design, coding, testing",
-                    "planning, analysis, coding, testing"
-                ],
-                answer: "planning, design, coding, testing"
-            },
-            { // Q28 (Original Q30 - Duplicate of Q25)
-                question: "Agile Software Development is based on",
-                options: [
-                    "Incremental Development",
-                    "Iterative Development",
-                    "Linear Development",
-                    "Both Incremental and Iterative Development"
-                ],
-                answer: "Both Incremental and Iterative Development"
-            },
-            { // Q29 (Original Q31)
-                question: "Which of the following is the correct pairing according to the Agile Manifesto statement of values?",
-                options: [
-                    "Individuals and Interactions over Working Software",
-                    "Individuals and Interactions over Contract Negotiation",
-                    "Individuals and Interactions over Processes and Tools",
-                    "Individuals and Interactions over Customer Collaboration"
-                ],
-                answer: "Individuals and Interactions over Processes and Tools"
-            },
-            { // Q30 (Original Q32)
-                question: "In an Agile team, who is responsible for quality?",
-                options: [
-                    "The developers",
-                    "The testers",
-                    "The product owner",
-                    "The entire team"
-                ],
-                answer: "The entire team"
-            },
-            { // Q31 (Original Q33)
-                question: "In Scrum method, what is the purpose of a daily stand-up meeting?",
-                options: [
-                    "It provides team building by encouraging everyone to stand up together for a quick exercise session",
-                    "It provides a way for each member to communicate progress and problems",
-                    "It forces the team to be co-located",
-                    "It helps determine where overtime will be required to keep the project on schedule"
-                ],
-                answer: "It provides a way for each member to communicate progress and problems"
-            },
-            { // Q32 (Original Q34)
-                question: "In which Agile method is simplicity one of the stated values used to guide development?",
-                options: [
-                    "XP",
-                    "FDD",
-                    "Scrum",
-                    "DSDM"
-                ],
-                answer: "XP"
-            },
-            { // Q33 (Original Q35)
-                question: "In an Agile project, when is software first expected to be delivered that will provide value to the customer?",
-                options: [
-                    "At the end of the project",
-                    "At the end of a release",
-                    "At the end of an iteration",
-                    "At the end of an epic"
-                ],
-                answer: "At the end of an iteration"
-            },
-            { // Q34 (Original Q36)
-                question: "What does it mean when a feature is classified as “done”?",
-                options: [
-                    "It has been developed",
-                    "It has been developed and integrated",
-                    "It has been developed, integrated and tested",
-                    "It has been developed, integrated, tested and released to production"
-                ],
-                answer: "It has been developed, integrated and tested"
-            },
-            { // Q35 (Original Q37)
-                question: "What does a task board show?",
-                options: [
-                    "Tasks completed against the budget spent",
-                    "Return on investment",
-                    "The progression of the tasks selected for an iteration",
-                    "The number of tasks still to be done against the time allocated"
-                ],
-                answer: "The progression of the tasks selected for an iteration"
-            },
-            { // Q36 (Original Q38)
-                question: "Which of the following is a tester skill that is more important in an Agile environment than in a sequential lifecycle environment?",
-                options: [
-                    "Collaboration",
-                    "Manual testing",
-                    "Performance testing",
-                    "Test case preparation"
-                ],
-                answer: "Collaboration"
-            },
-            { // Q37 (Original Q39)
-                question: "Which one of the following statements is correct regarding acceptance of any deliverables on an Agile Project?",
-                options: [
-                    "The team should allow only senior managers to sign off deliverables",
-                    "The team should get acceptance of project deliverables from the appropriate stakeholders at least at the end of every iteration.",
-                    "The team should get acceptance of project deliverables from the users during a UAT phase at the end of the project",
-                    "Acceptance of any particular deliverable on the project is gained from all stakeholders at the same time."
-                ],
-                answer: "The team should get acceptance of project deliverables from the appropriate stakeholders at least at the end of every iteration."
-            },
-            { // Q38 (Original Q40)
-                question: "In Scrum method, which one of the following is an important feature of the daily stand-up meeting?",
-                options: [
-                    "Everyone is expected to stand for the whole time, to keep the meeting short",
-                    "The meeting must be kept short and well-structured",
-                    "The meeting should ensure that it is clear to all which team members are not performing",
-                    "No-one is allowed to leave the stand-up meeting until all problems raised have been solved"
-                ],
-                answer: "The meeting must be kept short and well-structured"
-            },
-            { // Q39 (Original Q41 - Duplicate of Q7)
-                question: "In the popular prioritization technique called “MoSCoW”, the “M” stands for ...",
-                options: [
-                    "May have", // Option a different from Q7 in source
-                    "Major",
-                    "Must Have",
-                    "Mandatory"
-                ],
-                answer: "Must Have"
-            },
-            { // Q40 (Original Q42)
-                question: "The working culture of an Agile team is …",
-                options: [
-                    "Collective",
-                    "Collaborative",
-                    "Connective",
-                    "Contemplative"
-                ],
-                answer: "Collaborative"
-            },
-            { // Q41 (Original Q43)
-                question: "The Agile Manifesto states the following values:",
-                options: [
-                    "People are more important than contracts",
-                    "Working software should have priority over comprehensive documentation",
-                    "Plans should have priority over ability to respond",
-                    "Contracts should be negotiated which allow control over the people"
-                ],
-                answer: "Working software should have priority over comprehensive documentation"
-            },
-            { // Q42 (Original Q44)
-                question: "Which of the following are attributes of an Agile team?",
-                options: [
-                    "Courage to change and adapt",
-                    "Trust of fellow team members to do the work",
-                    "Responsiveness to change",
-                    "All of these"
-                ],
-                answer: "All of these"
-            },
-            { // Q43 (Original Q45)
-                question: "A burn-down chart shows",
-                options: [
-                    "The energy level and velocity of the team",
-                    "The remaining work (effort, points) to complete before the iteration (timebox) end",
-                    "The number of hours worked by each team member during the iteration (timebox)",
-                    "The rate of spending of the budget for a project"
-                ],
-                answer: "The remaining work (effort, points) to complete before the iteration (timebox) end"
-            },
-             { // Q44 (Original Q46)
-                question: "What is Fuzzy Logic?",
-                options: [
-                    "a method of reasoning that resembles human reasoning",
-                    "a method of question that resembles human answer",
-                    "a method of giving answer that resembles human answer.",
-                    "None of the Above"
-                ],
-                answer: "a method of reasoning that resembles human reasoning"
-            },
-             { // Q45 (Original Q47)
-                question: "COCOMO-II estimation model is based on",
-                options: [
-                    "Complex approach",
-                    "Algorithm approach",
-                    "Bottom up approach",
-                    "Top down approach"
-                ],
-                answer: "Algorithm approach"
-            },
-             { // Q46 (Original Q48)
-                question: "Which of the following techniques is used for estimating effort?",
-                options: [
-                    "Role playing",
-                    "Planning poker",
-                    "Observation",
-                    "None of the above"
-                ],
-                answer: "Planning poker"
-            },
-             { // Q47 (Original Q49)
-                question: "What is the first step of requirement elicitation ?",
-                options: [
-                    "Identifying Stakeholder",
-                    "Listing out Requirements",
-                    "Requirements Gathering",
-                    "All of the mentioned"
-                ],
-                answer: "Identifying Stakeholder"
-            },
-             { // Q48 (Original Q50)
-                question: "Why is Requirements Elicitation a difficult task ?",
-                options: [
-                    "Problem of scope",
-                    "Problem of understanding",
-                    "Problem of volatility",
-                    "All of the mentioned"
-                ],
-                answer: "All of the mentioned"
-            },
-            { // Q49 (Original Q51)
-                question: "What is the primary advantage of effort estimation techniques in agile projects?",
-                options: [
-                    "Focus on architectural planning",
-                    "Ability to handle unpredictable changes",
-                    "Use of traditional methods only",
-                    "Reduction of the number of teams involved"
-                ],
-                answer: "Ability to handle unpredictable changes"
-            },
-            { // Q50 (Original Q52)
-                question: "Which of the following methods is considered an effort estimation technique?",
-                options: [
-                    "COCOMO II Model",
-                    "Traditional programming model",
-                    "Waterfall model",
-                    "Architectural design model"
-                ],
-                answer: "COCOMO II Model"
-            },
-            { // Q51 (Original Q53)
-                question: "What method is commonly used for estimating story points?",
-                options: [
-                    "Fibonacci method",
-                    "Rapid analysis method",
-                    "Scrum method",
-                    "Architectural design method"
-                ],
-                answer: "Fibonacci method"
-            },
-            { // Q52 (Original Q54)
-                question: "Which of the following is NOT a characteristic of agile software development?",
-                options: [
-                    "Incremental delivery",
-                    "Fixed scope",
-                    "Customer collaboration",
-                    "Flexibility to change"
-                ],
-                answer: "Fixed scope"
-            },
-            { // Q53 (Original Q55)
-                question: "What is the primary purpose of the COCOMO II model?",
-                options: [
-                    "To measure code quality",
-                    "To estimate software project costs and duration",
-                    "To manage project teams",
-                    "To analyze customer requirements"
-                ],
-                answer: "To estimate software project costs and duration"
-            },
-            { // Q54 (Original Q56)
-                question: "What does the term \"velocity\" refer to in agile projects?",
-                options: [
-                    "The speed of the development team",
-                    "The amount of work completed in a sprint",
-                    "The rate of change in project requirements",
-                    "The efficiency of coding practices"
-                ],
-                answer: "The amount of work completed in a sprint"
-            },
-            { // Q55 (Original Q57)
-                question: "Which methodology is NOT considered an agile method?",
-                options: [
-                    "Extreme Programming (XP)",
-                    "Scrum",
-                    "Waterfall",
-                    "Feature-Driven Development (FDD)"
-                ],
-                answer: "Waterfall"
-            },
-            { // Q56 (Original Q58)
-                question: "What is a key characteristic of agile software development?",
-                options: [
-                    "Linear development process",
-                    "Fixed requirements",
-                    "Iterative and incremental approach",
-                    "Extensive documentation"
-                ],
-                answer: "Iterative and incremental approach"
-            },
-            { // Q57 (Original Q59)
-                question: "Which of the following models is specifically designed to handle uncertainty in software development?",
-                options: [
-                    "Waterfall model",
-                    "V-Model",
-                    "Agile model",
-                    "Spiral model"
-                ],
-                answer: "Agile model" // Note: Spiral also handles uncertainty via risk analysis, but Agile is more focused on adapting to changing requirements uncertainty. Given the context, Agile is the better fit.
-            },
-            { // Q58 (Original Q60)
-                question: "What does \"defuzzification\" refer to in fuzzy logic?",
-                options: [
-                    "Converting crisp outputs to fuzzy inputs",
-                    "Converting fuzzy outputs to crisp values",
-                    "Analyzing fuzzy data",
-                    "None of the above"
-                ],
-                answer: "Converting fuzzy outputs to crisp values"
-            },
-
-            // --- True/False Questions ---
-            { // TF Q1
-                question: "Agile software engineering demonstrated to deliver successful systems quickly.",
-                options: ["True", "False"],
-                answer: "True"
-            },
-            { // TF Q2
-                question: "Software project estimation can never be an exact science, but a combination of good historical data and systematic techniques can improve estimation accuracy.",
-                options: ["True", "False"],
-                answer: "True"
-            },
-            { // TF Q3
-                question: "Agility is defined as the ability of a project team to respond rapidly to a change.",
-                options: ["True", "False"],
-                answer: "False" // Note: Agility is broader, including effectiveness, adaptation, etc. The file's answer 'False' is kept.
-            },
-            { // TF Q4
-                question: "In agile development it is more important to build software that meets the customers’ needs today than worry about features that might be needed in the future.",
-                options: ["True", "False"],
-                answer: "True"
-            },
-            { // TF Q5
-                question: "Incremental development in Extreme Programming (XP) is supported through a system release once every month.",
-                options: ["True", "False"],
-                answer: "False" // XP promotes frequent, often much shorter, release cycles.
-            },
-            { // TF Q6
-                question: "In XP, as soon as the work on a task is complete, it is integrated into the whole system.",
-                options: ["True", "False"],
-                answer: "True" // Continuous Integration is a key XP practice.
-            },
-            { // TF Q7
-                question: "GQM approach is a method used to identify important and meaningful metrics?",
-                options: ["True", "False"],
-                answer: "True"
-            },
-            { // TF Q8
-                question: "“GQM is a hierarchical model that follows a top-down approach where first the goals are specified”, This statement is …",
-                options: ["True", "False"],
-                answer: "True"
-            },
-            { // TF Q9
-                question: "Cost and effort estimation of a software uses only one forms of decomposition, either decomposition of the problem or decomposition of the process.",
-                options: ["True", "False"],
-                answer: "False" // Often uses both.
-            },
-            { // TF Q10
-                question: "In the agile development process taught in class, the development team estimates each user story and decides the priority for each story.",
-                options: ["True", "False"],
-                answer: "False" // Product Owner typically prioritizes. Team estimates.
-            },
-            { // TF Q11
-                question: "In the Exploration phase, the team issues a product for the user's work environment.",
-                options: ["True", "False"],
-                answer: "False" // Exploration is usually about understanding; Release/Deployment puts it in the user environment.
-            },
-            { // TF Q12
-                question: "RE refers to the process of defining, documenting, and maintaining requirements in the engineering design process.",
-                options: ["True", "False"],
-                answer: "True" // RE = Requirements Engineering
-            },
-            { // TF Q13
-                question: "Requirements elicitation is a cyclic process",
-                options: ["True", "False"],
-                answer: "True"
-            },
-            { // TF Q14
-                question: "Functional requirements capture the intended behavior of the system.",
-                options: ["True", "False"],
-                answer: "True"
-            },
-            { // TF Q15
-                question: "SRS is ambiguous when every fixed requirement has only one interpretation.",
-                options: ["True", "False"],
-                answer: "False" // That would be unambiguous.
-            },
-            { // TF Q16
-                question: "In the RE, the Backward Traceability is depends upon each element in the SRS having a unique name or reference number.",
-                options: ["True", "False"],
-                answer: "False" // This describes *Forward* Traceability (from requirement to design/code/test). Backward is from test/code back to requirement. Unique ID helps both. The file's answer 'False' is kept.
-            },
-            { // TF Q17
-                question: "In testing phase, the agile team examines the product's performance and looks for the bug.",
-                options: ["True", "False"],
-                answer: "False" // Testing is continuous in Agile, not a separate phase at the end typically. The file's answer 'False' is kept.
-            },
-            { // TF Q18
-                question: "The team size only is very important factor for scaling-up agile project",
-                options: ["True", "False"],
-                answer: "False" // Many factors are important (dependencies, architecture, organizational structure etc).
-            },
-            { // TF Q19
-                question: "According to a proposed model for applying agile approach on E-government projects, the E-government architecture includes Infrastructure Layer and Access layer only.",
-                options: ["True", "False"],
-                answer: "False" // Typically includes Application, Data layers too.
-            },
-            { // TF Q20
-                question: "SPM method enables customers to flexibly define requirements according to a pre- defined procedure.",
-                options: ["True", "False"],
-                answer: "True" // Assuming SPM refers to a specific method where this holds.
-            },
-            { // TF Q21
-                question: "Agile requirement refinery includes vision stage and concept stage only.",
-                options: ["True", "False"],
-                answer: "False" // Likely includes more stages like elaboration, etc.
-            },
-            { // TF Q22
-                question: "DAT is a Dimensional Analytical Tools which include; Scope, Agility, Agile value, and Elicitation stage.",
-                options: ["True", "False"],
-                answer: "False" // Assuming 'Elicitation stage' is not typically considered a dimension in such tools.
-            },
-            { // TF Q23
-                question: "The agility dimension examines the support of agile values characterization in different practice levels.",
-                options: ["True", "False"],
-                answer: "True"
-            },
-            { // TF Q24
-                question: "Estimated hours are the planned hours that determined in the requirements refinery in SPM.",
-                options: ["True", "False"],
-                answer: "True" // Based on the description in TF Q20.
-            },
-            { // TF Q25
-                question: "Pair Programming is a programming technique that needs two programmers to work together to achieve a development task while sharing one computer.",
-                options: ["True", "False"],
-                answer: "True"
-            },
-            { // TF Q26
-                question: "Fuzzification is the process which refers to the transform of fuzzy output into crisp output.",
-                options: ["True", "False"],
-                answer: "False" // That's Defuzzification. Fuzzification is crisp input to fuzzy set.
-            },
-            { // TF Q27
-                question: "In 4-DAT approach, the scope dimension checks the support of a project size and team size only.",
-                options: ["True", "False"],
-                answer: "False" // Scope dimension likely includes more, like feature complexity, distribution etc.
-            },
-            { // TF Q28
-                question: "Agile methodologies prioritize customer satisfaction through early and continuous delivery of valuable software.",
-                options: ["True", "False"],
-                answer: "True"
-            },
-            { // TF Q29
-                question: "The COCOMO II model does not consider the team’s experience as a cost driver.",
-                options: ["True", "False"],
-                answer: "False" // It does (Personnel Capability factors).
-            },
-            { // TF Q30
-                question: "Story points are used to measure the complexity and size of user stories in agile projects.",
-                options: ["True", "False"],
-                answer: "True" // Relative measure of effort/complexity/size.
-            },
-            { // TF Q31
-                question: "The fuzzy logic approach in estimation only works well with large datasets.",
-                options: ["True", "False"],
-                answer: "False" // Can work with smaller datasets and expert knowledge too.
-            },
-            { // TF Q32
-                question: "Continuous testing is essential in large-scale agile projects to ensure quality.",
-                options: ["True", "False"],
-                answer: "True"
-            },
-            { // TF Q33
-                question: "Agile methodologies allow for fixed and unchanging requirements throughout the project.",
-                options: ["True", "False"],
-                answer: "False" // They embrace change.
-            },
-            { // TF Q34
-                question: "The COCOMO model is widely used for software cost estimation.",
-                options: ["True", "False"],
-                answer: "True"
-            },
-            { // TF Q35
-                question: "Agile teams typically work in long development cycles.",
-                options: ["True", "False"],
-                answer: "False" // They use short iterations/sprints.
-            },
-            { // TF Q36
-                question: "Defuzzification is a key process in converting fuzzy outputs into actionable estimates.",
-                options: ["True", "False"],
-                answer: "True"
-            },
-            { // TF Q37
-                question: "The story points method is based on a linear estimation scale.",
-                options: ["True", "False"],
-                answer: "False" // Often uses non-linear scales like Fibonacci.
-            },
-            // --- Questions added from New_Text_Document[1].txt ---
-            { // SQA Q1
-                question: "Some Quality requirements are .............. in the same sense as functional requirements. If the system does not meet them, it is useless.",
-                options: ["optional", "Recommended", "mandatory", "composition"],
-                answer: "mandatory"
-            },
-            { // SQA Q2
-                question: "Classification of quality factors according to ISO 9126 includes ...................... as an example.",
-                options: ["Maintainability", "accountability", "sustainability", "profitability"],
-                answer: "Maintainability"
-            },
-            { // SQA Q3
-                question: "The Content of SQA Plan according to IEEE Std 730 may include ........................",
-                options: ["All the above", "Code control", "Scope Control", "Reference document", "Reference document and Scope control"],
-                answer: "All the above"
-            },
-            { // SQA Q4
-                question: "SQA group is independent of .........................",
-                options: ["The project manager", "The project’s software engineering group", "The other software-relate groups", "All the above"],
-                answer: "All the above"
-            },
-            { // SQA Q5
-                question: "A high-quality product Satisfies clearly stated .........................",
-                options: ["reviews", "project manager view", "errors", "requirements"],
-                answer: "requirements"
-            },
-            { // SQA Q6
-                question: "A ................ sets out the desired product qualities and how these are assessed and defines the most significant quality attributes.",
-                options: ["Nothing", "Quality plan", "Quality review", "Quality requirements"],
-                answer: "Quality plan"
-            },
-            // Note: Duplicate "SQA group is independent of..." question from source skipped
-            { // SQA Q8
-                question: "In the quality control the process control is carried out .............",
-                options: ["before production", "During production", "All of the above", "After production control"],
-                answer: "During production"
-            },
-            { // SQA Q9
-                question: "Select which option is not true about software quality assurance ........",
-                options: ["Audits and reviews to be performed by the team", "Evaluations to be performed", "Amount of technical work to be performed", "Nothing"],
-                answer: "Amount of technical work to be performed"
-            },
-            { // SQA Q10
-                question: "Select which one is not appraisal in Software Quality Assurance?",
-                options: ["Maintenance", "Inter-process inspection", "Testing", "Quality Planning"],
-                answer: "Quality Planning"
-            },
-            { // SQA Q11
-                question: "............... are a framework for quality assurance processes",
-                options: ["Quality control rules", "Software quality standards", "Risk management rules"],
-                answer: "Software quality standards"
-            },
-             { // SQA Q12
-                question: "The bottom-up design includes ........",
-                options: ["Analyzing the processes as systems", "Identifying the processes", "All of these"],
-                answer: "All of these"
-            },
-            { // SQA Q13
-                question: "Beginner users shall adding new record to database in 5 minutes. This statement refers to ........ requirements",
-                options: ["Usability", "Capacity", "Performance"],
-                answer: "Usability"
-            },
-            { // SQA Q14 (TF)
-                question: "Software quality plan contain quality goals to be achieved, expected risks and risk management.",
-                options: ["True", "False"],
-                answer: "True"
-            },
-            { // SQA Q15 (TF)
-                question: "According to IEEE, the standard can be an object or measure of comparison that defines or represents the magnitude of a unit.",
-                options: ["True", "False"],
-                answer: "True"
-            },
-            { // SQA Q16 (TF)
-                question: "Software quality control activity includes mentoring how to conduct standard processes, such as quality reviews.",
-                options: ["True", "False"],
-                answer: "True"
-            },
-            { // SQA Q17
-                question: "In ONLINE SHOPPING systems, the process of searching for a specific item should take at most 10 seconds. This statement refers to ........ requirements.",
-                options: ["Capacity", "Performance", "Usability", "Accuracy"],
-                answer: "Performance"
-            },
-            { // SQA Q18
-                question: "In a Library system, the borrower screen shall be able to show at most 10 borrowed books per day. This statement refers to ........ requirements",
-                options: ["Capacity", "Accuracy", "Performance", "Usability"],
-                answer: "Capacity"
-            },
-            { // SQA Q19
-                question: "In the reservation systems, bookings shall be available at least 3 months ahead. This statement refers to ........ requirements",
-                options: ["Capacity", "Performance", "Usability", "Accuracy"],
-                answer: "Performance"
-            },
-             // Note: Duplicate "Some Quality requirements are..." question from source skipped
-            { // SQA Q21 (TF)
-                question: "Quality management provides an independent check on the software development process.",
-                options: ["True", "False"],
-                answer: "True"
-            },
-            { // SQA Q22 (TF)
-                question: "Software quality plan activity includes verifying and evaluating to improve the use of methods, procedures, and adopted software tools.",
-                options: ["True", "False"],
-                answer: "False"
-            },
-            { // SQA Q23 (TF)
-                question: "The software specification should reflect the characteristics of the product that the auditor wants",
-                options: ["True", "False"],
-                answer: "False"
-            },
-            { // SQA Q24
-                question: "The ........ defines the quality requirements of software and describes how these are to be assessed.",
-                options: ["Quality Plan", "Quality Control", "Quality Management"],
-                answer: "Quality Plan"
-            },
-            { // SQA Q25 (TF)
-                question: "Quality reviews involve a group of people examining a software process, system, or its associated documentation to discover potential problems.",
-                options: ["True", "False"],
-                answer: "True"
-            },
-            { // SQA Q26
-                question: ".......... are a primary objective of formal technical reviews to find during the process so that after the release of the software they do not become the defect.",
-                options: ["Faults", "Failures", "Errors"],
-                answer: "Errors"
-            },
-             { // SQA Q27 (TF)
-                question: "System engineering standard is particular application domain develop sophisticated interactions between system and software engineering",
-                options: ["True", "False"],
-                answer: "True"
-            },
-            { // SQA Q28 (TF)
-                question: "The reviewing is an independent examination process which provides an independent evaluation of conformance of software products and processes to applicable regulations.",
-                options: ["True", "False"],
-                answer: "False"
-            },
-            { // SQA Q29 (TF)
-                question: "A process allows the same quality to be replicated from product to product often by the use of standards.",
-                options: ["True", "False"],
-                answer: "True"
-            },
-            { // SQA Q30 (TF)
-                question: "The software quality control concerns with how general principles of good management are applied to specific areas of software engineering",
-                options: ["True", "False"],
-                answer: "False"
-            }
-
-        ];
-
         const quizContainer = document.getElementById('quiz-container');
+        const essayContainer = document.getElementById('essay-container');
+        const standardQuizTab = document.getElementById('standardQuizTab');
+        const essayQuizTab = document.getElementById('essayQuizTab');
 
         // Function to shuffle options (optional, but good for quizzes)
         function shuffleArray(array) {
@@ -1060,7 +232,6 @@
                 [array[i], array[j]] = [array[j], array[i]]; // Swap elements
             }
         }
-
 
         // Function to display questions
         function displayQuiz() {
@@ -1075,8 +246,6 @@
                 // Create question text
                 const questionText = document.createElement('p');
                 questionText.classList.add('question-text');
-                // Use innerHTML to allow potential <pre> tags or other formatting if needed later
-                // For this specific input, textContent is fine, but innerHTML is more flexible
                 questionText.innerHTML = `${index + 1}. ${qData.question}`; // Add question number
                 questionBlock.appendChild(questionText);
 
@@ -1090,7 +259,6 @@
                 // Create buttons for each option
                  options.forEach(option => {
                     const button = document.createElement('button');
-                    // Use innerHTML here too, just in case options had formatting
                     button.innerHTML = option;
                     button.addEventListener('click', handleAnswer);
                     optionsDiv.appendChild(button);
@@ -1111,7 +279,6 @@
         // Function to handle answer selection
         function handleAnswer(event) {
             const selectedButton = event.target;
-            // Use textContent to get the displayed text, ignoring potential HTML tags within the button
             const selectedAnswer = selectedButton.textContent;
             const questionBlock = selectedButton.closest('.question-block');
             const questionIndex = parseInt(questionBlock.getAttribute('data-question-index'), 10);
@@ -1139,7 +306,6 @@
 
                 // Highlight the correct answer button
                  optionButtons.forEach(button => {
-                    // Compare textContent for highlighting too
                     if (button.textContent === correctAnswer) {
                         button.classList.add('reveal-correct');
                     }
@@ -1148,8 +314,518 @@
              feedbackDiv.style.display = 'block'; // Make sure feedback is visible
         }
 
+        function displayEssayQuestions() {
+            const essayQuestionsWithAnswers = [
+                {
+                    id: "essayQ1",
+                    question: "<strong>Question 1:</strong><br>The Agile Manifesto and its Principles are foundational to Agile software development.<br>a) Explain the four core values of the Agile Manifesto.<br>b) Discuss three of the twelve Agile Principles, explaining how each principle guides an Agile team's behavior and decision-making. Provide a brief example for each.",
+                    answer: `
+                        <p><strong>a) The Four Core Values of the Agile Manifesto:</strong></p>
+                        <p>The Agile Manifesto proposes that while there is value in the items on the right, Agile methodologies value the items on the left more:</p>
+                        <ol>
+                            <li><strong>Individuals and interactions over Processes and Tools:</strong> This value emphasizes that people are the most important factor in software development. Effective communication and collaboration among team members are more crucial for success than rigid processes or specific tools. While processes and tools can be helpful, they should support the team, not dictate their work in a way that hinders interaction.</li>
+                            <li><strong>Working Product over Comprehensive Documentation:</strong> Agile prioritizes delivering functional software that provides value to the customer over spending excessive time creating extensive documentation. Documentation is still created, but it's kept lean and purposeful, focusing on what's necessary rather than producing exhaustive documents that may quickly become outdated.</li>
+                            <li><strong>Customer Collaboration over Contract Negotiation:</strong> This value stresses the importance of a continuous partnership with the customer throughout the development lifecycle. Instead of relying solely on an initial contract and negotiating every change, Agile encourages ongoing collaboration to ensure the product meets the customer's evolving needs and to build trust.</li>
+                            <li><strong>Responding to change over Following a plan:</strong> Agile methodologies acknowledge that requirements are likely to change during a project. Therefore, they value the ability to adapt and respond to these changes quickly and efficiently, rather than strictly adhering to an initial, potentially outdated, plan. While planning is essential, the plan should be flexible.</li>
+                        </ol>
+                        <p><strong>b) Three Agile Principles and their Guidance:</strong></p>
+                        <ol>
+                            <li><strong>Principle 1: "Our highest priority is to satisfy the customer through early and continuous delivery of valuable software."</strong>
+                                <ul>
+                                    <li><strong>Guidance:</strong> This principle directs the team to focus on delivering working software in frequent, small increments that provide tangible value to the customer from an early stage. It shifts the focus from completing all features at once to providing a steady stream of useful functionality.</li>
+                                    <li><strong>Example:</strong> Instead of waiting six months to deliver a complete application, an Agile team might deliver a core feature set within the first month, allowing the customer to use it and provide feedback, which then informs subsequent development.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Principle 2: "Welcome changing requirements, even late in development. Agile processes harness change for the customer's competitive advantage."</strong>
+                                <ul>
+                                    <li><strong>Guidance:</strong> This principle encourages teams to be flexible and view changes in requirements not as disruptions, but as opportunities to deliver a more valuable product. It means building processes that can accommodate changes without significant rework or delays.</li>
+                                    <li><strong>Example:</strong> If a customer realizes halfway through a project that a new market trend requires an additional feature, an Agile team would work to incorporate this change into an upcoming iteration, rather than sticking rigidly to the original scope if the change adds significant value.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Principle 7: "Working software is the primary measure of progress."</strong>
+                                <ul>
+                                    <li><strong>Guidance:</strong> This principle asserts that the most meaningful way to track progress is by the amount of functional, tested software delivered. It de-emphasizes metrics like percentage of tasks completed or lines of code written if they don't translate to usable product features.</li>
+                                    <li><strong>Example:</strong> At the end of an iteration (e.g., a two-week sprint), the team demonstrates the new, working features they've completed. This tangible output is how progress is assessed by both the team and the stakeholders, not just a status report indicating tasks are "in progress."</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    `
+                },
+                {
+                    id: "essayQ2",
+                    question: "<strong>Question 2:</strong><br>Extreme Programming (XP) and Scrum are two prominent Agile methodologies.<br>a) Compare and contrast XP and Scrum, highlighting at least three key differences in their practices or focus.<br>b) Describe three distinct roles within an XP team and three distinct roles within a Scrum team, outlining their primary responsibilities.",
+                    answer: `
+                        <p><strong>a) Comparison and Contrast of XP and Scrum:</strong></p>
+                        <p>Both XP and Scrum are Agile methodologies that emphasize iterative development, collaboration, and responsiveness to change. However, they have different focuses and prescribe different sets of practices.</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th>Extreme Programming (XP)</th>
+                                    <th>Scrum</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Primary Focus</strong></td>
+                                    <td>Technical excellence and software engineering practices.</td>
+                                    <td>Project management framework and process optimization.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Iteration Length</strong></td>
+                                    <td>Typically very short, 1-2 weeks. (Weekly cycle)</td>
+                                    <td>Typically 2-4 weeks (called Sprints). (30 days)</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Prescriptiveness</strong></td>
+                                    <td>More prescriptive about specific engineering practices (e.g., pair programming, TDD, continuous integration).</td>
+                                    <td>Less prescriptive about engineering practices, allowing teams to choose their own.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Handling Change</strong></td>
+                                    <td>Embraces change continuously within iterations.</td>
+                                    <td>Changes are typically not introduced during a Sprint; backlog refined for next Sprint.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Team Size</strong></td>
+                                    <td>Designed for small project teams, typically 2-12 members.</td>
+                                    <td>Suitable for small teams, often less than 10 persons for the dev team.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Documentation</strong></td>
+                                    <td>Minimal, e.g., User Story Cards, CRC Cards, Visible Wall Graphs.</td>
+                                    <td>Key artifacts include Product Backlog, Sprint Backlog, Burndown Charts.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p><strong>Key Differences:</strong></p>
+                        <ol>
+                            <li><strong>Focus on Engineering Practices:</strong> XP is highly focused on specific software engineering practices like Pair Programming, Test-First Programming, and Continuous Integration. Scrum, on the other hand, provides a framework for managing the development process but doesn't mandate specific engineering techniques.</li>
+                            <li><strong>Iteration Management and Change:</strong> XP iterations (often weekly cycles) are more flexible in incorporating changes. Scrum Sprints are typically time-boxed, and the Sprint Backlog is generally kept stable during a Sprint.</li>
+                            <li><strong>Roles:</strong> XP roles are often more fluid (e.g., Programmer, Coach). Scrum has very distinct roles (Product Owner, Scrum Master, Development Team).</li>
+                        </ol>
+                        <p><strong>b) Roles in XP and Scrum:</strong></p>
+                        <p><strong>XP Roles:</strong></p>
+                        <ol>
+                            <li><strong>Programmer:</strong> Responsible for writing tests, designing, and coding the software. They also refactor code, identify and estimate tasks and stories.</li>
+                            <li><strong>Coach:</strong> Teaches team members about the XP process, intervenes in case of issues, and monitors whether XP practices are being followed.</li>
+                            <li><strong>Customer (On-Site Customer):</strong> An integral part of the team who writes user stories and acceptance tests, prioritizes stories, and is readily available to answer questions.</li>
+                        </ol>
+                        <p><strong>Scrum Roles:</strong></p>
+                        <ol>
+                            <li><strong>Product Owner:</strong> Responsible for maximizing the value of the product. They manage and prioritize the Product Backlog and define the vision.</li>
+                            <li><strong>Scrum Master:</strong> A servant-leader for the Scrum Team. Facilitates Scrum events, removes impediments, and coaches the team.</li>
+                            <li><strong>Development Team:</strong> A self-organizing, cross-functional group of professionals who deliver a potentially releasable Increment of "Done" product.</li>
+                        </ol>
+                    `
+                },
+                {
+                    id: "essayQ3",
+                    question: "<strong>Question 3:</strong><br>Effort estimation is critical in Agile projects.<br>a) Explain the key components used in calculating User Story Effort in Agile, as per the formula: User Story Effort = Σ (Complexity × ILF × Story Size).<br>b) A project has three user stories with the following details:<br>    *   Story 1: Complexity=2, ILF=1, Story Size=5<br>    *   Story 2: Complexity=3, ILF=1.2, Story Size=8<br>    *   Story 3: Complexity=1, ILF=0.8, Story Size=3<br>    Calculate the Total User Story Effort.<br>c) Briefly explain how Project Velocity and Project Time (duration) are subsequently estimated based on User Story Effort.<br>d) What is the Magnitude of Relative Error (MRE), and how is it calculated? If a project's Actual Effort was 150 person-hours and the Predicted Effort was 120 person-hours, calculate the MRE.",
+                    answer: `
+                        <p><strong>a) Key Components for User Story Effort:</strong></p>
+                        <p>The formula <code>User Story Effort = Σ (Complexity × ILF × Story Size)</code> indicates the effort for each user story is a product of three main components:</p>
+                        <ol>
+                            <li><strong>Story Size:</strong> Represents the relative size or magnitude of a user story, often estimated in abstract units like story points.</li>
+                            <li><strong>Complexity:</strong> Quantifies the technical difficulty or intricacy involved in implementing the user story.</li>
+                            <li><strong>ILF (Implementation Level Factor):</strong> Adjusts the effort based on various environmental or team-specific aspects that can affect implementation (e.g., team experience, technical environment).</li>
+                        </ol>
+                        <p><strong>b) Calculation of Total User Story Effort:</strong></p>
+                        <ul>
+                            <li>Story 1 Effort: 2 × 1 × 5 = 10</li>
+                            <li>Story 2 Effort: 3 × 1.2 × 8 = 28.8</li>
+                            <li>Story 3 Effort: 1 × 0.8 × 3 = 2.4</li>
+                        </ul>
+                        <p><strong>Total User Story Effort:</strong> 10 + 28.8 + 2.4 = <strong>41.2</strong> (units)</p>
+                        <p><strong>c) Estimating Project Velocity and Project Time:</strong></p>
+                        <ol>
+                            <li><strong>Project Velocity:</strong> <code>Velocity = Initial project velocity (DF × FR)</code>
+                                <ul>
+                                    <li>Velocity represents the amount of User Story Effort a team can typically complete in a single iteration. It's adjusted by Development Factors (DF) and Familiarity/Requirement Factors (FR).</li>
+                                </ul>
+                            </li>
+                            <li><strong>Project Time (Duration):</strong> <code>Project Time = User Story Effort / (Project Velocity × Worked days/month)</code>
+                                <ul>
+                                    <li>Duration is estimated by dividing the total effort by the amount of effort the team can deliver per unit of time.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <p><strong>d) Magnitude of Relative Error (MRE):</strong></p>
+                        <ul>
+                            <li><strong>Definition:</strong> MRE measures the error in an estimated value compared to the actual value, regardless of whether it's an overestimate or underestimate.</li>
+                            <li><strong>Calculation:</strong> <pre>MRE = (|Actual Effort - Predicted Effort| / Actual Effort) × 100</pre></li>
+                            <li><strong>Calculation for given values:</strong>
+                                <p>Actual Effort = 150 person-hours<br>Predicted Effort = 120 person-hours</p>
+                                <pre>
+MRE = (|150 - 120| / 150) × 100
+MRE = (30 / 150) × 100
+MRE = 0.2 × 100
+MRE = <strong>20%</strong></pre>
+                            </li>
+                        </ul>
+                    `
+                },
+                {
+                    id: "essayQ4",
+                    question: "<strong>Question 4:</strong><br>The Goal-Question-Metric (GQM) approach is a valuable tool for evaluation.<br>a) Describe the GQM approach and its three main levels (Conceptual, Operational, Quantitative).<br>b) How can GQM be applied to evaluate the implementation of an XP practice, for example, \"Planning Game\"? Illustrate with a Goal, at least two Questions related to that goal, and one Metric for each question.",
+                    answer: `
+                        <p><strong>a) The Goal-Question-Metric (GQM) Approach:</strong></p>
+                        <p>The GQM approach is a systematic method for defining and evaluating a set of operational goals using measurement. It operates on three levels:</p>
+                        <ol>
+                            <li><strong>Conceptual Level (Goal):</strong> A high-level objective defined for an object (e.g., product, process) with respect to a quality model from a particular point of view. <em>Example:</em> "Planning Game aims to create, estimate, and prioritize requirements for the next release."</li>
+                            <li><strong>Operational Level (Question):</strong> A set of questions formulated to characterize how the achievement of a specific goal will be assessed. <em>Example (for Planning Game):</em> "Are all persons related to this process participated in it?"</li>
+                            <li><strong>Quantitative Level (Metric):</strong> For each question, a set of metrics (quantitative data) is defined to answer the question in a measurable way. <em>Example (for the above question):</em> "Percentage of participators in writing stories vs. all must be involved in this process."</li>
+                        </ol>
+                        <p><strong>b) Applying GQM to XP Practice "Planning Game":</strong></p>
+                        <p><strong>Goal (Conceptual Level):</strong></p>
+                        <p>To ensure the "Planning Game" XP practice is effectively implemented to collaboratively create, estimate, and prioritize user stories for an upcoming release, involving all necessary stakeholders and resulting in a well-understood and achievable plan.</p>
+                        <p><strong>Questions (Operational Level) - related to the Goal:</strong></p>
+                        <ol>
+                            <li><strong>Question 1:</strong> To what extent is the customer actively involved and satisfied with their participation in the Planning Game for story creation and prioritization?
+                                <ul>
+                                    <li><strong>Metric 1.1:</strong> Percentage of user stories for the release that were written or directly approved by the customer.</li>
+                                    <li><strong>Metric 1.2:</strong> Customer satisfaction rating (e.g., on a scale of 1-5) regarding their ability to influence story prioritization during the Planning Game.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Question 2:</strong> How effectively are user stories estimated by the development team during the Planning Game?
+                                <ul>
+                                    <li><strong>Metric 2.1:</strong> Variance between estimated effort for stories in a completed iteration and the actual effort taken.</li>
+                                    <li><strong>Metric 2.2:</strong> Percentage of stories from the Planning Game that required re-estimation during the iteration due to initial misunderstanding.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    `
+                },
+                {
+                    id: "essayQ5",
+                    question: "<strong>Question 5:</strong><br>The 4-Dimensional Analytical Tool (4DAT) and Agile Software Product Management (SPM) are frameworks for guiding Agile adoption and management.<br>a) Describe the four dimensions of the 4DAT.<br>b) Explain how 4DAT can be used to select an appropriate Agile methodology (e.g., XP or Scrum) for different project modules, using a hypothetical example of two modules with differing characteristics.<br>c) What is Agile Software Product Management (SPM), and what are its four main requirement refinery stages?",
+                    answer: `
+                        <p><strong>a) Four Dimensions of 4DAT:</strong></p>
+                        <p>The 4-Dimensional Analytical Tool (4DAT) assesses Agile methods across four key dimensions:</p>
+                        <ol>
+                            <li><strong>Scope Dimension:</strong> Checks method support for project/environmental characteristics like project size, team size, development style, code style, technology environment, physical environment, and business culture.</li>
+                            <li><strong>Agile Values Dimension:</strong> Quantitatively checks the existence and emphasis of agility within methods at both process and practice levels.</li>
+                            <li><strong>Agility Dimension:</strong> Examines the support of Agile values characterization in different practice levels (how specific practices contribute to agility).</li>
+                            <li><strong>Software Process Dimension:</strong> Examines practices supporting components of the software development process (requirements, design, coding, testing, deployment).</li>
+                        </ol>
+                        <p><strong>b) Using 4DAT for Methodology Selection (Hypothetical Example):</strong></p>
+                        <p>Consider two modules:</p>
+                        <ul>
+                            <li><strong>Module A: Core Algorithm Development:</strong> Complex tasks, small co-located team, intricate logic, rapid feedback needed.</li>
+                            <li><strong>Module B: User Interface (UI) for Reporting:</strong> Smaller tasks, larger/distributed team, standard UI, clear backlog management needed.</li>
+                        </ul>
+                        <p><strong>4DAT Analysis (Simplified Scope):</strong></p>
+                        <ul>
+                            <li><strong>Module A:</strong> XP might score higher (e.g., 6/8) due to suitability for small, co-located teams, technical practices, and rapid feedback. Scrum might score lower (e.g., 3/8). <em>Conclusion: XP likely more appropriate.</em></li>
+                            <li><strong>Module B:</strong> Scrum might score higher (e.g., 6/8) due to better handling of larger/distributed teams and backlog management for UI features. XP might score lower (e.g., 3/8). <em>Conclusion: Scrum likely more appropriate.</em></li>
+                        </ul>
+                        <p><strong>c) Agile Software Product Management (SPM):</strong></p>
+                        <p>Agile SPM enables customers to flexibly define requirements. It's crucial for large projects at a high management level, defining roles, regulations, and standards to facilitate links between project modules.</p>
+                        <p><strong>Four Main Requirement Refinery Stages in Agile SPM:</strong></p>
+                        <ol>
+                            <li><strong>Vision:</strong> The overall goal, the problem to be solved, and the target audience.</li>
+                            <li><strong>Theme:</strong> Broad categories of functionality or high-level objectives grouping related features.</li>
+                            <li><strong>Concept:</strong> Further refinement of themes into more concrete product capabilities or significant features.</li>
+                            <li><strong>Requirements Definition:</strong> Detailed stage where concepts are broken down into specific, actionable requirements (e.g., user stories).</li>
+                        </ol>
+                    `
+                },
+                {
+                    id: "essayQ6",
+                    question: "<strong>Question 6:</strong><br>The Requirement Engineering (RE) process is vital for project success, even in Agile environments.<br>a) What is Requirement Engineering?<br>b) Describe the key phases of the Requirement Engineering process, particularly as it applies to or is adapted for Agile development.",
+                    answer: `
+                        <p><strong>a) Requirement Engineering (RE):</strong></p>
+                        <p>Requirement Engineering refers to the systematic process of defining, documenting, and maintaining requirements in the engineering design process. Its purpose is to understand customer desires, analyze needs, assess feasibility, negotiate solutions, specify them clearly, validate specifications, and manage requirements as they transform into a working system.</p>
+                        <p><strong>b) Key Phases of the Requirement Engineering Process in Agile:</strong></p>
+                        <p>While traditional RE can be formal, in Agile, these phases are more lightweight, iterative, and continuous:</p>
+                        <ol>
+                            <li><strong>Feasibility Study:</strong>
+                                <ul>
+                                    <li><strong>Description:</strong> Assesses technical, operational, and economic feasibility. In Agile, this might be for the overall vision initially, then re-evaluated for major features; MVPs often test feasibility early.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Requirement Elicitation and Analysis:</strong>
+                                <ul>
+                                    <li><strong>Description:</strong> Identifying requirements with customers/stakeholders. In Agile, this is continuous via user story workshops, Product Owner interactions, and sprint review feedback.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Software Requirement Specification (SRS):</strong>
+                                <ul>
+                                    <li><strong>Description:</strong> Documenting requirements. In Agile, this is often a living Product Backlog (user stories, epics) with acceptance criteria, rather than a single large upfront document.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Software Requirement Validation:</strong>
+                                <ul>
+                                    <li><strong>Description:</strong> Ensuring requirements are correct, complete, and reflect customer needs. In Agile, this is continuous through sprint reviews (validating working software) and acceptance tests.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Software Requirement Management:</strong>
+                                <ul>
+                                    <li><strong>Description:</strong> Managing changes to requirements. In Agile, the Product Backlog is dynamic; changes are managed via backlog grooming and planning for subsequent iterations.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    `
+                },
+                 {
+                    id: "essayQ7_RequirementEngineeringAgilePDF",
+                    question: "<strong>Question 7 (Based on unit 5: Requirement Engineering in Agile):</strong><br>The Agile process model is an iterative approach to software development.<br>a) Define the Agile process model as presented in the lecture.<br>b) Describe the typical duration of an iteration in the Agile process model and explain how dividing the project into smaller parts benefits the project.<br>c) List and briefly explain the six key phases of the Agile Model as outlined in slides 5-12.",
+                    answer: `
+                        <p><strong>a) Definition of the Agile Process Model (Slide 2):</strong></p>
+                        <p>The Agile process model refers to a software development approach that is based on iterative development. In this model, tasks are broken down into smaller iterations. While initial project scope and requirements are laid down at the beginning, detailed long-term planning for all parts might not be direct. Plans regarding the number of iterations, their duration, and the scope of each iteration are clearly defined in advance.</p>
+                        <p><strong>b) Iteration Duration and Benefits (Slide 3):</strong></p>
+                        <p>Each iteration in the Agile process model is considered a short time "frame," typically lasting from <strong>one to four weeks</strong>.</p>
+                        <p>The division of the entire project into these smaller parts (iterations) offers significant benefits:</p>
+                        <ol>
+                            <li><strong>Minimizes Project Risk:</strong> By breaking down the project, risks can be identified and addressed earlier within smaller, manageable chunks.</li>
+                            <li><strong>Reduces Overall Project Delivery Time Requirements:</strong> Delivering working software in increments can lead to faster overall delivery.</li>
+                        </ol>
+                        <p><strong>c) Six Key Phases of the Agile Model (Slides 5-9, 11-12):</strong></p>
+                        <ol>
+                            <li><strong>Requirements Gathering (Slide 6):</strong> Define requirements, explain business opportunities, plan time/effort, and evaluate technical/economic feasibility.</li>
+                            <li><strong>Design the Requirements (Slide 7):</strong> Work with stakeholders to define requirements in detail, using tools like user flow diagrams or UML diagrams.</li>
+                            <li><strong>Construction/Iteration (Slide 8):</strong> Development work begins, aiming to deploy a working product. The product undergoes improvement, starting with simple, minimal functionality.</li>
+                            <li><strong>Testing/Quality Assurance (Slide 9):</strong> The QA team examines the product's performance and looks for bugs. (Referred to as '3- Testing' on slide 9, but aligns with slide 5's 'Testing/Quality assurance').</li>
+                            <li><strong>Deployment (Slide 11):</strong> The team issues a working product increment for the user's work environment.</li>
+                            <li><strong>Feedback (Slide 12):</strong> After release, the team receives and works through feedback about the product to inform future iterations.</li>
+                        </ol>
+                    `
+                },
+                {
+                    id: "essayQ8_SoftwareQuality",
+                    question: "<strong>Question 8 (Based on unit 5: Requirement Engineering in Agile):</strong><br>Software quality is a multi-faceted concept crucial for user satisfaction.<br>a) Define software quality in terms of \"fitness of purpose\" as explained in the lecture (Slide 10).<br>b) The lecture mentions five key attributes associated with a modern view of software quality (Slide 14). List and explain three of these attributes (Portability, Usability, Maintainability from slides 15, 16, 19), providing a brief example for each.<br>c) Explain why a functionally correct software product might still not be considered a quality product, using the example provided in the lecture (Slide 13).",
+                    answer: `
+                        <p><strong>a) Software Quality - Fitness of Purpose (Slide 10):</strong></p>
+                        <p>Software quality is defined in terms of its <strong>fitness of purpose</strong>. This means that a quality product does precisely what the users want it to do. For software products, this fitness for use is generally explained in terms of satisfying the requirements laid down in the Software Requirement Specification (SRS) document.</p>
+                        <p><strong>b) Three Key Attributes of Software Quality (Slides 15, 16, 19):</strong></p>
+                        <ol>
+                            <li><strong>Portability (Slide 15):</strong>
+                                <ul>
+                                    <li><strong>Explanation:</strong> A software product is portable if it can be freely made to work in various operating system environments, on multiple machines, and with other software products without significant modification.</li>
+                                    <li><strong>Example:</strong> An application developed on Windows that can also be easily compiled and run on macOS and Linux.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Usability (Slide 16):</strong>
+                                <ul>
+                                    <li><strong>Explanation:</strong> A software product has better usability if various categories of users can easily invoke its functions and achieve their goals effectively and efficiently.</li>
+                                    <li><strong>Example:</strong> A data analysis tool with a clear, intuitive user interface allowing new users to perform basic analyses without extensive training.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Maintainability (Slide 19):</strong>
+                                <ul>
+                                    <li><strong>Explanation:</strong> A software product is maintainable if bugs can be easily corrected, new tasks/features can be easily added, and existing functionalities can be easily modified.</li>
+                                    <li><strong>Example:</strong> Software with well-structured, modular code and clear documentation, allowing for easy updates like implementing new tax regulations in a financial app.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <p><strong>c) Functionally Correct but Not Quality Product (Slide 13):</strong></p>
+                        <p>A software product can perform all tasks as specified in the SRS document (i.e., it is functionally correct), but still not be considered a quality product if it fails in other crucial aspects, particularly usability. The lecture provides an example: "Consider a functionally correct software product... But, has an almost unusable user interface. Even though it may be functionally right, we cannot consider it to be a quality product." This highlights that if users cannot effectively interact with the software, its functional correctness alone is insufficient for it to be a quality product.</p>
+                    `
+                },
+                {
+                    id: "essayQ9_REProcessSRS",
+                    question: "<strong>Question 9 (Based on unit 5: Requirement Engineering in Agile):</strong><br>Requirement Engineering (RE) is a fundamental process in software development.<br>a) Define Requirement Engineering (RE) as per slide 21.<br>b) Outline and briefly explain the five main steps of the Requirement Engineering process presented (slides 22, 24-32).<br>c) What is the purpose of a Software Requirement Specification (SRS) document, and what are some models that might be used at this stage (slides 28-29)?",
+                    answer: `
+                        <p><strong>a) Definition of Requirement Engineering (RE) (Slide 21):</strong></p>
+                        <p>Requirement Engineering (RE) refers to the process of defining, documenting, and maintaining requirements in the engineering design process. It provides the appropriate mechanism to understand what the customer desires, analyzing the need, assessing feasibility, negotiating a reasonable solution, specifying the solution clearly, validating the specifications, and managing the requirements as they are transformed into a working system.</p>
+                        <p><strong>b) Five Main Steps of the Requirement Engineering Process (Slides 22, 24-32):</strong></p>
+                        <ol>
+                            <li><strong>Feasibility Study (Slides 24-25):</strong> Objective is to create reasons for developing software, ensuring it's acceptable, flexible, and conformable. Involves evaluating Technical, Operational, and Economic feasibility.</li>
+                            <li><strong>Requirement Elicitation and Analysis (Slides 26-27):</strong> Gathering requirements with customer help. Involves domain understanding, requirements collection, classification, conflict resolution, and prioritization.</li>
+                            <li><strong>Software Requirement Specification (SRS) (Slides 28-29):</strong> Creating a document by a software analyst that translates customer needs into technical language for the development team.</li>
+                            <li><strong>Software Requirement Validation (Slides 30-31):</strong> Ensuring requirements in the SRS are correct, complete, and accurately reflect user needs. Techniques include reviews, prototyping, test-case generation.</li>
+                            <li><strong>Software Requirement Management (Slide 32):</strong> Managing changing requirements during the RE process and system development.</li>
+                        </ol>
+                        <p><strong>c) Purpose of SRS and Models Used (Slides 28-29):</strong></p>
+                        <p>The purpose of an SRS document is to formally document collected requirements, translating them from ordinary language into technical language for the development team. Models used at this stage include:</p>
+                        <ul>
+                            <li>ER diagrams (Entity-Relationship diagrams)</li>
+                            <li>Data Flow Diagrams (DFDs)</li>
+                            <li>Data Dictionaries, etc.</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: "essayQ10_GoodSRSCharacteristics",
+                    question: "<strong>Question 10 (Based on unit 5: Requirement Engineering in Agile):</strong><br>A good Software Requirement Specification (SRS) possesses several key characteristics.<br>a) List ten prerequisites or characteristics of a complete and effective SRS document as mentioned on slide 33.<br>b) Choose four of these characteristics (e.g., Correctness, Completeness, Consistency, Unambiguousness from slides 37-40) and explain each one in detail, including why it is important for an SRS.",
+                    answer: `
+                        <p><strong>a) Ten Prerequisites/Characteristics of a Good SRS (Slide 33):</strong></p>
+                        <ol>
+                            <li>Clear</li>
+                            <li>Correct</li>
+                            <li>Consistent</li>
+                            <li>Coherent</li>
+                            <li>Comprehensible</li>
+                            <li>Modifiable</li>
+                            <li>Verifiable</li>
+                            <li>Prioritized</li>
+                            <li>Unambiguous</li>
+                            <li>Traceable</li>
+                            <li><em>(Also: Credible source)</em></li>
+                        </ol>
+                        <p><strong>b) Explanation of Four SRS Characteristics:</strong></p>
+                        <ol>
+                            <li><strong>Correctness (Slide 37):</strong>
+                                <ul>
+                                    <li><strong>Explanation:</strong> An SRS is correct if it accurately reflects user needs. User reviews verify accuracy. It's perfect if it covers all truly expected needs.</li>
+                                    <li><strong>Importance:</strong> An incorrect SRS leads to building the wrong system, causing wasted effort and dissatisfaction.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Completeness (Slide 38):</strong>
+                                <ul>
+                                    <li><strong>Explanation:</strong> Includes all essential requirements (functionality, performance, design, constraints, interfaces), defines responses to all input data, and has full labels/references.</li>
+                                    <li><strong>Importance:</strong> An incomplete SRS leads to ambiguities, developer assumptions, and potentially missing critical functionality.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Consistency (Slide 39):</strong>
+                                <ul>
+                                    <li><strong>Explanation:</strong> No subset of individual requirements conflict. Conflicts can be in descriptions of objects or specified actions.</li>
+                                    <li><strong>Importance:</strong> Inconsistent requirements make it impossible to build a system satisfying all needs, leading to confusion and rework.</li>
+                                </ul>
+                            </li>
+                            <li><strong>Unambiguousness (Slide 40):</strong>
+                                <ul>
+                                    <li><strong>Explanation:</strong> Every requirement has only one interpretation. If terms with multiple definitions are used, the SRS must clarify the intended meaning.</li>
+                                    <li><strong>Importance:</strong> Ambiguity leads to misinterpretations, resulting in features implemented differently than intended.</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    `
+                },
+                {
+                    id: "essayQ11_RequirementCategories",
+                    question: "<strong>Question 11 (Based on unit 5: Requirement Engineering in Agile):</strong><br>Software requirements can be broadly categorized.<br>a) Define Functional Requirements and explain their role in describing system behavior (Slide 34). Provide an example.<br>b) Define Non-functional Requirements (Slide 35). Explain the two main sub-categories of non-functional requirements (Execution qualities and Evolution qualities) and provide one example for each sub-category.",
+                    answer: `
+                        <p><strong>a) Functional Requirements (Slide 34):</strong></p>
+                        <ul>
+                            <li><strong>Definition:</strong> Functional requirements define a function that a system or system element must be qualified to perform and must be documented in different forms.</li>
+                            <li><strong>Role in Describing System Behavior:</strong> They describe the behavior of the system as it correlates to the system's functionality, specifying *what* the system should do (inputs, outputs, processing, actions).</li>
+                            <li><strong>Example:</strong> "The system shall allow a registered user to add items to a shopping cart."</li>
+                        </ul>
+                        <p><strong>b) Non-functional Requirements (NFRs) (Slide 35):</strong></p>
+                        <ul>
+                            <li><strong>Definition:</strong> NFRs specify the criteria used to judge the operation of a system, rather than specific behaviors. They define *how well* the system performs or qualities it must possess.</li>
+                            <li><strong>Two Main Sub-categories:</strong>
+                                <ol>
+                                    <li><strong>Execution Qualities:</strong>
+                                        <ul>
+                                            <li><strong>Explanation:</strong> Qualities like security and usability, observable at run time.</li>
+                                            <li><strong>Example (Security):</strong> "The system shall ensure all user passwords are encrypted using AES-256."</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>Evolution Qualities:</strong>
+                                        <ul>
+                                            <li><strong>Explanation:</strong> Qualities like testability, maintainability, extensibility, and scalability, embodied in the static structure of the software.</li>
+                                            <li><strong>Example (Maintainability):</strong> "The system shall be developed using a modular architecture to allow for individual modules to be updated with minimal impact."</li>
+                                        </ul>
+                                    </li>
+                                </ol>
+                            </li>
+                        </ul>
+                    `
+                },
+                {
+                    id: "essayQ12_TraceabilityModifiabilitySRS",
+                    question: "<strong>Question 12 (Based on unit 5: Requirement Engineering in Agile):</strong><br>Traceability and Modifiability are important characteristics of a well-defined Software Requirement Specification (SRS).<br>a) Explain what makes an SRS \"Traceable.\" Describe the two types of traceability mentioned (Backward and Forward Traceability from slide 44).<br>b) Explain what makes an SRS \"Modifiable\" (Slide 42) and why this is important for software projects.",
+                    answer: `
+                        <p><strong>a) Traceability in SRS (Slide 44):</strong></p>
+                        <p>An SRS is "Traceable" if the origin of each requirement is clear and it facilitates referencing each condition in future development or enhancement documentation.</p>
+                        <p><strong>Two types of Traceability:</strong></p>
+                        <ol>
+                            <li><strong>Backward Traceability:</strong> Each requirement explicitly references its source in earlier documents (e.g., business need, stakeholder request). This ensures requirements are legitimate and helps in impact analysis if the source changes.</li>
+                            <li><strong>Forward Traceability:</strong> Each requirement has a unique name/reference number, allowing it to be traced forward into design, code, test cases, etc. This verifies all requirements are addressed and helps understand the impact of changing a requirement.</li>
+                        </ol>
+                        <p><strong>b) Modifiability in SRS (Slide 42):</strong></p>
+                        <p>An SRS is "Modifiable" if changes to requirements can be made easily, quickly, and consistently. Modifications should be perfectly indexed and cross-referenced.</p>
+                        <p><strong>Importance of Modifiability:</strong></p>
+                        <ul>
+                            <li><strong>Adaptability:</strong> Allows the project to adapt to evolving requirements efficiently.</li>
+                            <li><strong>Reduced Rework:</strong> Clear documentation of changes leads to less rework in later stages.</li>
+                            <li><strong>Clarity and Consistency:</strong> Indexing and cross-referencing maintain overall consistency when changes are made.</li>
+                            <li><strong>Cost and Time Savings:</strong> Reduces time and cost associated with managing changes.</li>
+                        </ul>
+                    `
+                },
+                {
+                    id: "essayQ13_AgileLifecycleFeedback",
+                    question: "<strong>Question 13 (Based on unit 5: Requirement Engineering in Agile):</strong><br>The Agile Model encompasses a full software development lifecycle within its iterations.<br>a) According to slide 3, what activities are typically included in each iteration of an Agile model?<br>b) The \"Construction/iteration\" phase (slide 8) involves designers and developers working to deploy a working product. How does this phase typically approach product improvement and initial functionality?<br>c) How does the \"Feedback\" phase (slide 12) contribute to the iterative nature of the Agile model?",
+                    answer: `
+                        <p><strong>a) Activities in Each Agile Iteration (Slide 3):</strong></p>
+                        <p>Each iteration involves a team working through a full software development life cycle, including:</p>
+                        <ul>
+                            <li>Planning</li>
+                            <li>Requirements analysis</li>
+                            <li>Design</li>
+                            <li>Coding</li>
+                            <li>Testing</li>
+                        </ul>
+                        <p>This cycle is completed before a working product increment is demonstrated.</p>
+                        <p><strong>b) Approach in Construction/Iteration (Slide 8):</strong></p>
+                        <p>In the "Construction/iteration" phase:</p>
+                        <ul>
+                            <li><strong>Progressive Improvement:</strong> The product undergoes various stages of improvement over iterations.</li>
+                            <li><strong>Simple, Minimal Functionality Initially:</strong> Development often starts with basic functionality to deliver value quickly and gather early feedback.</li>
+                        </ul>
+                        <p><strong>c) Contribution of the "Feedback" Phase (Slide 12):</strong></p>
+                        <p>The "Feedback" phase is crucial for the iterative nature of Agile:</p>
+                        <ol>
+                            <li><strong>Informs Subsequent Iterations:</strong> Feedback is used to plan and adjust work for future iterations, helping prioritize and refine the product.</li>
+                            <li><strong>Ensures Alignment with User Needs:</strong> Helps ensure the product evolves to meet actual user expectations.</li>
+                            <li><strong>Drives Continuous Improvement:</strong> Allows for ongoing learning and improvement of both the product and the development process.</li>
+                        </ol>
+                    `
+                }
+            ];
+
+
+            essayContainer.innerHTML = `<h2>Essay Questions</h2>
+                                        <p>Click on a question to reveal its answer.</p>`; // Clear previous content and add header
+
+            essayQuestionsWithAnswers.forEach(essayQ => {
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('essay-question-item');
+                itemDiv.setAttribute('id', essayQ.id);
+
+                const titleDiv = document.createElement('div');
+                titleDiv.classList.add('essay-question-title');
+                titleDiv.innerHTML = essayQ.question; // Use innerHTML to render bold tags
+
+                const answerDiv = document.createElement('div');
+                answerDiv.classList.add('essay-answer-content');
+                answerDiv.innerHTML = essayQ.answer; // Use innerHTML to render the answer with HTML
+
+                titleDiv.addEventListener('click', () => {
+                    const isVisible = answerDiv.style.display === 'block';
+                    answerDiv.style.display = isVisible ? 'none' : 'block';
+                });
+
+                itemDiv.appendChild(titleDiv);
+                itemDiv.appendChild(answerDiv);
+                essayContainer.appendChild(itemDiv);
+            });
+        }
+
+        function showTab(tabName) {
+            if (tabName === 'standard') {
+                quizContainer.style.display = 'block';
+                essayContainer.style.display = 'none';
+                standardQuizTab.classList.add('active');
+                essayQuizTab.classList.remove('active');
+            } else if (tabName === 'essay') {
+                quizContainer.style.display = 'none';
+                essayContainer.style.display = 'block';
+                standardQuizTab.classList.remove('active');
+                essayQuizTab.classList.add('active');
+                displayEssayQuestions(); // Display essay questions when tab is shown
+            }
+        }
+
+        standardQuizTab.addEventListener('click', () => showTab('standard'));
+        essayQuizTab.addEventListener('click', () => showTab('essay'));
+
         // Initial call to display the quiz when the page loads
         displayQuiz();
+        showTab('standard'); // Show standard quiz by default
 
     </script>
 
