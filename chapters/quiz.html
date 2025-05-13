@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>206 Final Revision </title>
+    <title>Agile Methodology Quiz</title>
     <style>
         body {
             font-family: sans-serif;
@@ -170,21 +170,22 @@
             border-top: 1px solid #eee;
             line-height: 1.5; /* Improve readability of answer text */
         }
-        .essay-answer-content table {
+        .essay-answer-content table, .essay-sub-accordion-content table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
             margin-bottom: 10px;
         }
-        .essay-answer-content th, .essay-answer-content td {
+        .essay-answer-content th, .essay-answer-content td,
+        .essay-sub-accordion-content th, .essay-sub-accordion-content td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
-        .essay-answer-content th {
+        .essay-answer-content th, .essay-sub-accordion-content th {
             background-color: #f2f2f2;
         }
-        .essay-answer-content pre {
+        .essay-answer-content pre, .essay-sub-accordion-content pre {
             background-color: #eee;
             padding: 10px;
             border-radius: 4px;
@@ -192,16 +193,52 @@
             word-wrap: break-word;
             font-family: monospace;
         }
-        .essay-answer-content ul, .essay-answer-content ol {
+        .essay-answer-content ul, .essay-answer-content ol,
+        .essay-sub-accordion-content ul, .essay-sub-accordion-content ol {
             margin-left: 20px;
             padding-left: 20px;
+        }
+
+        /* Styles for sub-accordions within an essay answer */
+        .essay-sub-accordion-item {
+            margin-top: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 3px;
+            background-color: #fff; /* Ensure background for sub-items */
+        }
+        .essay-sub-accordion-item:first-child {
+            margin-top: 0; /* Remove top margin if it's the first sub-item */
+        }
+
+        .essay-sub-accordion-title {
+            background-color: #f7f7f7; /* Slightly different background for sub-titles */
+            padding: 8px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #e0e0e0; /* Separator for content */
+        }
+        .essay-sub-accordion-title:hover {
+            background-color: #e7e7e7;
+        }
+        .essay-sub-accordion-title p { /* Assumes the title node is a <p> */
+            margin: 0;
+            /* font-weight: bold; Let <strong> inside handle this */
+        }
+        .essay-sub-accordion-title p strong {
+             font-weight: bold; /* Explicitly ensure strong tags are bold */
+        }
+
+
+        .essay-sub-accordion-content {
+            padding: 10px 12px;
+            /* display: none; by default, handled by JS */
+            line-height: 1.5;
         }
 
     </style>
 </head>
 <body>
 
-    <h1>Final Revision </h1>
+    <h1>Agile Methodology Quiz</h1>
 
     <div class="tab-navigation">
         <button class="tab-button active" id="standardQuizTab">Standard Quiz</button>
@@ -569,7 +606,7 @@ MRE = <strong>20%</strong></pre>
                 },
                  {
                     id: "essayQ7_RequirementEngineeringAgilePDF",
-                    question: "<strong>Question 7 (Based on unit 5: Requirement Engineering in Agile):</strong><br>The Agile process model is an iterative approach to software development.<br>a) Define the Agile process model as presented in the lecture.<br>b) Describe the typical duration of an iteration in the Agile process model and explain how dividing the project into smaller parts benefits the project.<br>c) List and briefly explain the six key phases of the Agile Model as outlined in slides 5-12.",
+                    question: "<strong>Question 7 (Based on 'Requirement Engineering in Agile' PDF):</strong><br>The Agile process model is an iterative approach to software development.<br>a) Define the Agile process model as presented in the lecture.<br>b) Describe the typical duration of an iteration in the Agile process model and explain how dividing the project into smaller parts benefits the project.<br>c) List and briefly explain the six key phases of the Agile Model as outlined in slides 5-12.",
                     answer: `
                         <p><strong>a) Definition of the Agile Process Model (Slide 2):</strong></p>
                         <p>The Agile process model refers to a software development approach that is based on iterative development. In this model, tasks are broken down into smaller iterations. While initial project scope and requirements are laid down at the beginning, detailed long-term planning for all parts might not be direct. Plans regarding the number of iterations, their duration, and the scope of each iteration are clearly defined in advance.</p>
@@ -593,7 +630,7 @@ MRE = <strong>20%</strong></pre>
                 },
                 {
                     id: "essayQ8_SoftwareQuality",
-                    question: "<strong>Question 8 (Based on unit 5: Requirement Engineering in Agile):</strong><br>Software quality is a multi-faceted concept crucial for user satisfaction.<br>a) Define software quality in terms of \"fitness of purpose\" as explained in the lecture (Slide 10).<br>b) The lecture mentions five key attributes associated with a modern view of software quality (Slide 14). List and explain three of these attributes (Portability, Usability, Maintainability from slides 15, 16, 19), providing a brief example for each.<br>c) Explain why a functionally correct software product might still not be considered a quality product, using the example provided in the lecture (Slide 13).",
+                    question: "<strong>Question 8 (Based on 'Requirement Engineering in Agile' PDF):</strong><br>Software quality is a multi-faceted concept crucial for user satisfaction.<br>a) Define software quality in terms of \"fitness of purpose\" as explained in the lecture (Slide 10).<br>b) The lecture mentions five key attributes associated with a modern view of software quality (Slide 14). List and explain three of these attributes (Portability, Usability, Maintainability from slides 15, 16, 19), providing a brief example for each.<br>c) Explain why a functionally correct software product might still not be considered a quality product, using the example provided in the lecture (Slide 13).",
                     answer: `
                         <p><strong>a) Software Quality - Fitness of Purpose (Slide 10):</strong></p>
                         <p>Software quality is defined in terms of its <strong>fitness of purpose</strong>. This means that a quality product does precisely what the users want it to do. For software products, this fitness for use is generally explained in terms of satisfying the requirements laid down in the Software Requirement Specification (SRS) document.</p>
@@ -624,7 +661,7 @@ MRE = <strong>20%</strong></pre>
                 },
                 {
                     id: "essayQ9_REProcessSRS",
-                    question: "<strong>Question 9 (Based on unit 5: Requirement Engineering in Agile):</strong><br>Requirement Engineering (RE) is a fundamental process in software development.<br>a) Define Requirement Engineering (RE) as per slide 21.<br>b) Outline and briefly explain the five main steps of the Requirement Engineering process presented (slides 22, 24-32).<br>c) What is the purpose of a Software Requirement Specification (SRS) document, and what are some models that might be used at this stage (slides 28-29)?",
+                    question: "<strong>Question 9 (Based on 'Requirement Engineering in Agile' PDF):</strong><br>Requirement Engineering (RE) is a fundamental process in software development.<br>a) Define Requirement Engineering (RE) as per slide 21.<br>b) Outline and briefly explain the five main steps of the Requirement Engineering process presented (slides 22, 24-32).<br>c) What is the purpose of a Software Requirement Specification (SRS) document, and what are some models that might be used at this stage (slides 28-29)?",
                     answer: `
                         <p><strong>a) Definition of Requirement Engineering (RE) (Slide 21):</strong></p>
                         <p>Requirement Engineering (RE) refers to the process of defining, documenting, and maintaining requirements in the engineering design process. It provides the appropriate mechanism to understand what the customer desires, analyzing the need, assessing feasibility, negotiating a reasonable solution, specifying the solution clearly, validating the specifications, and managing the requirements as they are transformed into a working system.</p>
@@ -647,7 +684,7 @@ MRE = <strong>20%</strong></pre>
                 },
                 {
                     id: "essayQ10_GoodSRSCharacteristics",
-                    question: "<strong>Question 10 (Based on unit 5: Requirement Engineering in Agile):</strong><br>A good Software Requirement Specification (SRS) possesses several key characteristics.<br>a) List ten prerequisites or characteristics of a complete and effective SRS document as mentioned on slide 33.<br>b) Choose four of these characteristics (e.g., Correctness, Completeness, Consistency, Unambiguousness from slides 37-40) and explain each one in detail, including why it is important for an SRS.",
+                    question: "<strong>Question 10 (Based on 'Requirement Engineering in Agile' PDF):</strong><br>A good Software Requirement Specification (SRS) possesses several key characteristics.<br>a) List ten prerequisites or characteristics of a complete and effective SRS document as mentioned on slide 33.<br>b) Choose four of these characteristics (e.g., Correctness, Completeness, Consistency, Unambiguousness from slides 37-40) and explain each one in detail, including why it is important for an SRS.",
                     answer: `
                         <p><strong>a) Ten Prerequisites/Characteristics of a Good SRS (Slide 33):</strong></p>
                         <ol>
@@ -694,7 +731,7 @@ MRE = <strong>20%</strong></pre>
                 },
                 {
                     id: "essayQ11_RequirementCategories",
-                    question: "<strong>Question 11 (Based on unit 5: Requirement Engineering in Agile):</strong><br>Software requirements can be broadly categorized.<br>a) Define Functional Requirements and explain their role in describing system behavior (Slide 34). Provide an example.<br>b) Define Non-functional Requirements (Slide 35). Explain the two main sub-categories of non-functional requirements (Execution qualities and Evolution qualities) and provide one example for each sub-category.",
+                    question: "<strong>Question 11 (Based on 'Requirement Engineering in Agile' PDF):</strong><br>Software requirements can be broadly categorized.<br>a) Define Functional Requirements and explain their role in describing system behavior (Slide 34). Provide an example.<br>b) Define Non-functional Requirements (Slide 35). Explain the two main sub-categories of non-functional requirements (Execution qualities and Evolution qualities) and provide one example for each sub-category.",
                     answer: `
                         <p><strong>a) Functional Requirements (Slide 34):</strong></p>
                         <ul>
@@ -726,7 +763,7 @@ MRE = <strong>20%</strong></pre>
                 },
                 {
                     id: "essayQ12_TraceabilityModifiabilitySRS",
-                    question: "<strong>Question 12 (Based on unit 5: Requirement Engineering in Agile):</strong><br>Traceability and Modifiability are important characteristics of a well-defined Software Requirement Specification (SRS).<br>a) Explain what makes an SRS \"Traceable.\" Describe the two types of traceability mentioned (Backward and Forward Traceability from slide 44).<br>b) Explain what makes an SRS \"Modifiable\" (Slide 42) and why this is important for software projects.",
+                    question: "<strong>Question 12 (Based on 'Requirement Engineering in Agile' PDF):</strong><br>Traceability and Modifiability are important characteristics of a well-defined Software Requirement Specification (SRS).<br>a) Explain what makes an SRS \"Traceable.\" Describe the two types of traceability mentioned (Backward and Forward Traceability from slide 44).<br>b) Explain what makes an SRS \"Modifiable\" (Slide 42) and why this is important for software projects.",
                     answer: `
                         <p><strong>a) Traceability in SRS (Slide 44):</strong></p>
                         <p>An SRS is "Traceable" if the origin of each requirement is clear and it facilitates referencing each condition in future development or enhancement documentation.</p>
@@ -748,7 +785,7 @@ MRE = <strong>20%</strong></pre>
                 },
                 {
                     id: "essayQ13_AgileLifecycleFeedback",
-                    question: "<strong>Question 13 (Based on unit 5: Requirement Engineering in Agile):</strong><br>The Agile Model encompasses a full software development lifecycle within its iterations.<br>a) According to slide 3, what activities are typically included in each iteration of an Agile model?<br>b) The \"Construction/iteration\" phase (slide 8) involves designers and developers working to deploy a working product. How does this phase typically approach product improvement and initial functionality?<br>c) How does the \"Feedback\" phase (slide 12) contribute to the iterative nature of the Agile model?",
+                    question: "<strong>Question 13 (Based on 'Requirement Engineering in Agile' PDF):</strong><br>The Agile Model encompasses a full software development lifecycle within its iterations.<br>a) According to slide 3, what activities are typically included in each iteration of an Agile model?<br>b) The \"Construction/iteration\" phase (slide 8) involves designers and developers working to deploy a working product. How does this phase typically approach product improvement and initial functionality?<br>c) How does the \"Feedback\" phase (slide 12) contribute to the iterative nature of the Agile model?",
                     answer: `
                         <p><strong>a) Activities in Each Agile Iteration (Slide 3):</strong></p>
                         <p>Each iteration involves a team working through a full software development life cycle, including:</p>
@@ -777,7 +814,6 @@ MRE = <strong>20%</strong></pre>
                 }
             ];
 
-
             essayContainer.innerHTML = `<h2>Essay Questions</h2>
                                         <p>Click on a question to reveal its answer.</p>`; // Clear previous content and add header
 
@@ -788,11 +824,94 @@ MRE = <strong>20%</strong></pre>
 
                 const titleDiv = document.createElement('div');
                 titleDiv.classList.add('essay-question-title');
-                titleDiv.innerHTML = essayQ.question; // Use innerHTML to render bold tags
+                titleDiv.innerHTML = essayQ.question;
 
                 const answerDiv = document.createElement('div');
                 answerDiv.classList.add('essay-answer-content');
-                answerDiv.innerHTML = essayQ.answer; // Use innerHTML to render the answer with HTML
+                // answerDiv.style.display = 'none'; // This is handled by CSS
+
+                // --- MODIFICATION START ---
+                const tempAnswerContainer = document.createElement('div');
+                tempAnswerContainer.innerHTML = essayQ.answer;
+
+                let hasSubHeadings = false;
+                for (const node of Array.from(tempAnswerContainer.childNodes)) {
+                    if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'P' &&
+                        node.firstChild && node.firstChild.nodeType === Node.ELEMENT_NODE && node.firstChild.tagName === 'STRONG') {
+                        const strongText = node.firstChild.textContent.trim();
+                        if (/^([a-zA-Z]\)|\d+\.\s?|Part\s[a-zA-Z]:)/i.test(strongText)) {
+                            hasSubHeadings = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (hasSubHeadings) {
+                    answerDiv.innerHTML = ''; // Clear for structured sub-accordions
+                    let currentSubAccordionItem = null;
+                    let currentSubAccordionTitle = null;
+                    let currentSubAccordionContent = null;
+
+                    const finalizeAndAppendSubAccordion = () => {
+                        if (currentSubAccordionItem) {
+                            if (currentSubAccordionTitle && currentSubAccordionTitle.hasChildNodes() &&
+                                currentSubAccordionContent && currentSubAccordionContent.hasChildNodes()) {
+                                
+                                currentSubAccordionTitle.addEventListener('click', function() {
+                                    const contentElement = this.nextElementSibling;
+                                    const isVisible = contentElement.style.display === 'block';
+                                    contentElement.style.display = isVisible ? 'none' : 'block';
+                                });
+
+                                currentSubAccordionItem.appendChild(currentSubAccordionTitle);
+                                currentSubAccordionItem.appendChild(currentSubAccordionContent);
+                                answerDiv.appendChild(currentSubAccordionItem);
+                            }
+                            currentSubAccordionItem = null;
+                            currentSubAccordionTitle = null;
+                            currentSubAccordionContent = null;
+                        }
+                    };
+
+                    Array.from(tempAnswerContainer.childNodes).forEach(node => {
+                        let isNodeSubHeading = false;
+                        if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'P' &&
+                            node.firstChild && node.firstChild.nodeType === Node.ELEMENT_NODE && node.firstChild.tagName === 'STRONG') {
+                            const strongText = node.firstChild.textContent.trim();
+                            if (/^([a-zA-Z]\)|\d+\.\s?|Part\s[a-zA-Z]:)/i.test(strongText)) {
+                                isNodeSubHeading = true;
+                            }
+                        }
+
+                        if (isNodeSubHeading) {
+                            finalizeAndAppendSubAccordion(); 
+
+                            currentSubAccordionItem = document.createElement('div');
+                            currentSubAccordionItem.classList.add('essay-sub-accordion-item');
+
+                            currentSubAccordionTitle = document.createElement('div');
+                            currentSubAccordionTitle.classList.add('essay-sub-accordion-title');
+                            currentSubAccordionTitle.appendChild(node.cloneNode(true)); 
+
+                            currentSubAccordionContent = document.createElement('div');
+                            currentSubAccordionContent.classList.add('essay-sub-accordion-content');
+                            currentSubAccordionContent.style.display = 'none'; 
+                        } else {
+                            if (currentSubAccordionContent) {
+                                currentSubAccordionContent.appendChild(node.cloneNode(true));
+                            } else {
+                                // Content before the first sub-heading
+                                answerDiv.appendChild(node.cloneNode(true));
+                            }
+                        }
+                    });
+                    finalizeAndAppendSubAccordion(); // Finalize the last one
+                } else {
+                    // No sub-headings, use original behavior
+                    answerDiv.innerHTML = essayQ.answer;
+                }
+                // --- MODIFICATION END ---
+
 
                 titleDiv.addEventListener('click', () => {
                     const isVisible = answerDiv.style.display === 'block';
@@ -816,7 +935,9 @@ MRE = <strong>20%</strong></pre>
                 essayContainer.style.display = 'block';
                 standardQuizTab.classList.remove('active');
                 essayQuizTab.classList.add('active');
-                displayEssayQuestions(); // Display essay questions when tab is shown
+                if (!essayContainer.querySelector('.essay-question-item')) { // Load only if not already loaded
+                    displayEssayQuestions();
+                }
             }
         }
 
