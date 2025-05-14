@@ -5,9 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SE206 Course Index - Advanced Agile Software Development</title>
     <style>
-        /* Copied CSS from your SE205 index.html example */
+        html {
+            box-sizing: border-box;
+        }
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
         body {
-            font-family: sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
             line-height: 1.6;
             margin: 0;
             padding: 0;
@@ -29,24 +34,26 @@
             border-bottom: 2px solid #eee;
             padding-bottom: 10px;
             margin-bottom: 20px;
+            font-size: 2em;
         }
         h2 {
             color: #007bff; /* Lighter Blue */
             border-bottom: 1px solid #eee;
             padding-bottom: 5px;
             margin-top: 30px;
+            font-size: 1.5em;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            font-size: 0.9em; /* Adjust font size for better fit */
+            font-size: 0.9em;
         }
         th, td {
             border: 1px solid #ddd;
-            padding: 10px 12px; /* Adjust padding */
+            padding: 10px 12px;
             text-align: left;
-            vertical-align: top; /* Align content to top */
+            vertical-align: top;
         }
         th {
             background-color: #e9ecef;
@@ -66,11 +73,11 @@
         a:hover {
             text-decoration: underline;
         }
-        /* Adjust column widths */
-        th:nth-child(1), td:nth-child(1) { width: 8%; } /* Unit */
-        th:nth-child(2), td:nth-child(2) { width: 25%; } /* Main Topics */
-        th:nth-child(3), td:nth-child(3) { width: 42%; } /* Key Concepts */
-        th:nth-child(4), td:nth-child(4) { width: 25%; } /* Methodologies/Tools */
+        /* Adjust column widths for desktop */
+        th:nth-child(1), td:nth-child(1) { width: 8%; }
+        th:nth-child(2), td:nth-child(2) { width: 25%; }
+        th:nth-child(3), td:nth-child(3) { width: 42%; }
+        th:nth-child(4), td:nth-child(4) { width: 25%; }
 
         ul {
             list-style-type: disc;
@@ -90,6 +97,145 @@
             font-size: 1.1em;
             color: #555;
         }
+
+        /* Responsive Styles */
+        @media screen and (max-width: 992px) { /* Larger tablets */
+            .container {
+                width: 90%;
+            }
+             /* Adjust column widths for tablets */
+            th:nth-child(1), td:nth-child(1) { width: 10%; }
+            th:nth-child(2), td:nth-child(2) { width: 28%; }
+            th:nth-child(3), td:nth-child(3) { width: 37%; }
+            th:nth-child(4), td:nth-child(4) { width: 25%; }
+        }
+
+        @media screen and (max-width: 768px) { /* Tablets and Mobile */
+            .container {
+                width: 95%;
+                padding: 20px 15px;
+            }
+
+            h1 {
+                font-size: 1.6em;
+            }
+            h2 {
+                font-size: 1.3em;
+            }
+
+            table {
+                border: 0;
+            }
+
+            table thead {
+                display: none; /* Hide original table headers */
+            }
+
+            table tr {
+                display: block;
+                margin-bottom: 25px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                background-color: #fff;
+            }
+            tbody tr:nth-child(odd) { /* Reset alternating bg for stacked cards */
+                background-color: #fff;
+            }
+            tbody tr:hover { /* Subtle hover for cards */
+                background-color: #f9f9f9;
+            }
+
+            table td {
+                display: block;
+                padding: 10px 15px 10px 35%; /* Default padding, space for label */
+                position: relative;
+                border-bottom: 1px dashed #eee; /* Separator between "fields" */
+                text-align: left; /* Content aligns left */
+                width: 100% !important; /* Override inline widths from desktop */
+            }
+
+            table td:last-child {
+                border-bottom: none;
+            }
+
+            /* Card Header: First cell (Unit link) */
+            table td:first-child {
+                background-color: #e9ecef;
+                color: #0056b3;
+                font-weight: bold;
+                font-size: 1.1em;
+                padding: 12px 15px;
+                border-top-left-radius: 5px;
+                border-top-right-radius: 5px;
+                border-bottom: 1px solid #ddd;
+            }
+            table td:first-child a, table td:first-child strong a { /* Ensure link color */
+                color: #0056b3 !important;
+            }
+            table td:first-child::before { /* No label for the card header */
+                display: none;
+            }
+
+            /* Labels for other cells */
+            table td::before {
+                content: ""; /* Placeholder, set below */
+                position: absolute;
+                left: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: calc(35% - 25px); /* Label area width */
+                font-weight: bold;
+                color: #555;
+                text-align: left;
+                white-space: normal; /* Allow labels to wrap */
+                font-size: 0.9em;
+            }
+
+            table td:nth-of-type(2)::before { content: "Topics:"; }
+            table td:nth-of-type(3)::before { content: "Concepts:"; }
+            table td:nth-of-type(4)::before { content: "Methods/Tools:"; }
+
+            table td ul {
+                padding-left: 15px;
+                margin-top: 5px;
+                margin-bottom: 5px;
+            }
+             table td ul li {
+                margin-bottom: 3px;
+            }
+
+            .container > ul { /* General lists outside table */
+                padding-left: 20px;
+            }
+        }
+
+        @media screen and (max-width: 480px) { /* Smaller Mobile */
+            h1 {
+                font-size: 1.4em;
+            }
+            h2 {
+                font-size: 1.2em;
+            }
+            .container {
+                padding: 15px 10px;
+            }
+            table td { /* Adjust padding for labels on very small screens */
+                padding: 8px 10px 8px 40%;
+            }
+            table td::before { /* Adjust label width */
+                width: calc(40% - 20px);
+                font-size: 0.85em;
+            }
+            table td:first-child { /* Card header padding */
+                padding: 10px 10px;
+                font-size: 1em;
+            }
+             .course-desc {
+                font-size: 1em;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -137,8 +283,8 @@
                         - Agile Manifesto<br>
                         - XP (Intro)<br>
                         - Scrum (Intro)<br>
-                        - DSDM, FDD, Crystal, ASD, UP (Mentioned)
-                        - strong><a href="chapters/quiz.html">Agile Quiz</a></strong>
+                        - DSDM, FDD, Crystal, ASD, UP (Mentioned)<br>
+                        - <strong><a href="chapters/quiz.html">Agile Quiz</a></strong>
                     </td>
                 </tr>
                  <tr>
@@ -256,7 +402,6 @@
                         - DFDs, ER Diagrams, Data Dictionaries
                     </td>
                  </tr>
-                 <!-- NEW UNIT 6 - TESTING IN AGILE -->
                  <tr>
                     <td><strong><a href="chapters/se206_unit6.html">Unit 6</a></strong></td>
                     <td>
