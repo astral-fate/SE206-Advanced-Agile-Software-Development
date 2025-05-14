@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +39,7 @@
             font-weight: bold;
         }
 
-        .quiz-container, .essay-container {
+        .quiz-container, .essay-container /* Shares style with essay-container */ {
             max-width: 800px;
             margin: 20px auto;
             background: #fff;
@@ -47,7 +48,7 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .essay-container, #midterm-mcq-container /* Added midterm container */ {
+        .essay-container, #midterm-mcq-container, #practical-questions-container /* Added practical questions container */ {
             display: none; /* Hidden by default */
         }
 
@@ -243,7 +244,8 @@
     <div class="tab-navigation">
         <button class="tab-button active" id="standardQuizTab">Standard Quiz</button>
         <button class="tab-button" id="essayQuizTab">Essay Questions</button>
-        <button class="tab-button" id="midtermMcqTab">Midterm MCQ</button> <!-- New Tab Button -->
+        <button class="tab-button" id="midtermMcqTab">Midterm MCQ</button>
+        <button class="tab-button" id="practicalQuestionsTab">Practical Questions</button> <!-- New Tab Button -->
     </div>
 
     <div class="quiz-container" id="quiz-container">
@@ -256,8 +258,12 @@
         <!-- Essay questions and textareas can be added here -->
     </div>
 
-    <div class="quiz-container" id="midterm-mcq-container"> <!-- New Container for Midterm MCQs -->
+    <div class="quiz-container" id="midterm-mcq-container">
         <!-- Midterm MCQs will be loaded here by JavaScript -->
+    </div>
+
+    <div class="essay-container" id="practical-questions-container"> <!-- New Container for Practical Questions -->
+        <!-- Practical questions will be loaded here by JavaScript -->
     </div>
 
 
@@ -265,11 +271,13 @@
     <script>
         const quizContainer = document.getElementById('quiz-container');
         const essayContainer = document.getElementById('essay-container');
-        const midtermMcqContainer = document.getElementById('midterm-mcq-container'); // New container ref
+        const midtermMcqContainer = document.getElementById('midterm-mcq-container');
+        const practicalQuestionsContainer = document.getElementById('practical-questions-container'); // New container ref
 
         const standardQuizTab = document.getElementById('standardQuizTab');
         const essayQuizTab = document.getElementById('essayQuizTab');
-        const midtermMcqTab = document.getElementById('midtermMcqTab'); // New tab ref
+        const midtermMcqTab = document.getElementById('midtermMcqTab');
+        const practicalQuestionsTab = document.getElementById('practicalQuestionsTab'); // New tab ref
 
         // Data for the new Midterm MCQ tab
         const midtermMcqData = [
@@ -1223,14 +1231,279 @@ MRE = <strong>20%</strong></pre>
             });
         }
 
+        function displayPracticalQuestions() {
+            const practicalQuestionsData = [
+                {
+                    id: "practicalQ1_EffortMRE",
+                    question: `<strong>Practical Question 1: Effort Estimation & MRE</strong><br>
+                                a) A project has the following user stories. Calculate the Total User Story Effort using the formula: User Story Effort = Complexity × ILF × Story Size.<br>
+                                    * Story A: Complexity=2, ILF=1.5, Story Size=3<br>
+                                    * Story B: Complexity=4, ILF=1.0, Story Size=5<br>
+                                    * Story C: Complexity=1, ILF=1.2, Story Size=8<br><br>
+                                b) If the Predicted Total Effort for a project was 80 person-hours, and the Actual Total Effort turned out to be 95 person-hours, calculate the Magnitude of Relative Error (MRE).`,
+                    answer: `
+                        <p><strong>a) Calculating Total User Story Effort:</strong></p>
+                        <p>The formula is: <code>User Story Effort = Complexity × ILF × Story Size</code></p>
+                        <ul>
+                            <li>Story A Effort: 2 × 1.5 × 3 = 9</li>
+                            <li>Story B Effort: 4 × 1.0 × 5 = 20</li>
+                            <li>Story C Effort: 1 × 1.2 × 8 = 9.6</li>
+                        </ul>
+                        <p><strong>Total User Story Effort:</strong> 9 + 20 + 9.6 = <strong>38.6</strong> (units)</p>
+                        <hr>
+                        <p><strong>b) Calculating Magnitude of Relative Error (MRE):</strong></p>
+                        <p>The formula is: <code>MRE = (|Actual Effort - Predicted Effort| / Actual Effort) × 100</code></p>
+                        <p>Given:</p>
+                        <ul>
+                            <li>Predicted Effort = 80 person-hours</li>
+                            <li>Actual Effort = 95 person-hours</li>
+                        </ul>
+                        <pre>
+MRE = (|95 - 80| / 95) × 100
+MRE = (15 / 95) × 100
+MRE = 0.1578947... × 100
+MRE ≈ <strong>15.79%</strong></pre>
+                    `
+                },
+                {
+                    id: "practicalQ2_CheckDigit",
+                    question: `<strong>Practical Question 2: ISBN-13 Check Digit Calculation & Verification</strong><br>
+                                The International Standard Book Number (ISBN) is a unique numeric commercial book identifier. An ISBN-13 has a check digit to validate the number. The calculation and verification method for an ISBN-13 check digit is based on the principles for EAN-13 (as described in 'Unit 6: Testing In Agile' PDF, slides 20-22).<br><br>
+                                <strong>Method to Calculate the Check Digit (13th digit):</strong><br>
+                                <ol style="margin-left: 0; padding-left: 20px;">
+                                    <li>Take the first 12 digits.</li>
+                                    <li>Add all the digits in odd positions (1st, 3rd, 5th, 7th, 9th, 11th).</li>
+                                    <li>Add all the digits in even positions (2nd, 4th, 6th, 8th, 10th, 12th) and multiply this sum by 3.</li>
+                                    <li>Add the results from step 2 and step 3.</li>
+                                    <li>Take the remainder of this sum when divided by 10 (i.e., sum % 10).</li>
+                                    <li>If the remainder is 0, the check digit is 0. Otherwise, subtract the remainder from 10 to get the check digit.</li>
+                                </ol><br>
+                                <strong>Method to Verify an Existing ISBN-13 (including the check digit):</strong><br>
+                                <ol style="margin-left: 0; padding-left: 20px;">
+                                    <li>Take all 13 digits.</li>
+                                    <li>Add all the digits in odd positions (1st, 3rd, ..., 13th).</li>
+                                    <li>Add all the digits in even positions (2nd, 4th, ..., 12th) and multiply this sum by 3.</li>
+                                    <li>Add the results from step 2 and step 3.</li>
+                                    <li>If the final sum modulo 10 is 0, the ISBN-13 is correct.</li>
+                                </ol><br>
+                                a) Calculate the check digit for the first 12 digits of an ISBN: <strong>978-0-306-40615-?</strong><br>
+                                b) Verify if the following ISBN-13 is correct: <strong>978-3-16-148410-0</strong>`,
+                    answer: `
+                        <p><strong>a) Calculate the check digit for the first 12 digits of an ISBN: 978-0-306-40615-?</strong></p>
+                        <p>Digits: &nbsp;&nbsp;&nbsp;&nbsp;9 &nbsp;7 &nbsp;8 &nbsp;0 &nbsp;3 &nbsp;0 &nbsp;6 &nbsp;4 &nbsp;0 &nbsp;6 &nbsp;1 &nbsp;5</p>
+                        <p>Positions:1 &nbsp;2 &nbsp;3 &nbsp;4 &nbsp;5 &nbsp;6 &nbsp;7 &nbsp;8 &nbsp;9 10 11 12</p>
+                        <ol>
+                            <li>First 12 digits: 9, 7, 8, 0, 3, 0, 6, 4, 0, 6, 1, 5</li>
+                            <li>Sum of odd positioned digits: 9 (pos 1) + 8 (pos 3) + 3 (pos 5) + 6 (pos 7) + 0 (pos 9) + 1 (pos 11) = 27</li>
+                            <li>Sum of even positioned digits × 3: (7 (pos 2) + 0 (pos 4) + 0 (pos 6) + 4 (pos 8) + 6 (pos 10) + 5 (pos 12)) × 3 = (22) × 3 = 66</li>
+                            <li>Total sum: 27 + 66 = 93</li>
+                            <li>Remainder: 93 % 10 = 3</li>
+                            <li>Check digit: Since remainder is not 0, 10 - 3 = 7.</li>
+                        </ol>
+                        <p>The check digit is <strong>7</strong>. The full ISBN-13 is 978-0-306-40615-7.</p>
+                        <hr>
+                        <p><strong>b) Verify if the following ISBN-13 is correct: 978-3-16-148410-0</strong></p>
+                        <p>Digits: &nbsp;&nbsp;&nbsp;&nbsp;9 &nbsp;7 &nbsp;8 &nbsp;3 &nbsp;1 &nbsp;6 &nbsp;1 &nbsp;4 &nbsp;8 &nbsp;4 &nbsp;1 &nbsp;0 &nbsp;0</p>
+                        <p>Positions: 1 &nbsp;2 &nbsp;3 &nbsp;4 &nbsp;5 &nbsp;6 &nbsp;7 &nbsp;8 &nbsp;9 10 11 12 13</p>
+                        <ol>
+                            <li>All 13 digits are given.</li>
+                            <li>Sum of odd positioned digits: 9 (pos 1) + 8 (pos 3) + 1 (pos 5) + 1 (pos 7) + 8 (pos 9) + 1 (pos 11) + 0 (pos 13) = 28</li>
+                            <li>Sum of even positioned digits × 3: (7 (pos 2) + 3 (pos 4) + 6 (pos 6) + 4 (pos 8) + 4 (pos 10) + 0 (pos 12)) × 3 = (24) × 3 = 72</li>
+                            <li>Total sum: 28 + 72 = 100</li>
+                            <li>Verification: 100 % 10 = 0.</li>
+                        </ol>
+                        <p>Since the remainder is 0, the ISBN-13 <strong>978-3-16-148410-0</strong> is <strong>correct</strong>.</p>
+                    `
+                }
+            ];
+
+            practicalQuestionsContainer.innerHTML = `<h2>Practical Questions</h2>
+                                        <p>Click on a question to reveal its solution. These questions focus on calculations and practical applications of concepts discussed.</p>`;
+
+            practicalQuestionsData.forEach(pqData => {
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('essay-question-item');
+                itemDiv.setAttribute('id', pqData.id);
+
+                const titleDiv = document.createElement('div');
+                titleDiv.classList.add('essay-question-title');
+                titleDiv.innerHTML = pqData.question;
+
+                const answerDiv = document.createElement('div');
+                answerDiv.classList.add('essay-answer-content');
+
+                const tempAnswerContainer = document.createElement('div');
+                tempAnswerContainer.innerHTML = pqData.answer;
+
+                let hasSubHeadings = false;
+                for (const node of Array.from(tempAnswerContainer.childNodes)) {
+                    if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'P' &&
+                        node.firstChild && node.firstChild.nodeType === Node.ELEMENT_NODE && node.firstChild.tagName === 'STRONG') {
+                        const strongText = node.firstChild.textContent.trim();
+                        if (/^([a-zA-Z]\)|Part\s[a-zA-Z]:|Method for|To Calculate|To Verify)/i.test(strongText)) {
+                            hasSubHeadings = true;
+                            break;
+                        }
+                    } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'HR') {
+                        hasSubHeadings = true;
+                        break;
+                    }
+                }
+
+                if (hasSubHeadings) {
+                    answerDiv.innerHTML = '';
+                    let currentSubAccordionItem = null;
+                    let currentSubAccordionTitle = null;
+                    let currentSubAccordionContent = null;
+
+                    const finalizeAndAppendSubAccordion = () => {
+                         if (currentSubAccordionItem) {
+                            if (currentSubAccordionTitle && currentSubAccordionTitle.hasChildNodes() &&
+                                currentSubAccordionContent && currentSubAccordionContent.hasChildNodes()) {
+                                
+                                currentSubAccordionTitle.addEventListener('click', function() {
+                                    const contentElement = this.nextElementSibling;
+                                    const isVisible = contentElement.style.display === 'block';
+                                    contentElement.style.display = isVisible ? 'none' : 'block';
+                                });
+
+                                currentSubAccordionItem.appendChild(currentSubAccordionTitle);
+                                currentSubAccordionItem.appendChild(currentSubAccordionContent);
+                                answerDiv.appendChild(currentSubAccordionItem);
+                            }
+                            currentSubAccordionItem = null;
+                            currentSubAccordionTitle = null;
+                            currentSubAccordionContent = null;
+                        }
+                    };
+                    
+                    let firstNodeIsHeading = false;
+                    const firstRealNode = Array.from(tempAnswerContainer.childNodes).find(n => n.nodeType === Node.ELEMENT_NODE);
+                    if (firstRealNode && firstRealNode.tagName === 'P' &&
+                        firstRealNode.firstChild && firstRealNode.firstChild.nodeType === Node.ELEMENT_NODE && firstRealNode.firstChild.tagName === 'STRONG') {
+                         const strongText = firstRealNode.firstChild.textContent.trim();
+                         if (/^([a-zA-Z]\)|Part\s[a-zA-Z]:|Method for|To Calculate|To Verify)/i.test(strongText)) {
+                            firstNodeIsHeading = true;
+                         }
+                    }
+
+                    if (!firstNodeIsHeading && tempAnswerContainer.innerHTML.includes("<hr")) { // If there's an HR but the first element isn't a typical heading, put initial content outside accordions
+                        let initialContentDone = false;
+                         Array.from(tempAnswerContainer.childNodes).forEach(node => {
+                            if (!initialContentDone && node.nodeType === Node.ELEMENT_NODE && node.tagName === 'HR') {
+                                initialContentDone = true;
+                                return; // Skip the HR itself for the first section
+                            }
+                            if (!initialContentDone) {
+                                answerDiv.appendChild(node.cloneNode(true));
+                            } else {
+                                // Start sub-accordion logic from here
+                                 let isNodeSubHeading = false;
+                                if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'P' &&
+                                    node.firstChild && node.firstChild.nodeType === Node.ELEMENT_NODE && node.firstChild.tagName === 'STRONG') {
+                                    const strongText = node.firstChild.textContent.trim();
+                                    if (/^([a-zA-Z]\)|Part\s[a-zA-Z]:|Method for|To Calculate|To Verify)/i.test(strongText)) {
+                                        isNodeSubHeading = true;
+                                    }
+                                } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'HR' && currentSubAccordionItem) {
+                                     finalizeAndAppendSubAccordion(); // HR acts as a separator
+                                     return; // Skip HR from being content
+                                }
+
+
+                                if (isNodeSubHeading) {
+                                    finalizeAndAppendSubAccordion();
+                                    currentSubAccordionItem = document.createElement('div');
+                                    currentSubAccordionItem.classList.add('essay-sub-accordion-item');
+                                    currentSubAccordionTitle = document.createElement('div');
+                                    currentSubAccordionTitle.classList.add('essay-sub-accordion-title');
+                                    currentSubAccordionTitle.appendChild(node.cloneNode(true));
+                                    currentSubAccordionContent = document.createElement('div');
+                                    currentSubAccordionContent.classList.add('essay-sub-accordion-content');
+                                    currentSubAccordionContent.style.display = 'none';
+                                } else if (currentSubAccordionContent) {
+                                    currentSubAccordionContent.appendChild(node.cloneNode(true));
+                                } else {
+                                   // Fallback: if somehow content appears after HR but not in a sub-accordion structure
+                                   // This might happen if there are multiple HRs and content between them isn't headed
+                                   // For practical questions, the structure is fairly rigid (Part A <hr> Part B)
+                                   // So, this else might not be hit often if content is well-formed.
+                                   // To be safe, we create a new sub-accordion for such unheaded content after an HR
+                                   finalizeAndAppendSubAccordion(); // Finalize any previous
+                                   currentSubAccordionItem = document.createElement('div');
+                                   currentSubAccordionItem.classList.add('essay-sub-accordion-item');
+                                   currentSubAccordionTitle = document.createElement('div'); // Create a generic title or leave it blank
+                                   currentSubAccordionTitle.classList.add('essay-sub-accordion-title');
+                                   // currentSubAccordionTitle.innerHTML = "<p><strong>Details:</strong></p>"; // Generic title
+                                   currentSubAccordionContent = document.createElement('div');
+                                   currentSubAccordionContent.classList.add('essay-sub-accordion-content');
+                                   currentSubAccordionContent.style.display = 'none';
+                                   currentSubAccordionContent.appendChild(node.cloneNode(true));
+                                }
+                            }
+                        });
+
+
+                    } else { // Standard sub-accordion logic if first node is a heading OR no HR found (meaning it's all one block or structured with P strong)
+                        Array.from(tempAnswerContainer.childNodes).forEach(node => {
+                            let isNodeSubHeading = false;
+                            if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'P' &&
+                                node.firstChild && node.firstChild.nodeType === Node.ELEMENT_NODE && node.firstChild.tagName === 'STRONG') {
+                                const strongText = node.firstChild.textContent.trim();
+                                if (/^([a-zA-Z]\)|Part\s[a-zA-Z]:|Method for|To Calculate|To Verify)/i.test(strongText)) {
+                                    isNodeSubHeading = true;
+                                }
+                            } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'HR' && currentSubAccordionItem) {
+                                 finalizeAndAppendSubAccordion(); // HR acts as a separator
+                                 return; // Skip HR from being content
+                            }
+
+                            if (isNodeSubHeading) {
+                                finalizeAndAppendSubAccordion();
+                                currentSubAccordionItem = document.createElement('div');
+                                currentSubAccordionItem.classList.add('essay-sub-accordion-item');
+                                currentSubAccordionTitle = document.createElement('div');
+                                currentSubAccordionTitle.classList.add('essay-sub-accordion-title');
+                                currentSubAccordionTitle.appendChild(node.cloneNode(true));
+                                currentSubAccordionContent = document.createElement('div');
+                                currentSubAccordionContent.classList.add('essay-sub-accordion-content');
+                                currentSubAccordionContent.style.display = 'none';
+                            } else if (currentSubAccordionContent) {
+                                currentSubAccordionContent.appendChild(node.cloneNode(true));
+                            } else {
+                                answerDiv.appendChild(node.cloneNode(true));
+                            }
+                        });
+                    }
+                    finalizeAndAppendSubAccordion();
+                } else {
+                    answerDiv.innerHTML = pqData.answer;
+                }
+
+
+                titleDiv.addEventListener('click', () => {
+                    const isVisible = answerDiv.style.display === 'block';
+                    answerDiv.style.display = isVisible ? 'none' : 'block';
+                    // If sub-accordions exist, their individual toggle will handle their content
+                });
+
+                itemDiv.appendChild(titleDiv);
+                itemDiv.appendChild(answerDiv);
+                practicalQuestionsContainer.appendChild(itemDiv);
+            });
+        }
+
+
         function showTab(tabName) {
             quizContainer.style.display = 'none';
             essayContainer.style.display = 'none';
-            midtermMcqContainer.style.display = 'none'; // Hide new container
+            midtermMcqContainer.style.display = 'none';
+            practicalQuestionsContainer.style.display = 'none'; // Hide new container
 
             standardQuizTab.classList.remove('active');
             essayQuizTab.classList.remove('active');
-            midtermMcqTab.classList.remove('active'); // Deactivate new tab
+            midtermMcqTab.classList.remove('active');
+            practicalQuestionsTab.classList.remove('active'); // Deactivate new tab
 
             if (tabName === 'standard') {
                 quizContainer.style.display = 'block';
@@ -1238,28 +1511,35 @@ MRE = <strong>20%</strong></pre>
             } else if (tabName === 'essay') {
                 essayContainer.style.display = 'block';
                 essayQuizTab.classList.add('active');
-                if (!essayContainer.querySelector('.essay-question-item')) { // Load only if not already loaded
+                if (!essayContainer.querySelector('.essay-question-item')) {
                     displayEssayQuestions();
                 }
-            } else if (tabName === 'midterm-mcq') { // Handle new tab
+            } else if (tabName === 'midterm-mcq') {
                 midtermMcqContainer.style.display = 'block';
                 midtermMcqTab.classList.add('active');
-                if (!midtermMcqContainer.querySelector('.question-block')) { // Load only if not already loaded
+                if (!midtermMcqContainer.querySelector('.question-block')) {
                     displayMidtermMcq();
+                }
+            } else if (tabName === 'practical-questions') { // Handle new tab
+                practicalQuestionsContainer.style.display = 'block';
+                practicalQuestionsTab.classList.add('active');
+                if (!practicalQuestionsContainer.querySelector('.essay-question-item')) { // Load only if not already loaded
+                    displayPracticalQuestions();
                 }
             }
         }
 
         standardQuizTab.addEventListener('click', () => showTab('standard'));
         essayQuizTab.addEventListener('click', () => showTab('essay'));
-        midtermMcqTab.addEventListener('click', () => showTab('midterm-mcq')); // Event listener for new tab
+        midtermMcqTab.addEventListener('click', () => showTab('midterm-mcq'));
+        practicalQuestionsTab.addEventListener('click', () => showTab('practical-questions')); // Event listener for new tab
 
         // Initial call to display the quiz when the page loads
         displayQuiz();
-        // displayEssayQuestions(); // Load essay questions data initially but keep them hidden until tab is clicked
         showTab('standard'); // Show standard quiz by default
 
     </script>
 
 </body>
 </html>
+
