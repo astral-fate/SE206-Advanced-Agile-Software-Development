@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SE206 - Unit 6: Testing in Agile</title>
+    <style>
+        /* Paste the CSS from the SE205 unit1.html example here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, h3 {
+            color: #0056b3; /* Cairo University Blue */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            margin-top: 20px; /* Reduced top margin for sections */
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            margin-top: 25px;
+            margin-bottom: 15px;
+            color: #007bff; /* Lighter Blue */
+        }
+         ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+        ol { /* Added style for ordered lists */
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+         li {
+             margin-bottom: 8px;
+         }
+        code {
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            background-color: #e9ecef;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.95em;
+        }
+        strong {
+             color: #dc3545; /* Red emphasis */
+        }
+
+        /* Main Tabs Styles */
+        .main-tabs {
+            display: flex;
+            justify-content: space-around; /* Or flex-start, center */
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            margin-bottom: 25px;
+            border-bottom: 2px solid #0056b3;
+        }
+
+        .main-tabs .tab-button {
+            padding: 12px 20px; /* Adjusted padding slightly */
+            border: none;
+            background: none;
+            color: #0056b3;
+            font-size: 0.95em; /* Slightly smaller font */
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px 5px 0 0;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin-bottom: -2px; /* Overlap border */
+            border-bottom: 2px solid transparent;
+            text-align: center;
+        }
+
+        .main-tabs .tab-button.active {
+            background: #0056b3;
+            color: white;
+            border-bottom: 2px solid #0056b3;
+        }
+        .main-tabs .tab-button:hover:not(.active) {
+            background-color: #e9ecef;
+            border-bottom: 2px solid #adb5bd;
+        }
+
+        /* Content Sections */
+        .main-content {
+            display: none; /* Hide all main content sections by default */
+            animation: fadeIn 0.5s;
+        }
+
+        .main-content.active {
+            display: block; /* Show only the active one */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+
+        /* --- Accordion Styles (for Glossary and Essay) --- */
+        .accordion-container { /* Wrapper for glossary and essay questions */
+             border: 1px solid #dee2e6;
+            border-radius: 5px;
+            overflow: hidden; /* Contain borders */
+        }
+
+
+        .accordion-item {
+            border-bottom: 1px solid #dee2e6; /* Separator */
+        }
+        .accordion-item:last-child {
+            border-bottom: none;
+        }
+
+        .accordion-header {
+            background-color: #f8f9fa;
+            color: #dc3545; /* Highlight Red for terms */
+            cursor: pointer;
+            padding: 15px 20px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            position: relative; /* For the indicator */
+        }
+
+        /* Specific styling for essay questions header */
+        #essay .accordion-header {
+             color: #0056b3; /* Blue for essay questions */
+        }
+
+
+        .accordion-header:hover {
+            background-color: #e9ecef;
+        }
+
+        /* Indicator (+/-) */
+        .accordion-header::after {
+            content: '\002B'; /* + sign */
+            color: #0056b3;
+            font-weight: bold;
+            float: right;
+            margin-left: 5px;
+            transition: transform 0.2s ease-in-out;
+        }
+        #essay .accordion-header::after { /* Ensure blue color for essay indicator */
+             color: #0056b3;
+        }
+
+
+        .accordion-header.active::after {
+            content: "\2212"; /* - sign */
+            transform: rotate(180deg); /* Optional: animate the sign itself */
+        }
+        /* Optional: Slightly different style for active header */
+        .accordion-header.active {
+             background-color: #e7f1ff;
+        }
+
+
+        .accordion-panel {
+            padding: 0 20px; /* Start with 0 padding top/bottom */
+            background-color: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, padding 0.3s ease-out; /* Smooth transition */
+        }
+        /* Padding when panel is open */
+        .accordion-panel.open { /* Add a class for when it's open */
+             padding: 15px 20px;
+        }
+
+        .accordion-panel p,
+        .accordion-panel ul,
+        .accordion-panel ol { /* Apply margin to lists and paragraphs */
+            margin: 15px 0; /* Add margin back when panel is open */
+            color: #333; /* Reset color for definition */
+        }
+         .accordion-panel strong { /* Ensure strong is red inside panel */
+             color: #dc3545;
+         }
+
+
+        /* --- End Accordion Styles --- */
+
+        /* Concepts Section Styles */
+        #concepts .concept-block {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+        }
+         #concepts .concept-block h3 {
+            margin-top: 0;
+            color: #007bff;
+            border-bottom: 1px dotted #ccc;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+
+        /* Quiz Styles (apply within #fill, #tf, #mc) */
+        .question {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            background-color: #ffffff; /* White background for questions */
+            position: relative; /* For feedback positioning */
+        }
+
+        .question p {
+            margin: 0 0 15px;
+            font-weight: bold;
+            font-size: 1.05em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-button {
+            padding: 10px 15px;
+            border: 1px solid #ced4da;
+            background: #f8f9fa; /* Light background for options */
+            color: #495057;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: left;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            width: 100%;
+        }
+        .option-button:hover {
+             background-color: #e9ecef;
+             border-color: #adb5bd;
+        }
+
+        .option-button.selected {
+            background: #007bff;
+            color: white;
+            border-color: #0056b3;
+        }
+
+        .check-answer {
+            margin-top: 15px;
+            padding: 10px 20px;
+            border: none;
+            background: #28a745; /* Success Green */
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.2s ease;
+        }
+        .check-answer:hover {
+             background-color: #218838;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SE206 - Unit 6: Testing in Agile</h1>
+
+        <div class="main-tabs">
+            <button class="tab-button active" data-tab="glossary">Glossary</button>
+            <button class="tab-button" data-tab="concepts">Key Concepts</button>
+            <button class="tab-button" data-tab="essay">Essay Questions</button>
+            <button class="tab-button" data-tab="fill">Fill in the Blank</button>
+            <button class="tab-button" data-tab="tf">True/False</button>
+            <button class="tab-button" data-tab="mc">Multiple Choice</button>
+        </div>
+
+        <section id="glossary" class="main-content active">
+            <h2>Glossary of Terms</h2>
+            <div class="accordion-container">
+                <div class="accordion-item">
+                    <button class="accordion-header">Testing</button>
+                    <div class="accordion-panel">
+                        <p>The process of evaluating a system or its component(s) with the intent to find whether it satisfies the specified requirements or not. It involves executing a system to identify gaps, errors, or missing requirements. (As per ANSI/IEEE 1059: A process of analyzing a software item to detect differences between existing and required conditions and to evaluate features).</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Defect/Error/Bug</button>
+                    <div class="accordion-panel">
+                        <p>Differences between existing and required conditions in a software item, identified during testing.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Unit Testing</button>
+                    <div class="accordion-panel">
+                        <p>Testing conducted by developers on individual units or components of source code to isolate each part of the program and show that individual parts are correct in terms of requirements and functionality.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Verification</button>
+                    <div class="accordion-panel">
+                        <p>The process of evaluating software to determine whether the products of a given development phase satisfy the conditions imposed at the start of that phase. It addresses the concern: "Are you building it right?". Involves static activities like reviews and inspections, typically done by developers.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Validation</button>
+                    <div class="accordion-panel">
+                        <p>The process of evaluating software during or at the end of the development process to determine whether it satisfies specified requirements. It addresses the concern: "Are you building the right thing?". Involves dynamic activities like executing the software, typically done by testers.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Static Testing</button>
+                    <div class="accordion-panel">
+                        <p>Testing of a software development artifact, e.g., requirements, design or code, without execution of these artifacts. (Implied by Verification activities like reviews, walkthroughs, inspections).</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Dynamic Testing</button>
+                    <div class="accordion-panel">
+                        <p>Testing that involves the execution of the software of a component or system. (Implied by Validation activities).</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Range Check</button>
+                    <div class="accordion-panel">
+                        <p>A validation method suitable for date and numeric data types that checks whether data is within given values. Example: a student's score should be >0 but <100.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Length Check</button>
+                    <div class="accordion-panel">
+                        <p>A validation method suitable for text and date data types that checks if the input data contains the required number of characters. Example: a telephone number should be 11 digits.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Type Check</button>
+                    <div class="accordion-panel">
+                        <p>A validation method that checks that the input data does not contain invalid characters based on the expected data type (e.g., Integer, String, Boolean). Example: username should not contain numbers.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Format Check</button>
+                    <div class="accordion-panel">
+                        <p>A validation method suitable for date and text data types that checks if data is in a specific format. Example: Student ID starts with 3 letters followed by 4 digits (SEM2021).</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Limit Check</button>
+                    <div class="accordion-panel">
+                        <p>A validation method suitable for numeric data types, similar to a range check but only one of the boundaries is checked. Example: student's score must be >0.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Presence Check</button>
+                    <div class="accordion-panel">
+                        <p>A validation method, often for primary keys, that checks if data is actually present and has not been missed out. Example: Student's ID should be present.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Lookup Check</button>
+                    <div class="accordion-panel">
+                        <p>A validation method suitable for a list of values, where an entered data item is compared to a list of valid entries (often stored in a database table). Example: Country field must be one of the predefined countries.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Check Digit</button>
+                    <div class="accordion-panel">
+                        <p>A validation method, often used for barcodes or ISBNs, that looks at an extra digit calculated from the other digits of a number and then put on the end of the number to verify accuracy.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Double Entry</button>
+                    <div class="accordion-panel">
+                        <p>A verification method where data is entered twice, sometimes by different operators, and the computer system compares both entries for discrepancies.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Screen/Visual Check</button>
+                    <div class="accordion-panel">
+                        <p>A verification method involving a manual check by the user entering the data, who confirms its correctness on the screen, often against a paper document or from their own knowledge.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Black-Box Testing</button>
+                    <div class="accordion-panel">
+                        <p>A software testing method in which the internal structure/design/implementation of the item being tested is NOT known to the tester. Testing is based on inputs and outputs.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">White-Box Testing</button>
+                    <div class="accordion-panel">
+                        <p>A software testing method in which the internal structure/design/implementation of the item being tested IS known to the tester. Also called glass-box or open-box testing.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Grey-Box Testing</button>
+                    <div class="accordion-panel">
+                        <p>A software testing method which is a combination of Black Box and White Box testing. The tester has limited knowledge of the internal workings, possibly access to design documents or databases.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Functional Testing</button>
+                    <div class="accordion-panel">
+                        <p>A type of black-box testing based on the specifications of the software. The application is tested by providing input and examining the output to ensure it conforms to the intended functionality and specified requirements.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Integration Testing</button>
+                    <div class="accordion-panel">
+                        <p>The phase in software testing in which individual software modules are combined and tested as a group. It can be done bottom-up (starting with unit-tested modules) or top-down (starting with high-level modules).</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">System Testing</button>
+                    <div class="accordion-panel">
+                        <p>Testing conducted on a complete, integrated system to evaluate the system's compliance with its specified requirements and quality standards. Tests the system as a whole.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Regression Testing</button>
+                    <div class="accordion-panel">
+                        <p>Selective re-testing of a system or component to verify that modifications have not caused unintended effects and that the system or component still complies with its specified requirements. Ensures bug fixes don't introduce new faults.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Alpha Testing</button>
+                    <div class="accordion-panel">
+                        <p>The first stage of testing, typically performed in-house by developer and QA teams. It often combines unit, integration, and system testing. Aspects tested include spelling, broken links, and performance on low-spec machines.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Beta Testing</button>
+                    <div class="accordion-panel">
+                        <p>Testing performed after alpha testing, where a sample of the intended audience tests the application in a real-world environment. Also known as pre-release testing.</p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-header">Non-Functional Testing</button>
+                    <div class="accordion-panel">
+                        <p>Testing software from requirements which are non-functional in nature but important, such as performance, security, usability, portability, etc.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="concepts" class="main-content">
+            <h2>Key Concepts from Unit 6</h2>
+            <div class="concept-block">
+                <h3>What is Software Testing?</h3>
+                <p>Testing is a critical process in software development. Its primary goals are:</p>
+                <ul>
+                    <li>To evaluate a system or its components.</li>
+                    <li>To determine if the system satisfies specified requirements.</li>
+                    <li>To identify any gaps, errors, defects, or missing requirements compared to actual requirements.</li>
+                    <li>(ANSI/IEEE 1059) To analyze a software item to detect differences between existing and required conditions and to evaluate its features.</li>
+                </ul>
+            </div>
+            <div class="concept-block">
+                <h3>Who Performs Testing and When?</h3>
+                <ul>
+                    <li><strong>Roles:</strong> Testing involves various stakeholders. Dedicated testing teams (Software Testers, QA Engineers) evaluate developed software. Developers also conduct <strong>Unit Testing</strong> on their code. Project Managers and End Users can also be involved.</li>
+                    <li><strong>When to Start:</strong> An <strong>early start</strong> to testing (Shift-Left) is crucial. It reduces rework cost and time. In SDLC, testing can begin from the Requirements Gathering phase and continue through deployment.</li>
+                    <li><strong>Agile vs. Waterfall:</strong> In Waterfall, formal testing is a distinct phase. In Agile/incremental models, testing is performed at the end of every increment/iteration, with the whole application tested at the end. Testing is continuous.</li>
+                    <li><strong>When to Stop:</strong> It's hard to achieve 100% testing. Criteria include: deadlines, test case completion, functional/code coverage targets, bug rate stabilization (no high-priority bugs), and management decisions.</li>
+                </ul>
+            </div>
+            <div class="concept-block">
+                <h3>Verification vs. Validation</h3>
+                <p>These two terms are often confused but represent distinct quality assurance activities:</p>
+                <ul>
+                    <li><strong>Verification ("Are you building it right?"):</strong>
+                        <ul>
+                            <li>Ensures the software system meets all specified functionality and conforms to design specifications.</li>
+                            <li>Typically occurs first and involves checking documentation, code, etc.</li>
+                            <li>Primarily done by developers.</li>
+                            <li>Involves <strong>static activities</strong> (reviews, walkthroughs, inspections) without executing the code.</li>
+                            <li>An objective process.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Validation ("Are you building the right thing?"):</strong>
+                        <ul>
+                            <li>Ensures that the developed functionalities meet the intended behavior and user needs.</li>
+                            <li>Occurs after verification and involves checking the overall product.</li>
+                            <li>Primarily done by testers.</li>
+                            <li>Involves <strong>dynamic activities</strong> (executing the software against requirements).</li>
+                            <li>A subjective process, involves decisions on how well the software works.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="concept-block">
+                <h3>Validation Methods (Data Input Checks)</h3>
+                <p>Techniques to ensure data entered into the system is sensible and acceptable:</p>
+                <ul>
+                    <li><strong>Range Check:</strong> Data within specified upper/lower limits (e.g., age 18-65). Considers Normal, Abnormal, Extreme data.</li>
+                    <li><strong>Length Check:</strong> Data has a specific number of characters (e.g., password 8-16 characters).</li>
+                    <li><strong>Type Check:</strong> Data conforms to the expected data type (e.g., numeric field shouldn't accept letters).</li>
+                    <li><strong>Format Check:</strong> Data adheres to a predefined pattern (e.g., email format, date dd/mm/yyyy).</li>
+                    <li><strong>Limit Check:</strong> Data is above or below a single boundary (e.g., quantity > 0).</li>
+                    <li><strong>Presence Check:</strong> Ensures required data is not missing (e.g., mandatory fields).</li>
+                    <li><strong>Lookup Check:</strong> Data matches an entry in a predefined list of valid values (e.g., selecting a state from a dropdown).</li>
+                    <li><strong>Check Digit:</strong> An extra digit used to verify the accuracy of a numerical identifier (e.g., ISBN, credit card numbers).</li>
+                </ul>
+            </div>
+            <div class="concept-block">
+                <h3>Verification Methods</h3>
+                <p>Techniques to ensure data is accurately copied or transferred:</p>
+                <ul>
+                    <li><strong>Double Entry:</strong> Data is entered twice (often by different operators) and the system compares the two entries for consistency.</li>
+                    <li><strong>Screen/Visual Check:</strong> A manual check where the user visually confirms the correctness of entered data as displayed on the screen, possibly against a source document.</li>
+                </ul>
+            </div>
+             <div class="concept-block">
+                <h3>Software Testing Methods (Approaches)</h3>
+                <p>Different approaches based on the tester's knowledge of the system's internal workings:</p>
+                <ul>
+                    <li><strong>Black-Box Testing:</strong> Tester has no knowledge of the internal code structure or logic. Testing is based on inputs and observing outputs against requirements. Focuses on "what" the system does.</li>
+                    <li><strong>White-Box Testing (Glass-Box/Open-Box):</strong> Tester has detailed knowledge of the internal logic, code structure, and design. Tests are designed to cover specific code paths, branches, and conditions. Focuses on "how" the system works internally.</li>
+                    <li><strong>Grey-Box Testing:</strong> Tester has partial or limited knowledge of the internal workings, perhaps access to design documents or databases. Combines aspects of both black-box and white-box testing to design more effective test cases.</li>
+                </ul>
+            </div>
+            <div class="concept-block">
+                <h3>Testing Levels</h3>
+                <p>Testing is performed at different stages and scopes:</p>
+                <h4>1. Functional Testing</h4>
+                <p>A type of black-box testing focusing on the functional requirements and specifications. It verifies that the system performs its intended functions correctly.</p>
+                <ul>
+                    <li><strong>Unit Testing:</strong> Testing individual components or modules by developers.</li>
+                    <li><strong>Integration Testing:</strong> Testing the interfaces and interactions between integrated components.
+                        <ul>
+                            <li><em>Bottom-up:</em> Starts with lower-level modules and integrates upwards.</li>
+                            <li><em>Top-down:</em> Starts with higher-level modules and integrates downwards, often using stubs.</li>
+                        </ul>
+                    </li>
+                    <li><strong>System Testing:</strong> Testing the complete and integrated system as a whole against specified requirements and quality standards. Performed by a specialized team.</li>
+                    <li><strong>Regression Testing:</strong> Re-testing after modifications or bug fixes to ensure no new defects have been introduced and existing functionality remains intact.</li>
+                    <li><strong>Alpha Testing:</strong> In-house testing by developer/QA teams before release. Combines unit, integration, and system testing. Focuses on basic usability, functionality, and stability.</li>
+                    <li><strong>Beta Testing (Pre-release Testing):</strong> External testing by a sample of real users in their environment before the official release. Gathers feedback on usability, performance, and overall satisfaction.</li>
+                </ul>
+                <h4>2. Non-Functional Testing</h4>
+                <p>Tests aspects of the software not related to specific functions, but to quality attributes such as:</p>
+                <ul>
+                    <li><strong>Performance Testing:</strong> Evaluates responsiveness, stability, and scalability under a particular workload.</li>
+                    <li><strong>Load Testing:</strong> Assesses system behavior under normal and peak load conditions.</li>
+                    <li><strong>Stress Testing:</strong> Evaluates system behavior beyond normal operating conditions to find its breaking point.</li>
+                    <li><strong>Usability Testing:</strong> Assesses how easy and intuitive the software is to use for end-users.</li>
+                    <li><strong>Security Testing:</strong> Identifies vulnerabilities and ensures data protection and system integrity.</li>
+                    <li><strong>Portability Testing:</strong> Checks if the software can be easily transferred from one environment to another.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="essay" class="main-content">
+            <h2>Essay Questions</h2>
+            <div id="essay-questions-container" class="accordion-container">
+                <!-- Essay questions will be loaded here by JavaScript -->
+            </div>
+        </section>
+
+        <div id="fill" class="main-content">
+            <h2>Fill in the Blank Questions</h2>
+            <div id="fill-questions"></div>
+        </div>
+
+        <div id="tf" class="main-content">
+            <h2>True/False Questions</h2>
+            <div id="tf-questions"></div>
+        </div>
+
+        <div id="mc" class="main-content">
+            <h2>Multiple Choice Questions</h2>
+            <div id="mc-questions"></div>
+        </div>
+
+    </div>
+
+    <script>
+        const fillInTheBlank = [
+            { question: "Testing evaluates if a system or its component(s) satisfies the specified ______.", options: ["design", "requirements", "budget", "timeline"], answer: "requirements" },
+            { question: "Developers typically conduct ______ Testing on individual units of source code.", options: ["System", "Integration", "Unit", "Beta"], answer: "Unit" },
+            { question: "Verification addresses the concern: 'Are you building it ______?'", options: ["fast", "cheap", "right", "big"], answer: "right" },
+            { question: "Validation addresses the concern: 'Are you building the ______ thing?'", options: ["wrong", "right", "new", "old"], answer: "right" },
+            { question: "A ______ check is a validation method that ensures data falls within specified upper and lower boundaries.", options: ["Type", "Format", "Range", "Presence"], answer: "Range" },
+            { question: "______-Box Testing is performed without any knowledge of the internal workings of the application.", options: ["White", "Grey", "Black", "Glass"], answer: "Black" },
+            { question: "Testing combined parts of an application to determine if they function correctly together is called ______ testing.", options: ["Unit", "System", "Integration", "Regression"], answer: "Integration" },
+            { question: "______ testing is performed by a sample of the intended audience to test the application in a real-world environment before release.", options: ["Alpha", "Unit", "Beta", "System"], answer: "Beta" },
+            { question: "Checking that data has been accurately copied from one part of a system to another is a goal of ______.", options: ["Validation", "Verification", "Debugging", "Deployment"], answer: "Verification" },
+            { question: "Evaluating system behavior under peak load conditions is a focus of ______ testing.", options: ["Usability", "Security", "Load", "Portability"], answer: "Load" }
+        ];
+
+        const trueOrFalse = [
+            { question: "Testing can guarantee that a software product is 100% free of defects.", answer: false },
+            { question: "Validation is typically performed before verification in the SDLC.", answer: false },
+            { question: "A range check is considered a verification method rather than a validation method.", answer: false },
+            { question: "White-box testing requires access to the source code and knowledge of the internal logic.", answer: true },
+            { question: "System testing is primarily focused on testing individual modules in isolation.", answer: false },
+            { question: "Regression testing is performed to ensure that new changes or bug fixes haven't negatively impacted existing functionality.", answer: true },
+            { question: "Alpha testing is typically conducted by end-users at their own sites.", answer: false },
+            { question: "Non-functional testing is concerned with 'what' the system does, rather than 'how well' it does it.", answer: false },
+            { question: "An early start to testing can reduce the cost and time associated with rework.", answer: true },
+            { question: "Lookup check compares entered data against a predefined list of valid entries.", answer: true }
+        ];
+
+        const multipleChoice = [
+            { question: "Which of the following best describes the primary intent of software testing?", options: ["To prove the software is completely correct", "To find defects and ensure requirements are met", "To write test documentation", "To speed up the development process"], answer: "To find defects and ensure requirements are met" },
+            { question: "Which testing activity primarily answers the question: 'Are you building the right thing?'", options: ["Verification", "Validation", "Unit Testing", "Code Review"], answer: "Validation" },
+            { question: "Which of these is NOT a common data validation method?", options: ["Range Check", "Format Check", "Double Entry", "Presence Check"], answer: "Double Entry" }, // Double Entry is a verification method
+            { question: "Testing that focuses on the internal logic and structure of the code is known as:", options: ["Black-Box Testing", "White-Box Testing", "Grey-Box Testing", "User Acceptance Testing"], answer: "White-Box Testing" },
+            { question: "Which level of functional testing is typically performed first by developers on individual code modules?", options: ["System Testing", "Integration Testing", "Unit Testing", "Alpha Testing"], answer: "Unit Testing" },
+            { question: "What type of testing is performed to ensure that a bug fix has not introduced other problems?", options: ["Stress Testing", "Regression Testing", "Performance Testing", "Beta Testing"], answer: "Regression Testing" },
+            { question: "Which testing phase involves releasing the software to a limited external audience for real-world feedback before official launch?", options: ["Alpha Testing", "System Testing", "Unit Testing", "Beta Testing"], answer: "Beta Testing" },
+            { question: "Testing for qualities like performance, usability, and security falls under:", options: ["Functional Testing", "Non-Functional Testing", "Integration Testing", "Requirement Testing"], answer: "Non-Functional Testing" },
+            { question: "The ANSI/IEEE standard mentioned in relation to the definition of testing is:", options: ["IEEE 829", "ISO 9001", "ANSI/IEEE 1059", "CMMI Level 5"], answer: "ANSI/IEEE 1059" },
+            { question: "Which development model typically involves a distinct, formal testing phase conducted towards the end?", options: ["Agile", "Iterative", "Waterfall", "Scrum"], answer: "Waterfall" }
+        ];
+
+        const essayQuestions = [
+            {
+                question: "Explain the difference between Verification and Validation in software testing. Provide an example for each.",
+                answer: `
+                    <p>Verification and Validation (V&V) are two fundamental quality assurance processes in software development, often confused but distinct in their purpose and execution.</p>
+                    <p><strong>Verification</strong> addresses the question: <em>"Are you building it right?"</em> It focuses on ensuring that the software is being developed according to its design specifications and standards. It checks if the deliverables of a particular phase meet the conditions set at the beginning of that phase. Verification typically involves static testing techniques that do not require executing the code, such as reviews, walkthroughs, and inspections of documents, design, and code.</p>
+                    <p><strong>Example of Verification:</strong> A code review where developers examine a piece of code to ensure it adheres to coding standards, follows the design document, and is logically sound without actually running the program.</p>
+                    <p><strong>Validation</strong> addresses the question: <em>"Are you building the right thing?"</em> It focuses on ensuring that the software product meets the user's actual needs and requirements. It checks if the final product (or an increment) behaves as intended from the user's perspective. Validation typically involves dynamic testing techniques, which require executing the software.</p>
+                    <p><strong>Example of Validation:</strong> Performing user acceptance testing (UAT) where end-users execute test cases on a deployed system to confirm that a feature, like a 'search product' function, works correctly and provides the expected results as per their business needs.</p>
+                    <p>In summary, verification ensures the software is built correctly as per specifications, while validation ensures the correct software is built to meet user needs.</p>
+                `
+            },
+            {
+                question: "Describe Black-Box, White-Box, and Grey-Box testing. What are the key characteristics of each approach?",
+                answer: `
+                    <p>Black-Box, White-Box, and Grey-Box testing are different approaches to software testing, distinguished by the tester's knowledge of the system's internal workings:</p>
+                    <p><strong>1. Black-Box Testing:</strong></p>
+                    <ul>
+                        <li><strong>Knowledge:</strong> The tester has no knowledge of the internal structure, design, or code of the software. The system is treated as a "black box."</li>
+                        <li><strong>Focus:</strong> Testing is based purely on the software's specifications and requirements. It focuses on the inputs and expected outputs.</li>
+                        <li><strong>Techniques:</strong> Equivalence partitioning, boundary value analysis, decision table testing, state transition testing.</li>
+                        <li><strong>Purpose:</strong> To verify the functionality of the software without considering how it is implemented.</li>
+                    </ul>
+                    <p><strong>2. White-Box Testing (Glass-Box or Open-Box Testing):</strong></p>
+                    <ul>
+                        <li><strong>Knowledge:</strong> The tester has full knowledge of the internal structure, design, and code of the software.</li>
+                        <li><strong>Focus:</strong> Testing is based on the internal logic and paths within the code.</li>
+                        <li><strong>Techniques:</strong> Statement coverage, branch coverage, path coverage, condition coverage.</li>
+                        <li><strong>Purpose:</strong> To ensure that all internal components are working correctly, all logical paths are exercised, and internal structures are sound.</li>
+                    </ul>
+                    <p><strong>3. Grey-Box Testing:</strong></p>
+                    <ul>
+                        <li><strong>Knowledge:</strong> The tester has partial or limited knowledge of the internal workings of the software. This might include access to design documents, database schemas, or some architectural understanding, but not necessarily full source code access.</li>
+                        <li><strong>Focus:</strong> Combines aspects of both black-box and white-box testing. The tester might use their limited internal knowledge to design more effective black-box tests or to target specific areas.</li>
+                        <li><strong>Techniques:</strong> Can involve designing test cases based on known data structures or common error-prone areas identified from design documents.</li>
+                        <li><strong>Purpose:</strong> To leverage some internal knowledge to improve test coverage and defect detection efficiency, without the full overhead of white-box testing.</li>
+                    </ul>
+                `
+            },
+            {
+                question: "Explain the typical levels of functional testing in software development: Unit, Integration, System, and Regression Testing.",
+                answer: `
+                    <p>Functional testing focuses on verifying that the software performs its intended functions as specified. It is typically conducted at several levels:</p>
+                    <ol>
+                        <li><strong>Unit Testing:</strong>
+                            <p>This is the lowest level of testing, performed by developers on individual, isolated components or modules of the software. The goal is to verify that each unit of the software performs as designed and meets its specific requirements. It helps detect issues early in the development cycle.</p>
+                        </li>
+                        <li><strong>Integration Testing:</strong>
+                            <p>After individual units are tested, they are combined or integrated, and integration testing is performed to verify the interfaces and interactions between these components. The aim is to detect defects that arise when units are combined. It can be done using different strategies like bottom-up (integrating lower-level modules first) or top-down (integrating higher-level modules first, often using stubs for lower-level ones).</p>
+                        </li>
+                        <li><strong>System Testing:</strong>
+                            <p>Once all components are integrated, system testing is performed on the entire, complete system. The purpose is to evaluate the system's compliance with all specified requirements, both functional and non-functional, from an end-to-end perspective. It validates that the system works as a whole and meets quality standards, usually conducted by a dedicated testing team in an environment similar to production.</p>
+                        </li>
+                        <li><strong>Regression Testing:</strong>
+                            <p>This type of testing is performed whenever a change is made to the software, such as a bug fix, new feature addition, or modification to existing functionality. The intent of regression testing is to ensure that the changes have not adversely affected existing, previously working functionalities and that no new defects have been introduced. It involves re-running a subset of existing test cases.</p>
+                        </li>
+                    </ol>
+                    <p>These levels build upon each other, starting from individual units and progressing to the entire system, ensuring quality throughout the development lifecycle.</p>
+                `
+            },
+            {
+                question: "Why is early testing considered crucial in Agile development, and how does it differ from testing in traditional Waterfall models?",
+                answer: `
+                    <p>Early testing, often referred to as "shift-left testing," is a cornerstone of Agile development and offers significant advantages.</p>
+                    <p><strong>Importance in Agile:</strong></p>
+                    <ul>
+                        <li><strong>Cost Reduction:</strong> Defects found early in the development cycle (e.g., during a sprint) are significantly cheaper and easier to fix than those found later in system testing or after release.</li>
+                        <li><strong>Faster Feedback Loops:</strong> Agile relies on short iterations. Early and continuous testing within each iteration provides rapid feedback to developers, allowing for quick corrections and adjustments.</li>
+                        <li><strong>Improved Quality:</strong> By addressing issues as they arise, the overall quality of the product is continuously improved, leading to a more stable and reliable product by the end of each iteration.</li>
+                        <li><strong>Risk Mitigation:</strong> Identifying and fixing problems early reduces the risk of major issues surfacing late in the project, which could derail timelines and budgets.</li>
+                        <li><strong>Building the Right Product:</strong> Continuous testing of small increments allows the team and stakeholders to verify that the evolving product meets the intended requirements and user needs, preventing divergence from the desired outcome.</li>
+                    </ul>
+                    <p><strong>Difference from Waterfall:</strong></p>
+                    <ul>
+                        <li><strong>Timing:</strong> In traditional Waterfall models, testing is typically a distinct phase that occurs after development is largely complete. This means defects are often discovered late, making them more expensive and time-consuming to fix. In Agile, testing is an integral part_of each iteration, occurring concurrently with development.</li>
+                        <li><strong>Scope:</strong> Waterfall testing often focuses on testing the entire system at once after it's built. Agile testing involves testing smaller, functional increments continuously throughout the development lifecycle (e.g., unit tests by developers, acceptance tests per user story).</li>
+                        <li><strong>Collaboration:</strong> Agile promotes close collaboration between developers, testers, and business stakeholders throughout each iteration. Testers are involved from the beginning, helping to define acceptance criteria and providing feedback early. In Waterfall, testers might receive the software with limited prior involvement.</li>
+                    </ul>
+                    <p>In essence, Agile's approach to early and continuous testing supports its principles of adaptability, rapid delivery, and high quality by making testing an ongoing, integrated activity rather than a separate, late-stage phase.</p>
+                `
+            },
+             {
+                question: "Describe Alpha Testing and Beta Testing. What are their objectives and who typically performs them?",
+                answer: `
+                    <p>Alpha and Beta testing are two distinct phases of user acceptance testing, typically conducted towards the end of the development lifecycle before a product's official release.</p>
+                    <p><strong>Alpha Testing:</strong></p>
+                    <ul>
+                        <li><strong>Objective:</strong> To identify bugs, usability issues, and gather initial feedback on the product's functionality and performance in a controlled environment. It is the first stage of testing involving more than just the core development/QA team.</li>
+                        <li><strong>Performers:</strong> Typically performed in-house by internal teams such as developers, QA staff, and sometimes other employees who act as potential users. It can be considered a combination of unit, integration, and system testing performed by these internal teams.</li>
+                        <li><strong>Environment:</strong> Conducted at the developer's site or a simulated user environment.</li>
+                        <li><strong>Characteristics:</strong> More formal than ad-hoc testing by developers; may involve testing on machines with lower specifications to check loading times and latency. Looks for spelling mistakes, broken links, and general directions/flow.</li>
+                    </ul>
+                    <p><strong>Beta Testing (or Pre-release Testing):</strong></p>
+                    <ul>
+                        <li><strong>Objective:</strong> To gather feedback from real users in their actual environment to uncover defects, usability issues, and assess overall user satisfaction before the final release. It aims to ensure the product is ready for a wider audience.</li>
+                        <li><strong>Performers:</strong> Conducted by a selected group of actual end-users or customers who are external to the development organization. These users test the application in their own environments with their own data.</li>
+                        <li><strong>Environment:</strong> Conducted at the users' locations (real-world environment).</li>
+                        <li><strong>Characteristics:</strong> Less controlled than alpha testing. Feedback focuses on real-world usage, performance, reliability, and overall user experience. Beta test versions are often distributed widely (e.g., via the web).</li>
+                    </ul>
+                    <p>In summary, Alpha testing is an internal validation step, while Beta testing is an external validation step using real users to ensure the product meets market expectations before full launch.</p>
+                `
+            }
+        ];
+
+        // --- START OF SCRIPT LOGIC ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const mainTabButtons = document.querySelectorAll('.main-tabs .tab-button');
+            const mainTabContents = document.querySelectorAll('.main-content');
+            const essayContainer = document.getElementById('essay-questions-container');
+            const fillContainer = document.getElementById('fill-questions');
+            const tfContainer = document.getElementById('tf-questions');
+            const mcContainer = document.getElementById('mc-questions');
+
+            mainTabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+                    mainTabButtons.forEach(btn => btn.classList.remove('active'));
+                    mainTabContents.forEach(content => content.classList.remove('active'));
+                    button.classList.add('active');
+                    const targetContent = document.getElementById(tabId);
+                    if (targetContent) {
+                        targetContent.classList.add('active');
+                    }
+                });
+            });
+
+            function setupAccordionListeners(containerSelector) {
+                const headers = document.querySelectorAll(`${containerSelector} .accordion-header`);
+                headers.forEach(header => {
+                    header.addEventListener('click', function() {
+                        const panel = this.nextElementSibling;
+                        const isActive = this.classList.contains('active');
+                        const parentContainer = this.closest('.accordion-container');
+
+                        if (parentContainer) {
+                            parentContainer.querySelectorAll('.accordion-item').forEach(item => {
+                                const otherHeader = item.querySelector('.accordion-header');
+                                const otherPanel = item.querySelector('.accordion-panel');
+                                if (otherHeader !== this && otherHeader.classList.contains('active')) {
+                                    otherHeader.classList.remove('active');
+                                    otherPanel.style.maxHeight = null;
+                                    otherPanel.classList.remove('open');
+                                }
+                            });
+                        }
+
+                        if (isActive) {
+                            this.classList.remove('active');
+                            panel.style.maxHeight = null;
+                            panel.classList.remove('open');
+                        } else {
+                            this.classList.add('active');
+                            panel.style.maxHeight = panel.scrollHeight + 40 + "px";
+                            panel.classList.add('open');
+                        }
+                    });
+                });
+            }
+            
+            setupAccordionListeners('#glossary .accordion-container'); // For glossary initially
+
+            function handleOptionSelection(button, questionDiv) {
+                const siblings = questionDiv.querySelectorAll('.option-button.selected');
+                siblings.forEach(sib => sib.classList.remove('selected'));
+                button.classList.add('selected');
+                const existingFeedback = questionDiv.querySelector('.feedback');
+                if (existingFeedback) {
+                    existingFeedback.remove();
+                }
+            }
+
+            function showFeedback(questionDiv, isCorrect, correctAnswer) {
+                const existingFeedback = questionDiv.querySelector('.feedback');
+                if (existingFeedback) {
+                    existingFeedback.remove();
+                }
+                const feedback = document.createElement('div');
+                feedback.className = 'feedback';
+                if (isCorrect) {
+                    feedback.classList.add('correct');
+                    feedback.textContent = 'Correct!';
+                } else {
+                    feedback.classList.add('incorrect');
+                    let displayAnswer = correctAnswer;
+                    if (typeof correctAnswer === 'boolean') {
+                        displayAnswer = correctAnswer ? 'True' : 'False';
+                    }
+                    feedback.textContent = `Incorrect. Correct answer: ${displayAnswer}`;
+                }
+                const checkButton = questionDiv.querySelector('.check-answer');
+                if (checkButton) {
+                    checkButton.parentNode.insertBefore(feedback, checkButton.nextSibling);
+                } else {
+                    questionDiv.appendChild(feedback);
+                }
+            }
+
+            function loadEssayQuestions() {
+                essayContainer.innerHTML = '';
+                essayQuestions.forEach((q, index) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'accordion-item';
+                    const headerButton = document.createElement('button');
+                    headerButton.className = 'accordion-header';
+                    headerButton.textContent = `${index + 1}. ${q.question}`;
+                    const panelDiv = document.createElement('div');
+                    panelDiv.className = 'accordion-panel';
+                    panelDiv.innerHTML = q.answer;
+                    itemDiv.appendChild(headerButton);
+                    itemDiv.appendChild(panelDiv);
+                    essayContainer.appendChild(itemDiv);
+                });
+                setupAccordionListeners('#essay-questions-container'); // Setup listeners after loading
+            }
+
+            function loadFillInTheBlankQuestions() {
+                fillContainer.innerHTML = '';
+                fillInTheBlank.forEach((q, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question';
+                    const questionText = document.createElement('p');
+                    questionText.innerHTML = `${index + 1}. ` + q.question.replace('_______', '<span style="color: #007bff; font-weight:bold;">_______</span>');
+                    questionDiv.appendChild(questionText);
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'options';
+                    const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+                    shuffledOptions.forEach(option => {
+                        const optionButton = document.createElement('button');
+                        optionButton.className = 'option-button';
+                        optionButton.textContent = option;
+                        optionButton.addEventListener('click', () => handleOptionSelection(optionButton, questionDiv));
+                        optionsDiv.appendChild(optionButton);
+                    });
+                    questionDiv.appendChild(optionsDiv);
+                    const checkButton = document.createElement('button');
+                    checkButton.className = 'check-answer';
+                    checkButton.textContent = 'Check Answer';
+                    checkButton.addEventListener('click', () => {
+                        const selected = questionDiv.querySelector('.option-button.selected');
+                        if (selected) {
+                            showFeedback(questionDiv, selected.textContent === q.answer, q.answer);
+                        } else {
+                            showFeedback(questionDiv, false, q.answer);
+                        }
+                    });
+                    questionDiv.appendChild(checkButton);
+                    fillContainer.appendChild(questionDiv);
+                });
+            }
+
+            function loadTrueFalseQuestions() {
+                tfContainer.innerHTML = '';
+                trueOrFalse.forEach((q, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question';
+                    const questionText = document.createElement('p');
+                    questionText.textContent = `${index + 1}. ` + q.question;
+                    questionDiv.appendChild(questionText);
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'options';
+                    const trueButton = document.createElement('button');
+                    trueButton.className = 'option-button';
+                    trueButton.textContent = 'True';
+                    trueButton.addEventListener('click', () => handleOptionSelection(trueButton, questionDiv));
+                    optionsDiv.appendChild(trueButton);
+                    const falseButton = document.createElement('button');
+                    falseButton.className = 'option-button';
+                    falseButton.textContent = 'False';
+                    falseButton.addEventListener('click', () => handleOptionSelection(falseButton, questionDiv));
+                    optionsDiv.appendChild(falseButton);
+                    questionDiv.appendChild(optionsDiv);
+                    const checkButton = document.createElement('button');
+                    checkButton.className = 'check-answer';
+                    checkButton.textContent = 'Check Answer';
+                    checkButton.addEventListener('click', () => {
+                        const selected = questionDiv.querySelector('.option-button.selected');
+                        if (selected) {
+                            const isCorrect = (selected.textContent === 'True' && q.answer === true) || (selected.textContent === 'False' && q.answer === false);
+                            showFeedback(questionDiv, isCorrect, q.answer);
+                        } else {
+                            showFeedback(questionDiv, false, q.answer);
+                        }
+                    });
+                    questionDiv.appendChild(checkButton);
+                    tfContainer.appendChild(questionDiv);
+                });
+            }
+
+            function loadMultipleChoiceQuestions() {
+                mcContainer.innerHTML = '';
+                multipleChoice.forEach((q, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question';
+                    const questionText = document.createElement('p');
+                    questionText.textContent = `${index + 1}. ` + q.question;
+                    questionDiv.appendChild(questionText);
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'options';
+                    const shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+                    shuffledOptions.forEach(option => {
+                        const optionButton = document.createElement('button');
+                        optionButton.className = 'option-button';
+                        optionButton.textContent = option;
+                        optionButton.addEventListener('click', () => handleOptionSelection(optionButton, questionDiv));
+                        optionsDiv.appendChild(optionButton);
+                    });
+                    questionDiv.appendChild(optionsDiv);
+                    const checkButton = document.createElement('button');
+                    checkButton.className = 'check-answer';
+                    checkButton.textContent = 'Check Answer';
+                    checkButton.addEventListener('click', () => {
+                        const selected = questionDiv.querySelector('.option-button.selected');
+                        if (selected) {
+                            showFeedback(questionDiv, selected.textContent === q.answer, q.answer);
+                        } else {
+                            showFeedback(questionDiv, false, q.answer);
+                        }
+                    });
+                    questionDiv.appendChild(checkButton);
+                    mcContainer.appendChild(questionDiv);
+                });
+            }
+
+            loadEssayQuestions();
+            loadFillInTheBlankQuestions();            loadTrueFalseQuestions();
+            loadMultipleChoiceQuestions();
+        });
+    </script>
+</body>
+  </html> 
